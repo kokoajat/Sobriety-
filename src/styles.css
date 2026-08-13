@@ -490,3 +490,15 @@ button:disabled {
 .fork-done h1 {
   font-size: 1.5rem;
 }
+
+/* The "name your own" tile. Dashed rather than filled: it is an escape hatch
+   from the shipped list, not a ninth option competing with the eight. */
+.tag-button-add {
+  border-style: dashed;
+  background: none;
+  color: var(--ink-soft);
+}
+
+.tag-button-add strong {
+  color: var(--ink);
+}

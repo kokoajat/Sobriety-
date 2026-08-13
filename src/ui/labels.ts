@@ -7,29 +7,10 @@
  * every evening is manufacturing the thing it claims to treat.
  */
 
-import type { Block, ForkChoice, FunctionTag } from '../core/types';
+import type { Block, ForkChoice } from '../core/types';
 
-export const FUNCTION_LABELS: Record<FunctionTag, string> = {
-  unwind: 'Työstä vapaalle',
-  social: 'Sosiaalinen jännitys',
-  sleep: 'Nukahtaminen',
-  boredom: 'Tyhjä ilta',
-  numb: 'Tunteen vaimennus',
-  celebrate: 'Juhla tai palkinto',
-  ritual: 'Tapa, käsi tekee itsestään',
-  craving: 'Pelkkä himo',
-};
-
-export const FUNCTION_HINTS: Record<FunctionTag, string> = {
-  unwind: 'Työpäivä ei muuten lopu mihinkään.',
-  social: 'Toisten seurassa oleminen on helpompaa.',
-  sleep: 'Ilman sitä uni ei tule.',
-  boredom: 'Ilta on tyhjä ja pitkä.',
-  numb: 'Jokin tunne pitää saada hiljaisemmaksi.',
-  celebrate: 'Tämä ansaitaan.',
-  ritual: 'Ei erityistä syytä, näin vain tehdään.',
-  craving: 'Tekee mieli, eikä siihen liity mitään muuta.',
-};
+// Function labels live in core/functions.ts, since the user's own functions are
+// data rather than translations and both kinds must resolve the same way.
 
 export const BLOCK_LABELS: Record<Block, string> = {
   morning: 'Aamu',

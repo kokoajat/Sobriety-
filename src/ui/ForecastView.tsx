@@ -7,8 +7,9 @@
  */
 
 import { useState } from 'react';
-import { BLOCKS, FUNCTION_TAGS, type Block, type ForkPrediction, type FunctionTag } from '../core/types';
-import { BLOCK_CLOCK, BLOCK_LABELS, FUNCTION_LABELS, WEEKDAYS } from './labels';
+import { BLOCKS, type Block, type ForkPrediction, type FunctionTag } from '../core/types';
+import { functionLabel, functionOptions } from '../core/functions';
+import { BLOCK_CLOCK, BLOCK_LABELS, WEEKDAYS } from './labels';
 import type { Store } from '../store';
 
 interface Props {
@@ -25,6 +26,7 @@ export function ForecastView({ store, onDone }: Props) {
   const [cue, setCue] = useState('');
 
   const weekday = WEEKDAYS[new Date(`${store.today}T12:00:00`).getDay()];
+  const options = functionOptions(store.functions);
 
   const addFork = () => {
     setForks((prev) => [...prev, { block, tag, cue: cue.trim() || undefined }]);
@@ -81,7 +83,7 @@ export function ForecastView({ store, onDone }: Props) {
             {forks.map((f, i) => (
               <li key={i} className="chip">
                 <span>
-                  {BLOCK_LABELS[f.block]} · {FUNCTION_LABELS[f.tag]}
+                  {BLOCK_LABELS[f.block]} · {functionLabel(f.tag, store.functions)}
                   {f.cue ? ` · ${f.cue}` : ''}
                 </span>
                 <button
@@ -111,9 +113,9 @@ export function ForecastView({ store, onDone }: Props) {
           <label>
             Mitä varten
             <select value={tag} onChange={(e) => setTag(e.target.value as FunctionTag)}>
-              {FUNCTION_TAGS.map((t) => (
-                <option key={t} value={t}>
-                  {FUNCTION_LABELS[t]}
+              {options.map((o) => (
+                <option key={o.tag} value={o.tag}>
+                  {o.label}
                 </option>
               ))}
             </select>

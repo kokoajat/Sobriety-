@@ -10,9 +10,9 @@
 import { calibrationBins } from '../core/forecast';
 import { scoreableRows } from '../core/day';
 import { SCORING_WINDOW_DAYS, useInsight } from '../store';
+import { functionLabel } from '../core/functions';
 import {
   BLOCK_LABELS,
-  FUNCTION_LABELS,
   WEEKDAYS,
   formatPercent,
   formatScore,
@@ -20,14 +20,16 @@ import {
   readSkill,
   readSpread,
 } from './labels';
-import type { Day } from '../core/types';
+import type { CustomFunction, Day } from '../core/types';
 
 interface Props {
   days: Day[];
   today: string;
+  /** Needed to name the user's own functions in the blind-spot and load lists. */
+  functions: CustomFunction[];
 }
 
-export function InsightView({ days, today }: Props) {
+export function InsightView({ days, today, functions }: Props) {
   const insight = useInsight(days, today);
   const { scores } = insight;
 
@@ -100,7 +102,9 @@ export function InsightView({ days, today }: Props) {
                 </strong>
                 <span>
                   {s.forksUnpredicted}/{s.forksObserved} risteystä yllätti
-                  {s.dominantTag ? ` · ${FUNCTION_LABELS[s.dominantTag].toLowerCase()}` : ''}
+                  {s.dominantTag
+                    ? ` · ${functionLabel(s.dominantTag, functions).toLowerCase()}`
+                    : ''}
                 </span>
               </li>
             ))}
@@ -114,7 +118,7 @@ export function InsightView({ days, today }: Props) {
           <ul className="loadlist">
             {insight.load.slice(0, 5).map((row) => (
               <li key={row.tag}>
-                <span>{FUNCTION_LABELS[row.tag]}</span>
+                <span>{functionLabel(row.tag, functions)}</span>
                 <span className="hint">
                   {row.drank}/{row.forks} risteystä päätyi juomaan
                 </span>
@@ -162,7 +166,7 @@ function Metric({
  * Reliability diagram. Bins with no data are simply absent rather than plotted
  * at zero, so an empty region reads as "no evidence" instead of "perfect".
  */
-function CalibrationPlot({ days, today }: Props) {
+function CalibrationPlot({ days, today }: Pick<Props, 'days' | 'today'>) {
   const rows = scoreableRows(days.filter((d) => d.date <= today));
   const bins = calibrationBins(rows, 5).filter((b) => b.n > 0);
   const size = 240;

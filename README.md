@@ -101,6 +101,15 @@ merkinnyt aamulla, se kirjataan yllätykseksi. Kolmen toiston jälkeen sovellus
 kertoo: "torstai-iltana tulee risteys, jota et näe tulevaksi." Se on
 kalibrointivirheraportti, ei syytös.
 
+**Tehtävälista on avoin.** Kahdeksan valmista tehtävää on kehittäjän arvaus siitä,
+mihin juoma otetaan. Jos arvaus ei osu, käyttäjä kirjaa iltansa lähimmän väärän
+otsikon alle — ja sen jälkeen jokainen luku lasketaan kategorian yli, jota hänellä
+ei ole. Siksi omia tehtäviä voi lisätä sekä rauhassa Valmistelussa että kesken
+risteyksen, ja ne ovat mukana analyysissä täsmälleen samoin kuin valmiit. Samalla
+nimellä lisääminen käyttää olemassa olevaa tehtävää uuden sijaan, jottei saman
+asian historia jakaudu kahdelle tunnisteelle. Käytöstä poisto on arkistointi, ei
+poisto: vanhat päivät säilyvät luettavina.
+
 **Risteys, ei juoma, on kirjattava tapahtuma.** Yksikkö on hetki jossa päivä
 haarautuu. Neljä vaihtoehtoa — *join*, *siirsin*, *tein jotain muuta*, *ohitin* —
 kirjataan täsmälleen samalla tavalla. Sovellus jolle pitää valehdella lakkaa

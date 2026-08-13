@@ -11,11 +11,11 @@
 export type DateKey = string;
 
 /**
- * The job the drink is hired to do. Drinking is not the problem, it is the
- * current solution to one of these, so the app tracks the demand rather than
- * the consumption.
+ * The jobs shipped with the app. Drinking is not the problem, it is the current
+ * solution to one of these, so the app tracks the demand rather than the
+ * consumption.
  */
-export type FunctionTag =
+export type BuiltinFunctionTag =
   | 'unwind' // siirtymä työstä vapaalle
   | 'social' // sosiaalinen jännitys
   | 'sleep' // nukahtaminen
@@ -25,7 +25,7 @@ export type FunctionTag =
   | 'ritual' // tapa, käsi tekee itsestään
   | 'craving'; // pelkkä himo ilman tunnistettua tehtävää
 
-export const FUNCTION_TAGS: FunctionTag[] = [
+export const BUILTIN_FUNCTION_TAGS: BuiltinFunctionTag[] = [
   'unwind',
   'social',
   'sleep',
@@ -35,6 +35,42 @@ export const FUNCTION_TAGS: FunctionTag[] = [
   'ritual',
   'craving',
 ];
+
+/**
+ * A function tag: one of the builtins above, or a user-defined id.
+ *
+ * Deliberately widened to `string`. The eight builtins are a guess at what a
+ * drink gets hired for, and a guess that does not fit forces the user to file
+ * the evening under the nearest wrong label — after which every number in the
+ * app is computed over a category that does not exist for them. Analysis treats
+ * tags as opaque keys throughout, so custom ones need no special handling
+ * downstream.
+ */
+export type FunctionTag = string;
+
+/** Namespaced so a user-defined tag can never collide with a future builtin. */
+export const CUSTOM_TAG_PREFIX = 'custom:';
+
+export function isCustomTag(tag: FunctionTag): boolean {
+  return tag.startsWith(CUSTOM_TAG_PREFIX);
+}
+
+/**
+ * A function the user defined themselves.
+ *
+ * Never hard-deleted, only archived: historical forks still reference the tag,
+ * and a deleted record would leave old days labelled with a raw id. Archiving
+ * takes it out of the pickers while keeping every past day readable.
+ */
+export interface CustomFunction {
+  /** The tag value itself, `custom:<uuid>`. */
+  id: FunctionTag;
+  label: string;
+  /** The user's own note on when this applies; shown under the label. */
+  hint?: string;
+  createdAt: number;
+  archived?: boolean;
+}
 
 /** Coarse time-of-day buckets. Fine enough to be actionable, coarse enough to accumulate data. */
 export type Block = 'morning' | 'afternoon' | 'evening' | 'night';

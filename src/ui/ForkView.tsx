@@ -12,11 +12,12 @@
  * app that stops receiving data at exactly the moment the data matters.
  */
 
-import { useMemo, useState } from 'react';
-import { FUNCTION_TAGS, type ForkChoice, type FunctionTag } from '../core/types';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { ForkChoice, FunctionTag } from '../core/types';
 import { pickForFork } from '../core/substitution';
+import { functionLabel, functionOptions } from '../core/functions';
 import { minuteOfDay } from '../core/day';
-import { CHOICE_LABELS, FUNCTION_HINTS, FUNCTION_LABELS } from './labels';
+import { CHOICE_LABELS } from './labels';
 import type { Store } from '../store';
 
 interface Props {
@@ -28,6 +29,18 @@ export function ForkView({ store, onDone }: Props) {
   const [tag, setTag] = useState<FunctionTag | null>(null);
   const [intensity, setIntensity] = useState(3);
   const [logged, setLogged] = useState<ForkChoice | null>(null);
+  const [naming, setNaming] = useState(false);
+  const [newLabel, setNewLabel] = useState('');
+
+  const options = useMemo(() => functionOptions(store.functions), [store.functions]);
+  const namingRef = useRef<HTMLDivElement>(null);
+
+  // The naming form sits below eight tiles, so on a phone it opens off-screen.
+  // Scrolling it into view keeps the escape hatch usable at a fork, where a
+  // moment of hunting for the input is a moment the fork goes unlogged.
+  useEffect(() => {
+    if (naming) namingRef.current?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }, [naming]);
 
   const message = useMemo(
     () => (tag ? store.messages.find((m) => m.tag === tag) : undefined),
@@ -51,6 +64,19 @@ export function ForkView({ store, onDone }: Props) {
       alternativeId: choice === 'substituted' ? suggestion?.alternative.id : undefined,
     });
     setLogged(choice);
+  };
+
+  /**
+   * Create the function and select it in one step, reusing an existing one when
+   * the label already matches — at a fork the user should never be asked to
+   * resolve a duplicate.
+   */
+  const addAndPick = async () => {
+    const created = await store.addFunction(newLabel);
+    if (!created) return;
+    setNaming(false);
+    setNewLabel('');
+    setTag(created);
   };
 
   const rate = async (worked: boolean) => {
@@ -101,14 +127,68 @@ export function ForkView({ store, onDone }: Props) {
           </p>
         </header>
         <ul className="tag-grid">
-          {FUNCTION_TAGS.map((t) => (
-            <li key={t}>
-              <button type="button" className="tag-button" onClick={() => setTag(t)}>
-                <strong>{FUNCTION_LABELS[t]}</strong>
-                <span>{FUNCTION_HINTS[t]}</span>
+          {options.map((option) => (
+            <li key={option.tag}>
+              <button
+                type="button"
+                className="tag-button"
+                onClick={() => setTag(option.tag)}
+              >
+                <strong>{option.label}</strong>
+                {option.hint && <span>{option.hint}</span>}
               </button>
             </li>
           ))}
+          <li>
+            {naming ? (
+              // Naming happens here rather than only in Valmistelu because a
+              // function that is missing is missing *now*. Sending the user off
+              // to a settings screen mid-fork means the fork goes unlogged, and
+              // an unlogged fork is the one outcome this app cannot afford.
+              <div className="block" ref={namingRef}>
+                <label className="field">
+                  Mihin tehtävään?
+                  <input
+                    type="text"
+                    autoFocus
+                    value={newLabel}
+                    onChange={(e) => setNewLabel(e.target.value)}
+                    placeholder="omin sanoin"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') void addAndPick();
+                    }}
+                  />
+                </label>
+                <div className="button-row">
+                  <button type="button" className="primary" onClick={addAndPick}>
+                    Käytä tätä
+                  </button>
+                  <button
+                    type="button"
+                    className="secondary"
+                    onClick={() => {
+                      setNaming(false);
+                      setNewLabel('');
+                    }}
+                  >
+                    Peruuta
+                  </button>
+                </div>
+                <p className="hint">
+                  Tallentuu omaksi tehtäväksesi ja on jatkossa mukana analyysissä.
+                </p>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className="tag-button tag-button-add"
+                onClick={() => setNaming(true)}
+              >
+                <strong>Muu — nimeä itse</strong>
+                <span>Jos mikään ylläolevista ei ole se, mistä tässä on kyse.</span>
+              </button>
+            )}
+          </li>
         </ul>
       </section>
     );
@@ -117,7 +197,7 @@ export function ForkView({ store, onDone }: Props) {
   return (
     <section className="view">
       <header className="view-head">
-        <h1>{FUNCTION_LABELS[tag]}</h1>
+        <h1>{functionLabel(tag, store.functions)}</h1>
       </header>
 
       {message && (

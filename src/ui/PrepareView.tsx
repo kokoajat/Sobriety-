@@ -10,9 +10,9 @@
  */
 
 import { useRef, useState } from 'react';
-import { FUNCTION_TAGS, type Alternative, type FunctionTag } from '../core/types';
+import type { Alternative, FunctionTag } from '../core/types';
 import { rankAlternatives } from '../core/substitution';
-import { FUNCTION_HINTS, FUNCTION_LABELS } from './labels';
+import { functionHint, functionLabel, functionOptions } from '../core/functions';
 import type { Store } from '../store';
 
 const newId = () => (crypto.randomUUID?.() ?? String(Date.now() + Math.random()));
@@ -22,11 +22,24 @@ export function PrepareView({ store }: { store: Store }) {
   const [text, setText] = useState('');
   const [label, setLabel] = useState('');
   const [recording, setRecording] = useState(false);
+  const [functionLabelDraft, setFunctionLabelDraft] = useState('');
+  const [functionHintDraft, setFunctionHintDraft] = useState('');
   const recorder = useRef<MediaRecorder | null>(null);
   const chunks = useRef<Blob[]>([]);
 
   const existing = store.messages.find((m) => m.tag === tag);
   const ranked = rankAlternatives(store.alternatives, tag);
+  const options = functionOptions(store.functions);
+  const ownFunctions = store.functions.filter((f) => !f.archived);
+
+  const addOwnFunction = async () => {
+    const created = await store.addFunction(functionLabelDraft, functionHintDraft);
+    if (!created) return;
+    setFunctionLabelDraft('');
+    setFunctionHintDraft('');
+    // Jump to the new function: the reason to define one is to prepare for it.
+    setTag(created);
+  };
 
   const saveMessage = async () => {
     if (!text.trim()) return;
@@ -90,14 +103,68 @@ export function PrepareView({ store }: { store: Store }) {
         <label className="field">
           Mitä tehtävää valmistelet
           <select value={tag} onChange={(e) => setTag(e.target.value as FunctionTag)}>
-            {FUNCTION_TAGS.map((t) => (
-              <option key={t} value={t}>
-                {FUNCTION_LABELS[t]}
+            {options.map((o) => (
+              <option key={o.tag} value={o.tag}>
+                {o.label}
               </option>
             ))}
           </select>
-          <span className="hint">{FUNCTION_HINTS[tag]}</span>
+          <span className="hint">{functionHint(tag, store.functions)}</span>
         </label>
+      </div>
+
+      <div className="block">
+        <h2>Omat tehtävät</h2>
+        <p className="hint">
+          Kahdeksan valmista tehtävää on arvaus siitä, mihin juoma otetaan. Jos omasi ei ole
+          niiden joukossa, lisää se — se on mukana risteysvalinnoissa ja kaikessa analyysissä
+          siitä eteenpäin.
+        </p>
+
+        {ownFunctions.length > 0 && (
+          <ul className="ranked">
+            {ownFunctions.map((f) => (
+              <li key={f.id}>
+                <span>{f.label}</span>
+                <button
+                  type="button"
+                  className="chip-remove"
+                  onClick={() => store.archiveFunction(f.id, true)}
+                  aria-label={`Poista käytöstä: ${f.label}`}
+                  title="Poista käytöstä"
+                >
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <label className="field">
+          Tehtävän nimi
+          <input
+            type="text"
+            value={functionLabelDraft}
+            onChange={(e) => setFunctionLabelDraft(e.target.value)}
+            placeholder="riita kotona"
+          />
+        </label>
+        <label className="field">
+          Milloin se pätee (valinnainen)
+          <input
+            type="text"
+            value={functionHintDraft}
+            onChange={(e) => setFunctionHintDraft(e.target.value)}
+            placeholder="kun ilta menee pieleen"
+          />
+        </label>
+        <button type="button" className="secondary" onClick={addOwnFunction}>
+          Lisää tehtävä
+        </button>
+        <p className="hint">
+          Käytöstä poistaminen ei poista historiaa: vanhat päivät säilyvät luettavina, tehtävä
+          vain katoaa valinnoista.
+        </p>
       </div>
 
       <div className="block">
@@ -149,8 +216,8 @@ export function PrepareView({ store }: { store: Store }) {
       <div className="block">
         <h2>Vaihtoehdot</h2>
         <p className="hint">
-          Mikä muu voisi hoitaa saman tehtävän? Ei parempi ihminen, vaan jotain mikä on
-          käden ulottuvilla kolmessa sekunnissa.
+          Mikä muu voisi hoitaa tehtävän <strong>{functionLabel(tag, store.functions)}</strong>?
+          Ei parempi ihminen, vaan jotain mikä on käden ulottuvilla kolmessa sekunnissa.
         </p>
         {ranked.length > 0 && (
           <ul className="ranked">

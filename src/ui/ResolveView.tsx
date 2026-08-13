@@ -8,8 +8,9 @@
  */
 
 import { useState } from 'react';
-import { FUNCTION_TAGS, type FunctionTag, type ObservedFork } from '../core/types';
-import { CHOICE_LABELS, FUNCTION_LABELS, formatMinute, formatPercent } from './labels';
+import type { FunctionTag, ObservedFork } from '../core/types';
+import { functionLabel, functionOptions } from '../core/functions';
+import { CHOICE_LABELS, formatMinute, formatPercent } from './labels';
 import type { Store } from '../store';
 
 interface Props {
@@ -27,6 +28,7 @@ export function ResolveView({ store, onDone }: Props) {
   const [drinks, setDrinks] = useState<string>(day?.observation?.drinks?.toString() ?? '');
   const [extra, setExtra] = useState<ObservedFork[]>([]);
   const [missedTag, setMissedTag] = useState<FunctionTag>('unwind');
+  const options = functionOptions(store.functions);
 
   const addMissed = () => {
     setExtra((prev) => [
@@ -111,7 +113,7 @@ export function ResolveView({ store, onDone }: Props) {
           {liveForks.map((f, i) => (
             <li key={`live-${i}`}>
               <span className="fork-time">{formatMinute(f.atMin)}</span>
-              <span>{FUNCTION_LABELS[f.tag]}</span>
+              <span>{functionLabel(f.tag, store.functions)}</span>
               <span className="fork-choice">{CHOICE_LABELS[f.choice]}</span>
               <span className="badge">hetkessä</span>
             </li>
@@ -119,7 +121,7 @@ export function ResolveView({ store, onDone }: Props) {
           {extra.map((f, i) => (
             <li key={`extra-${i}`}>
               <span className="fork-time">—</span>
-              <span>{FUNCTION_LABELS[f.tag]}</span>
+              <span>{functionLabel(f.tag, store.functions)}</span>
               <span className="fork-choice">{CHOICE_LABELS[f.choice]}</span>
               <button
                 type="button"
@@ -144,9 +146,9 @@ export function ResolveView({ store, onDone }: Props) {
               value={missedTag}
               onChange={(e) => setMissedTag(e.target.value as FunctionTag)}
             >
-              {FUNCTION_TAGS.map((t) => (
-                <option key={t} value={t}>
-                  {FUNCTION_LABELS[t]}
+              {options.map((o) => (
+                <option key={o.tag} value={o.tag}>
+                  {o.label}
                 </option>
               ))}
             </select>

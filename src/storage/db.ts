@@ -9,16 +9,26 @@
  * be required for any feature here.
  */
 
-import type { Alternative, Day, DateKey, SelfMessage, Settings } from '../core/types';
+import type {
+  Alternative,
+  CustomFunction,
+  Day,
+  DateKey,
+  SelfMessage,
+  Settings,
+} from '../core/types';
 import { DEFAULT_SETTINGS } from '../core/types';
 
 const DB_NAME = 'sobriety';
-const DB_VERSION = 1;
+// v2 added the user's own function tags. Upgrades only create missing stores,
+// so an existing database keeps every day already recorded in it.
+const DB_VERSION = 2;
 
 const STORE_DAYS = 'days';
 const STORE_ALTERNATIVES = 'alternatives';
 const STORE_MESSAGES = 'messages';
 const STORE_SETTINGS = 'settings';
+const STORE_FUNCTIONS = 'functions';
 
 function open(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -36,6 +46,9 @@ function open(): Promise<IDBDatabase> {
       }
       if (!db.objectStoreNames.contains(STORE_SETTINGS)) {
         db.createObjectStore(STORE_SETTINGS);
+      }
+      if (!db.objectStoreNames.contains(STORE_FUNCTIONS)) {
+        db.createObjectStore(STORE_FUNCTIONS, { keyPath: 'id' });
       }
     };
     request.onsuccess = () => resolve(request.result);
@@ -78,6 +91,11 @@ export const messages = {
   remove: (id: string) => run<undefined>(STORE_MESSAGES, 'readwrite', (s) => s.delete(id)),
 };
 
+export const functions = {
+  all: () => run<CustomFunction[]>(STORE_FUNCTIONS, 'readonly', (s) => s.getAll()),
+  put: (f: CustomFunction) => run<IDBValidKey>(STORE_FUNCTIONS, 'readwrite', (s) => s.put(f)),
+};
+
 export const settings = {
   async get(): Promise<Settings> {
     const stored = await run<Settings | undefined>(STORE_SETTINGS, 'readonly', (s) =>
@@ -90,28 +108,33 @@ export const settings = {
 };
 
 export interface ExportBundle {
-  version: 1;
+  /** 2 is written; 1 is still accepted on import. */
+  version: 1 | 2;
   exportedAt: number;
   days: Day[];
   alternatives: Alternative[];
   /** Voice recordings are omitted: they are large, and they are the user's voice. */
   messages: Omit<SelfMessage, 'audio'>[];
+  /** Without these, an imported history would render as "Poistettu tehtävä". */
+  functions: CustomFunction[];
   settings: Settings;
 }
 
 export async function exportAll(): Promise<ExportBundle> {
-  const [d, a, m, s] = await Promise.all([
+  const [d, a, m, f, s] = await Promise.all([
     days.all(),
     alternatives.all(),
     messages.all(),
+    functions.all(),
     settings.get(),
   ]);
   return {
-    version: 1,
+    version: 2,
     exportedAt: Date.now(),
     days: d,
     alternatives: a,
     messages: m.map(({ audio: _audio, ...rest }) => rest),
+    functions: f,
     settings: s,
   };
 }
@@ -122,10 +145,14 @@ export async function exportAll(): Promise<ExportBundle> {
  * silently drop the days it recorded meanwhile.
  */
 export async function importAll(bundle: ExportBundle): Promise<void> {
-  if (bundle.version !== 1) throw new Error(`Tuntematon vientiversio: ${bundle.version}`);
+  // v1 bundles predate custom functions and carry none; they import cleanly.
+  if (bundle.version !== 1 && bundle.version !== 2) {
+    throw new Error(`Tuntematon vientiversio: ${bundle.version}`);
+  }
   for (const day of bundle.days) await days.put(day);
   for (const a of bundle.alternatives) await alternatives.put(a);
   for (const m of bundle.messages) await messages.put(m as SelfMessage);
+  for (const f of bundle.functions ?? []) await functions.put(f);
   await settings.put({ ...DEFAULT_SETTINGS, ...bundle.settings });
 }
 

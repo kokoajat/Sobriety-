@@ -43,7 +43,9 @@ export function App() {
       <div className="content">
         {tab === 'today' && <TodayView phase={phase} store={store} onFork={() => setTab('fork')} />}
         {tab === 'fork' && <ForkView store={store} onDone={() => setTab('today')} />}
-        {tab === 'insight' && <InsightView days={store.days} today={store.today} />}
+        {tab === 'insight' && (
+          <InsightView days={store.days} today={store.today} functions={store.functions} />
+        )}
         {tab === 'prepare' && <PrepareView store={store} />}
         {tab === 'data' && <DataView store={store} />}
       </div>

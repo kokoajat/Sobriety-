@@ -12,11 +12,14 @@ import { dateKey, engagedDates, scoreableRows, withinWindow } from './core/day';
 import { decompose, engagementStreak, calibrationBias, forecastSpread } from './core/forecast';
 import { blindSpots, functionLoad, noticingRate, windowStats } from './core/windows';
 import { recordAttempt } from './core/substitution';
+import { findCustomByLabel, newCustomTag } from './core/functions';
 import {
   DEFAULT_SETTINGS,
   type Alternative,
+  type CustomFunction,
   type Day,
   type Forecast,
+  type FunctionTag,
   type ObservedFork,
   type Observation,
   type SelfMessage,
@@ -32,6 +35,7 @@ export interface Store {
   days: Day[];
   alternatives: Alternative[];
   messages: SelfMessage[];
+  functions: CustomFunction[];
   settings: Settings;
   saveForecast: (forecast: Forecast) => Promise<void>;
   logFork: (fork: ObservedFork) => Promise<void>;
@@ -40,6 +44,8 @@ export interface Store {
   rateAlternative: (id: string, worked: boolean) => Promise<void>;
   upsertMessage: (message: SelfMessage) => Promise<void>;
   removeMessage: (id: string) => Promise<void>;
+  addFunction: (label: string, hint?: string) => Promise<FunctionTag | undefined>;
+  archiveFunction: (id: FunctionTag, archived: boolean) => Promise<void>;
   saveSettings: (settings: Settings) => Promise<void>;
   reload: () => Promise<void>;
 }
@@ -49,19 +55,22 @@ export function useStore(): Store {
   const [days, setDays] = useState<Day[]>([]);
   const [alternatives, setAlternatives] = useState<Alternative[]>([]);
   const [messages, setMessages] = useState<SelfMessage[]>([]);
+  const [functions, setFunctions] = useState<CustomFunction[]>([]);
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [today, setToday] = useState(dateKey());
 
   const reload = useCallback(async () => {
-    const [d, a, m, s] = await Promise.all([
+    const [d, a, m, f, s] = await Promise.all([
       db.days.all(),
       db.alternatives.all(),
       db.messages.all(),
+      db.functions.all(),
       db.settings.get(),
     ]);
     setDays(d.sort((x, y) => (x.date < y.date ? -1 : 1)));
     setAlternatives(a);
     setMessages(m);
+    setFunctions(f);
     setSettings(s);
     setReady(true);
   }, []);
@@ -153,6 +162,47 @@ export function useStore(): Store {
     setMessages((prev) => prev.filter((m) => m.id !== id));
   }, []);
 
+  /**
+   * Define a function of the user's own, or hand back the existing one.
+   *
+   * Reuses a match by label rather than minting a second tag for the same
+   * thing: two ids meaning "riita kotona" would split that function's history
+   * down the middle and quietly weaken every count computed over it. A match
+   * that was archived is revived, for the same reason.
+   */
+  const addFunction = useCallback(
+    async (label: string, hint?: string) => {
+      const trimmed = label.trim();
+      if (trimmed === '') return undefined;
+
+      const existing = findCustomByLabel(trimmed, functions);
+      const next: CustomFunction = existing
+        ? { ...existing, archived: false, hint: hint?.trim() || existing.hint }
+        : {
+            id: newCustomTag(),
+            label: trimmed,
+            hint: hint?.trim() || undefined,
+            createdAt: Date.now(),
+          };
+
+      await db.functions.put(next);
+      setFunctions((prev) => [...prev.filter((f) => f.id !== next.id), next]);
+      return next.id;
+    },
+    [functions],
+  );
+
+  const archiveFunction = useCallback(
+    async (id: FunctionTag, archived: boolean) => {
+      const match = functions.find((f) => f.id === id);
+      if (!match) return;
+      const next = { ...match, archived };
+      await db.functions.put(next);
+      setFunctions((prev) => prev.map((f) => (f.id === id ? next : f)));
+    },
+    [functions],
+  );
+
   const saveSettings = useCallback(async (next: Settings) => {
     await db.settings.put(next);
     setSettings(next);
@@ -164,6 +214,7 @@ export function useStore(): Store {
     days,
     alternatives,
     messages,
+    functions,
     settings,
     saveForecast,
     logFork,
@@ -172,6 +223,8 @@ export function useStore(): Store {
     rateAlternative,
     upsertMessage,
     removeMessage,
+    addFunction,
+    archiveFunction,
     saveSettings,
     reload,
   };
