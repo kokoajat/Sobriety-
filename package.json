@@ -5,8 +5,8 @@
   "type": "module",
   "description": "Ennustepohjainen itsetuntemustyokalu alkoholinkayton ymparille",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "dev": "vite --open /app.html",
+    "build": "tsc --noEmit && vite build && node scripts/sync-build.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",

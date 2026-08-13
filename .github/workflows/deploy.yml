@@ -38,6 +38,17 @@ jobs:
       - run: npm test
       - run: npm run build
 
+      # The site GitHub actually serves is the build committed at the repo root
+      # (see README: the Pages source is branch-based and cannot be changed from
+      # here). A stale commit would silently serve an old app, so rebuild and
+      # fail if the result differs from what is committed.
+      - name: Verify committed build is current
+        run: |
+          if ! git diff --exit-code -- index.html assets; then
+            echo "::error::Repon juuren kaannos on vanhentunut. Aja 'npm run build' ja committaa index.html + assets/."
+            exit 1
+          fi
+
       # enablement turns Pages on when it is off. It does NOT change the source
       # of a repo where Pages is already enabled — that is a repository setting
       # (Settings > Pages > Source: GitHub Actions), and until it is set to

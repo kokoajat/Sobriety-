@@ -141,14 +141,40 @@ src/core/          puhdas logiikka, ei riippuvuuksia UI:hin — täysin testattu
   day.ts           päivän elinkaari, paikalliset päivämäärät
 src/storage/db.ts  IndexedDB, vienti/tuonti/poisto
 src/ui/            näkymät
+app.html           Vite-sisääntulo (ei index.html — ks. Julkaisu)
+index.html         julkaistu käännös, generoitu — älä muokkaa käsin
+assets/            julkaistun käännöksen tiedostot, generoitu
 ```
 
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 66 testiä ydinlogiikalle
-npm run build      # typecheck + tuotantokäännös
+npm test           # 72 testiä ydinlogiikalle
+npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
+
+## Julkaisu
+
+Sivusto on osoitteessa https://kokoajat.github.io/Sobriety-/ ja se julkaistaan
+**repon juuresta**, ei erillisestä käännösvaiheesta. Siksi juuren `index.html` ja
+`assets/` ovat versionhallinnassa: ne *ovat* julkaistu sivusto.
+
+Tämä on epätavallista ja syy on kertomisen arvoinen. GitHub Pages ei käännä
+mitään — se tarjoilee valitun lähteen sellaisenaan. Jos Viten sisääntulo olisi
+juuren `index.html`:nä, Pages tarjoilisi sen kääntämättä, selain kohtaisi
+`<script src="/src/main.tsx">`-rivin jota se ei osaa suorittaa, ja sivu jäisi
+tyhjäksi. Siksi sisääntulo on `app.html` eikä `index.html`.
+
+Puhtaampi ratkaisu olisi asettaa Pagesin lähteeksi *GitHub Actions*, jolloin
+`.github/workflows/deploy.yml` julkaisisi `dist/`-hakemiston eikä käännöstä
+tarvitsisi committoida. Se workflow on olemassa ja toimii. Vaihto vaatii kuitenkin
+repositorion asetuksen (Settings → Pages → Source), eikä sitä pysty tekemään
+koodista. Jos vaihdat sen, voit poistaa juuresta `index.html`:n, `assets/`:n ja
+`scripts/sync-build.mjs`:n sekä palauttaa `app.html`:n nimeksi `index.html`.
+
+**Muistisääntö:** älä koskaan muokkaa juuren `index.html`:ää tai `assets/`:ia
+käsin. Aja `npm run build` ja committaa sen tulos. CI kääntää uudelleen ja kaatuu,
+jos committoitu käännös ei vastaa lähdekoodia.
 
 ## Tilanne
 
