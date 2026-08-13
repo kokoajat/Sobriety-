@@ -51,6 +51,15 @@ export function formatDate(key: string): string {
   return `${WEEKDAYS_SHORT[d.getDay()].toLowerCase()} ${d.getDate()}.${d.getMonth() + 1}.`;
 }
 
+/** `155` as `2 h 35 min`. Minutes only below an hour, so short spans stay exact. */
+export function formatDuration(min: number): string {
+  if (!Number.isFinite(min)) return '–';
+  if (min < 60) return `${Math.round(min)} min`;
+  const hours = Math.floor(min / 60);
+  const rest = Math.round(min % 60);
+  return rest === 0 ? `${hours} h` : `${hours} h ${rest} min`;
+}
+
 export function formatMinute(min: number): string {
   const h = Math.floor(min / 60) % 24;
   const m = min % 60;

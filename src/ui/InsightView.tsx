@@ -14,24 +14,28 @@ import { functionLabel } from '../core/functions';
 import {
   BLOCK_LABELS,
   WEEKDAYS,
+  formatDate,
+  formatDuration,
+  formatMinute,
   formatPercent,
   formatScore,
   readBias,
   readSkill,
   readSpread,
 } from './labels';
-import type { CustomFunction, Day } from '../core/types';
+import type { CustomFunction, Day, Settings } from '../core/types';
 
 interface Props {
   days: Day[];
   today: string;
   /** Needed to name the user's own functions in the blind-spot and load lists. */
   functions: CustomFunction[];
+  settings: Settings;
 }
 
-export function InsightView({ days, today, functions }: Props) {
-  const insight = useInsight(days, today);
-  const { scores } = insight;
+export function InsightView({ days, today, functions, settings }: Props) {
+  const insight = useInsight(days, today, settings.dayStartsAtMin);
+  const { scores, sessionSummary } = insight;
 
   return (
     <section className="view">
@@ -87,6 +91,43 @@ export function InsightView({ days, today, functions }: Props) {
           </li>
         </ul>
       </div>
+
+      {insight.sessions.length > 0 && (
+        <div className="block">
+          <h2>Jaksot</h2>
+          <p className="hint">
+            Päivä yhtenä jaksona: ensimmäisestä risteyksestä viimeiseen. Päivän raja on klo{' '}
+            {formatMinute(settings.dayStartsAtMin)}, joten puolenyön yli jatkunut ilta on
+            yksi jakso eikä kaksi.
+          </p>
+
+          {sessionSummary.count >= 3 && (
+            <p className="hint">
+              Tyypillinen jakso kestää {formatDuration(sessionSummary.medianDurationMin)} ja
+              päättyy klo {formatMinute(sessionSummary.medianEndMin)}.
+            </p>
+          )}
+
+          <ul className="sessions">
+            {insight.sessions.slice(0, 10).map((s) => (
+              <li key={s.date}>
+                <span className="session-when">{formatDate(s.date)}</span>
+                <span className="session-span">
+                  {s.forks === 1
+                    ? formatMinute(s.startMin)
+                    : `${formatMinute(s.startMin)}–${formatMinute(s.endMin)}`}
+                </span>
+                <span className="hint">
+                  {s.forks === 1 ? '1 risteys' : `${formatDuration(s.durationMin)} · ${s.forks} risteystä`}
+                  {/* A long quiet stretch means these were separate occasions;
+                      saying so keeps the span from implying one continuous evening. */}
+                  {s.longestGapMin >= 180 ? ' · erillisissä erissä' : ''}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {insight.blindSpots.length > 0 && (
         <div className="block">

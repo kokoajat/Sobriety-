@@ -11,6 +11,7 @@ import * as db from './storage/db';
 import { dateKey, engagedDates, scoreableRows, withinWindow } from './core/day';
 import { decompose, engagementStreak, calibrationBias, forecastSpread } from './core/forecast';
 import { blindSpots, functionLoad, noticingRate, windowStats } from './core/windows';
+import { sessions, summarize } from './core/sessions';
 import { recordAttempt } from './core/substitution';
 import { findCustomByLabel, newCustomTag } from './core/functions';
 import {
@@ -238,11 +239,14 @@ export function useStore(): Store {
 }
 
 /** Everything the insight view shows, derived in one place. */
-export function useInsight(days: Day[], today: string) {
+export function useInsight(days: Day[], today: string, dayStartsAtMin: number) {
   return useMemo(() => {
     const window = withinWindow(days, today, SCORING_WINDOW_DAYS);
     const rows = scoreableRows(window);
+    const spans = sessions(window, dayStartsAtMin);
     return {
+      sessions: spans,
+      sessionSummary: summarize(spans, dayStartsAtMin),
       scores: decompose(rows),
       bias: calibrationBias(rows),
       spread: forecastSpread(rows),
@@ -252,5 +256,5 @@ export function useInsight(days: Day[], today: string) {
       noticing: noticingRate(window),
       rows,
     };
-  }, [days, today]);
+  }, [days, today, dayStartsAtMin]);
 }

@@ -502,3 +502,37 @@ button:disabled {
 .tag-button-add strong {
   color: var(--ink);
 }
+
+/* Session rows: date, span, then the quiet detail. Times are tabular so the
+   column reads as a column rather than as ragged text. */
+.sessions {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+}
+
+.sessions li {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0.1rem 0.6rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.6rem;
+}
+
+.session-when {
+  grid-row: span 2;
+  color: var(--ink-soft);
+}
+
+.session-span {
+  font-variant-numeric: tabular-nums;
+  font-size: 1rem;
+}
+
+.sessions .hint {
+  margin: 0;
+}

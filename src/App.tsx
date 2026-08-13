@@ -7,6 +7,7 @@ import { ResolveView } from './ui/ResolveView';
 import { InsightView } from './ui/InsightView';
 import { PrepareView } from './ui/PrepareView';
 import { DataView } from './ui/DataView';
+import { OnboardingView } from './ui/OnboardingView';
 import { formatDate } from './ui/labels';
 
 type Tab = 'today' | 'fork' | 'insight' | 'prepare' | 'data';
@@ -39,13 +40,30 @@ export function App() {
     );
   }
 
+  // Asked once, before the tab bar exists: the day boundary is the axis every
+  // later number is measured against, so it is worth one screen up front.
+  if (!store.settings.onboardedAt) {
+    return (
+      <main className="app">
+        <div className="content">
+          <OnboardingView settings={store.settings} onDone={store.saveSettings} />
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="app">
       <div className="content">
         {tab === 'today' && <TodayView phase={phase} store={store} onFork={() => setTab('fork')} />}
         {tab === 'fork' && <ForkView store={store} onDone={() => setTab('today')} />}
         {tab === 'insight' && (
-          <InsightView days={store.days} today={store.today} functions={store.functions} />
+          <InsightView
+            days={store.days}
+            today={store.today}
+            functions={store.functions}
+            settings={store.settings}
+          />
         )}
         {tab === 'prepare' && <PrepareView store={store} />}
         {tab === 'data' && <DataView store={store} />}

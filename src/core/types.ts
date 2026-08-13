@@ -189,8 +189,8 @@ export interface Settings {
   forecastAtMin: number;
   /** Local minute-of-day for the evening resolve nudge. */
   resolveAtMin: number;
-  /** Set once at onboarding; used only to seed the base rate before data exists. */
-  seedBaseRate?: number;
+  /** Stamped when the rhythm question has been answered or skipped. */
+  onboardedAt?: number;
 }
 
 export const DEFAULT_SETTINGS: Settings = {

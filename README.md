@@ -135,12 +135,25 @@ yksi ilta, ja kalenterirajaan katkaistuna sen jälkipuolisko päätyisi päiväl
 jolle ei tehty ennustetta — jolloin illan ennuste jäisi kokonaan pisteyttämättä.
 Raja on säädettävissä Tiedot-välilehdellä.
 
-**Sessio ei kelpaa pisteytysyksiköksi, vaikka se on luontevampi kokemuksena.**
-Kalibrointi vaatii yksikön joka on olemassa myös silloin kun mitään ei tapahdu.
-Sessio on määritelmällisesti juomisjakso: jokaisen session toteuma olisi "join",
-perustaso 100 %, erottelukyky nolla. Yksikköä joka syntyy vasta ennustettavasta
-tapahtumasta ei voi ennustaa. Päivänsisäinen rakenne on risteyksissä, ei
-yksikössä.
+**Jakso näytetään, päivä pisteytetään.** Itsetuntemus-näkymä esittää päivän
+yhtenä jaksona — ensimmäisestä risteyksestä viimeiseen, rajasta rajaan — jolloin
+puolenyön yli jatkunut ilta näkyy yhtenä jaksona eikä kahtena. Jakso on
+johdettu, ei tallennettu: se on se mihin risteykset summautuvat. Jos jakson
+sisällä on yli kolmen tunnin tauko, se sanotaan ääneen ("erillisissä erissä"),
+jottei 12.30–23.00 näytä yhdeltä yhtenäiseltä illalta.
+
+Jakso ei silti kelpaa **pisteytysyksiköksi**, vaikka se on luontevampi
+kokemuksena. Kalibrointi vaatii yksikön joka on olemassa myös silloin kun mitään
+ei tapahdu. Jakso on määritelmällisesti juomisjakso: jokaisen toteuma olisi
+"join", perustaso 100 %, erottelukyky nolla. Yksikköä joka syntyy vasta
+ennustettavasta tapahtumasta ei voi ennustaa.
+
+**Rytmi kysytään heti, ei arvata.** Ensimmäisellä käynnistyksellä kysytään yksi
+asia: milloin sinun päiväsi vaihtuu, ja milloin haluat sulkea sen. Se on akseli
+jota vasten jokainen myöhempi luku mitataan, joten sen arvaaminen käyttäjän
+puolesta menee väärin kaikilla joiden illat eivät noudata kalenteria. Kysely on
+yksi ruutu, ohitettavissa, eikä se kysy juomamääristä mitään — asetusruudusta ei
+tehdä tarkastusta.
 
 **Ainoa putkilaskuri mittaa mukanaoloa.** Se katkeaa vain väliin jätetystä
 päivästä. Juominen ei katkaise sitä — ei koskaan.
@@ -159,6 +172,7 @@ src/core/          puhdas logiikka, ei riippuvuuksia UI:hin — täysin testattu
   forecast.ts      Brier, Murphy-hajotelma, kalibrointi, mukanaoloputki
   windows.ts       sokeat pisteet, funktiokuorma, huomaamisaste
   substitution.ts  vaihtoehtojen ranking (Laplace-silotus + Wilson-alaraja)
+  sessions.ts      päivä yhtenä jaksona, johdettu risteyksistä
   day.ts           päivän elinkaari, paikalliset päivämäärät
 src/storage/db.ts  IndexedDB, vienti/tuonti/poisto
 src/ui/            näkymät
@@ -170,7 +184,7 @@ assets/            julkaistun käännöksen tiedostot, generoitu
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 107 testiä ydinlogiikalle
+npm test           # 123 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 
