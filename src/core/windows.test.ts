@@ -36,7 +36,7 @@ describe('windowStats', () => {
   it('counts every block of a resolved day as an opportunity', () => {
     const stats = windowStats([
       day('2026-08-13', {
-        observation: { date: '2026-08-13', drank: false, forks: [], resolvedAt: 0 },
+        observation: { date: '2026-08-13', drank: false, forks: [], resolvedAt: 1 },
       }),
     ]);
     expect(stats).toHaveLength(4);
@@ -56,7 +56,7 @@ describe('windowStats', () => {
           date: '2026-08-13',
           drank: true,
           forks: [fork({ atMin: 19 * 60 })],
-          resolvedAt: 0,
+          resolvedAt: 1,
         },
       }),
     ]);
@@ -79,7 +79,7 @@ describe('windowStats', () => {
           forks: [{ block: 'evening', tag: 'unwind' }],
           madeAt: 0,
         },
-        observation: { date: '2026-08-13', drank: true, forks: [fork()], resolvedAt: 0 },
+        observation: { date: '2026-08-13', drank: true, forks: [fork()], resolvedAt: 1 },
       }),
     ]);
     expect(stats.find((s) => s.block === 'evening')!.forksUnpredicted).toBe(0);
@@ -97,7 +97,7 @@ describe('windowStats', () => {
           ],
           madeAt: 0,
         },
-        observation: { date: '2026-08-13', drank: false, forks: [], resolvedAt: 0 },
+        observation: { date: '2026-08-13', drank: false, forks: [], resolvedAt: 1 },
       }),
     ]);
     expect(stats.find((s) => s.block === 'evening')!.forksPredicted).toBe(1);
@@ -108,14 +108,14 @@ describe('windowStats', () => {
       date: '2026-08-13',
       drank: true,
       forks: [fork({ tag: 'numb' }), fork({ tag: 'numb' }), fork({ tag: 'social' })],
-      resolvedAt: 0,
+      resolvedAt: 1,
     };
     const stats = windowStats([day('2026-08-13', { observation })]);
     expect(stats.find((s) => s.block === 'evening')!.dominantTag).toBe('numb');
   });
 
   it('keeps weekdays separate', () => {
-    const observation = (date: string) => ({ date, drank: true, forks: [fork()], resolvedAt: 0 });
+    const observation = (date: string) => ({ date, drank: true, forks: [fork()], resolvedAt: 1 });
     const stats = windowStats([
       day('2026-08-13', { observation: observation('2026-08-13') }), // Thursday
       day('2026-08-14', { observation: observation('2026-08-14') }), // Friday
@@ -131,7 +131,7 @@ describe('blindSpots', () => {
     dates.map((date) =>
       day(date, {
         forecast: { date, p: 0.2, forks: [], madeAt: 0 },
-        observation: { date, drank: true, forks: [fork()], resolvedAt: 0 },
+        observation: { date, drank: true, forks: [fork()], resolvedAt: 1 },
       }),
     );
 
@@ -152,7 +152,7 @@ describe('blindSpots', () => {
     const days = ['2026-07-23', '2026-07-30', '2026-08-06'].map((date) =>
       day(date, {
         forecast: { date, p: 0.8, forks: [{ block: 'evening', tag: 'unwind' }], madeAt: 0 },
-        observation: { date, drank: true, forks: [fork()], resolvedAt: 0 },
+        observation: { date, drank: true, forks: [fork()], resolvedAt: 1 },
       }),
     );
     expect(blindSpots(windowStats(days))).toEqual([]);
@@ -173,7 +173,7 @@ describe('functionLoad', () => {
             fork({ tag: 'boredom', choice: 'passed' }),
             fork({ tag: 'boredom', choice: 'passed' }),
           ],
-          resolvedAt: 0,
+          resolvedAt: 1,
         },
       }),
     ];
@@ -196,7 +196,7 @@ describe('noticingRate', () => {
             fork({ loggedInMoment: false }),
             fork({ loggedInMoment: false }),
           ],
-          resolvedAt: 0,
+          resolvedAt: 1,
         },
       }),
     ];

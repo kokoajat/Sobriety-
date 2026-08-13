@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { addDays, dateKey, dayPhase, engagedDates, scoreableRows, withinWindow } from './day';
+import {
+  addDays,
+  dateKey,
+  dayPhase,
+  engagedDates,
+  isResolved,
+  scoreableRows,
+  withinWindow,
+} from './day';
 import { DEFAULT_SETTINGS, type Day } from './types';
 
 const at = (hour: number, minute = 0) => new Date(2026, 7, 13, hour, minute);
@@ -46,9 +54,51 @@ describe('dayPhase', () => {
   it('is closed once the outcome is in, whatever the outcome was', () => {
     const resolved: Day = {
       ...withForecast,
-      observation: { date: '2026-08-13', drank: true, forks: [], resolvedAt: 0 },
+      observation: { date: '2026-08-13', drank: true, forks: [], resolvedAt: 1 },
     };
     expect(dayPhase(resolved, at(23), DEFAULT_SETTINGS)).toBe('closed');
+  });
+
+  it('stays live after a fork is logged, since a fork does not end the day', () => {
+    // Live fork logging writes an observation hours before the evening step;
+    // reading its presence as "resolved" would close the day on the first fork.
+    const withLiveFork: Day = {
+      ...withForecast,
+      observation: {
+        date: '2026-08-13',
+        drank: false,
+        forks: [
+          { atMin: 14 * 60, tag: 'boredom', choice: 'passed', intensity: 2, loggedInMoment: true },
+        ],
+        resolvedAt: 0,
+      },
+    };
+    expect(dayPhase(withLiveFork, at(14), DEFAULT_SETTINGS)).toBe('live');
+    expect(dayPhase(withLiveFork, at(22), DEFAULT_SETTINGS)).toBe('awaiting-resolve');
+  });
+});
+
+describe('isResolved', () => {
+  const openObservation = {
+    date: '2026-08-13',
+    drank: true,
+    forks: [],
+    resolvedAt: 0,
+  };
+
+  it('is false for a day carrying only live-logged forks', () => {
+    expect(isResolved({ date: '2026-08-13', observation: openObservation })).toBe(false);
+  });
+
+  it('is true once the evening step has stamped it', () => {
+    expect(
+      isResolved({ date: '2026-08-13', observation: { ...openObservation, resolvedAt: 1 } }),
+    ).toBe(true);
+  });
+
+  it('is false for a day with no observation at all', () => {
+    expect(isResolved({ date: '2026-08-13' })).toBe(false);
+    expect(isResolved(undefined)).toBe(false);
   });
 });
 
@@ -58,17 +108,30 @@ describe('scoreableRows', () => {
       {
         date: '2026-08-11',
         forecast: { date: '2026-08-11', p: 0.7, forks: [], madeAt: 0 },
-        observation: { date: '2026-08-11', drank: true, forks: [], resolvedAt: 0 },
+        observation: { date: '2026-08-11', drank: true, forks: [], resolvedAt: 1 },
       },
       // Resolved but never forecast: not a miss, just not a played day.
       {
         date: '2026-08-12',
-        observation: { date: '2026-08-12', drank: true, forks: [], resolvedAt: 0 },
+        observation: { date: '2026-08-12', drank: true, forks: [], resolvedAt: 1 },
       },
       // Forecast but not yet resolved.
       { date: '2026-08-13', forecast: { date: '2026-08-13', p: 0.2, forks: [], madeAt: 0 } },
     ];
     expect(scoreableRows(days)).toEqual([{ p: 0.7, outcome: 1 }]);
+  });
+
+  it('does not score a day that only has live-logged forks', () => {
+    // `drank` is still false mid-afternoon; scoring it now would record an
+    // outcome the user never confirmed.
+    const days: Day[] = [
+      {
+        date: '2026-08-13',
+        forecast: { date: '2026-08-13', p: 0.6, forks: [], madeAt: 0 },
+        observation: { date: '2026-08-13', drank: false, forks: [], resolvedAt: 0 },
+      },
+    ];
+    expect(scoreableRows(days)).toEqual([]);
   });
 });
 
@@ -78,10 +141,21 @@ describe('engagedDates', () => {
       {
         date: '2026-08-13',
         forecast: { date: '2026-08-13', p: 0.9, forks: [], madeAt: 0 },
-        observation: { date: '2026-08-13', drank: true, forks: [], resolvedAt: 0 },
+        observation: { date: '2026-08-13', drank: true, forks: [], resolvedAt: 1 },
       },
     ];
     expect(engagedDates(days).has('2026-08-13')).toBe(true);
+  });
+
+  it('excludes a day that has not been closed yet', () => {
+    const days: Day[] = [
+      {
+        date: '2026-08-13',
+        forecast: { date: '2026-08-13', p: 0.9, forks: [], madeAt: 0 },
+        observation: { date: '2026-08-13', drank: true, forks: [], resolvedAt: 0 },
+      },
+    ];
+    expect(engagedDates(days).size).toBe(0);
   });
 });
 

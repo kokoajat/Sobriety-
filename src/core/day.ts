@@ -34,8 +34,20 @@ export type DayPhase =
   /** Forecast and outcome both recorded. */
   | 'closed';
 
+/**
+ * A day is resolved only once the user has actually closed it in the evening.
+ *
+ * Forks logged live write into `observation` as they happen, so the record
+ * exists long before the day is over — its mere presence must never be read as
+ * "resolved", or logging a single fork would close the day, skip the evening
+ * step, and score the day on an outcome nobody confirmed.
+ */
+export function isResolved(day: Day | undefined): boolean {
+  return Boolean(day?.observation && day.observation.resolvedAt > 0);
+}
+
 export function dayPhase(day: Day | undefined, now: Date, settings: Settings): DayPhase {
-  if (day?.observation) return 'closed';
+  if (isResolved(day)) return 'closed';
   if (!day?.forecast) return 'awaiting-forecast';
   return minuteOfDay(now) >= settings.resolveAtMin ? 'awaiting-resolve' : 'live';
 }
@@ -50,8 +62,8 @@ export function dayPhase(day: Day | undefined, now: Date, settings: Settings): D
 export function scoreableRows(days: Day[]): ScoredForecast[] {
   const rows: ScoredForecast[] = [];
   for (const day of days) {
-    if (!day.forecast || !day.observation) continue;
-    rows.push({ p: day.forecast.p, outcome: day.observation.drank ? 1 : 0 });
+    if (!day.forecast || !isResolved(day)) continue;
+    rows.push({ p: day.forecast.p, outcome: day.observation!.drank ? 1 : 0 });
   }
   return rows;
 }
@@ -60,7 +72,7 @@ export function scoreableRows(days: Day[]): ScoredForecast[] {
 export function engagedDates(days: Day[]): Set<DateKey> {
   const set = new Set<DateKey>();
   for (const day of days) {
-    if (day.forecast && day.observation) set.add(day.date);
+    if (day.forecast && isResolved(day)) set.add(day.date);
   }
   return set;
 }

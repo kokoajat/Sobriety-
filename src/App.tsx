@@ -89,7 +89,7 @@ function TodayView({
   return (
     <section className="view">
       <header className="view-head">
-        <h1>Päivä käynnissä</h1>
+        <h1>{phase === 'closed' ? 'Päivä suljettu' : 'Päivä käynnissä'}</h1>
         <p className="lede">
           Ennuste tehty: {Math.round((day?.forecast?.p ?? 0) * 100)} %.
           {forks.length > 0 && ` Risteyksiä kirjattu ${forks.length}.`}

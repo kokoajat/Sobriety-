@@ -7,6 +7,7 @@
  * information they demonstrably do not have, because they failed to predict it.
  */
 
+import { isResolved } from './day';
 import { BLOCK_RANGES, BLOCKS, type Block, type Day, type FunctionTag } from './types';
 
 export interface WindowStat {
@@ -67,7 +68,7 @@ export function windowStats(days: Day[]): WindowStat[] {
   };
 
   for (const day of days) {
-    if (!day.observation) continue;
+    if (!isResolved(day)) continue;
     const weekday = new Date(`${day.date}T12:00:00`).getDay();
 
     // Every block of a resolved day is an opportunity, whether or not a fork
@@ -78,7 +79,7 @@ export function windowStats(days: Day[]): WindowStat[] {
     const predicted = new Set<Block>(day.forecast?.forks.map((f) => f.block) ?? []);
     for (const block of predicted) ensure(weekday, block).forksPredicted += 1;
 
-    for (const fork of day.observation.forks) {
+    for (const fork of day.observation!.forks) {
       const block = blockOf(fork.atMin);
       const row = ensure(weekday, block);
       row.forksObserved += 1;
@@ -125,7 +126,8 @@ export function blindSpots(stats: WindowStat[], minForks = 3): BlindSpot[] {
 export function functionLoad(days: Day[]): { tag: FunctionTag; forks: number; drank: number }[] {
   const counts = new Map<FunctionTag, { forks: number; drank: number }>();
   for (const day of days) {
-    for (const fork of day.observation?.forks ?? []) {
+    if (!isResolved(day)) continue;
+    for (const fork of day.observation!.forks) {
       const row = counts.get(fork.tag) ?? { forks: 0, drank: 0 };
       row.forks += 1;
       if (fork.choice === 'drank') row.drank += 1;
@@ -148,7 +150,8 @@ export function noticingRate(days: Day[]): { rate: number; inMoment: number; tot
   let inMoment = 0;
   let total = 0;
   for (const day of days) {
-    for (const fork of day.observation?.forks ?? []) {
+    if (!isResolved(day)) continue;
+    for (const fork of day.observation!.forks) {
       total += 1;
       if (fork.loggedInMoment) inMoment += 1;
     }
