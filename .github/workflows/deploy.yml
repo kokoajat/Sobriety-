@@ -38,9 +38,11 @@ jobs:
       - run: npm test
       - run: npm run build
 
-      # enablement flips the repo's Pages source to "GitHub Actions". Without it
-      # the legacy branch builder keeps running in parallel and republishes the
-      # repo root — the unbuilt Vite entry — over whatever this job deploys.
+      # enablement turns Pages on when it is off. It does NOT change the source
+      # of a repo where Pages is already enabled — that is a repository setting
+      # (Settings > Pages > Source: GitHub Actions), and until it is set to
+      # Actions the legacy branch builder keeps running in parallel and
+      # republishes the repo root over whatever this job deploys.
       - uses: actions/configure-pages@v5
         with:
           enablement: true
