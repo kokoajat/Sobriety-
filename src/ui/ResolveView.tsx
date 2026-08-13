@@ -10,16 +10,19 @@
 import { useState } from 'react';
 import type { FunctionTag, ObservedFork } from '../core/types';
 import { functionLabel, functionOptions } from '../core/functions';
-import { CHOICE_LABELS, formatMinute, formatPercent } from './labels';
+import { CHOICE_LABELS, formatDate, formatMinute, formatPercent } from './labels';
 import type { Store } from '../store';
 
 interface Props {
   store: Store;
   onDone: () => void;
+  /** Which day to close. Defaults to today; an earlier date closes a stranded day. */
+  date?: string;
 }
 
-export function ResolveView({ store, onDone }: Props) {
-  const day = store.days.find((d) => d.date === store.today);
+export function ResolveView({ store, onDone, date }: Props) {
+  const target = date ?? store.today;
+  const day = store.days.find((d) => d.date === target);
   const liveForks = day?.observation?.forks ?? [];
 
   const [drank, setDrank] = useState<boolean | null>(
@@ -49,7 +52,7 @@ export function ResolveView({ store, onDone }: Props) {
     if (drank === null) return;
     const parsed = Number.parseFloat(drinks.replace(',', '.'));
     await store.resolveDay({
-      date: store.today,
+      date: target,
       drank,
       drinks: Number.isFinite(parsed) ? parsed : undefined,
       forks: [...liveForks, ...extra],
@@ -61,7 +64,7 @@ export function ResolveView({ store, onDone }: Props) {
   return (
     <section className="view">
       <header className="view-head">
-        <h1>Ilta</h1>
+        <h1>{target === store.today ? 'Ilta' : `Päättämättä: ${formatDate(target)}`}</h1>
         {day?.forecast ? (
           <p className="lede">
             Aamulla arvioit {formatPercent(day.forecast.p)}. Miten kävi?

@@ -57,7 +57,7 @@ export function useStore(): Store {
   const [messages, setMessages] = useState<SelfMessage[]>([]);
   const [functions, setFunctions] = useState<CustomFunction[]>([]);
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
-  const [today, setToday] = useState(dateKey());
+  const [tick, setTick] = useState(0);
 
   const reload = useCallback(async () => {
     const [d, a, m, f, s] = await Promise.all([
@@ -79,11 +79,18 @@ export function useStore(): Store {
     void reload();
   }, [reload]);
 
-  // A session left open overnight must not keep writing into yesterday.
+  // Re-evaluate which day it is once a minute, so a session left open across the
+  // boundary rolls over on its own.
   useEffect(() => {
-    const id = setInterval(() => setToday(dateKey()), 60_000);
+    const id = setInterval(() => setTick((t) => t + 1), 60_000);
     return () => clearInterval(id);
   }, []);
+
+  const today = useMemo(
+    () => dateKey(new Date(), settings.dayStartsAtMin),
+    // `tick` is the intended dependency: it is what makes this recompute.
+    [settings.dayStartsAtMin, tick],
+  );
 
   const writeDay = useCallback(
     async (date: string, patch: (day: Day) => Day) => {

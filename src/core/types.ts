@@ -176,6 +176,15 @@ export interface SelfMessage {
 }
 
 export interface Settings {
+  /**
+   * Clock minute at which one logged day ends and the next begins.
+   *
+   * Not midnight. An evening that runs past midnight is one evening as lived,
+   * and cutting it at 00:00 files its second half under a day that had no
+   * forecast — losing the first half's forecast from scoring entirely. 05:00
+   * matches the `night` block, which already spans 22:00–05:00.
+   */
+  dayStartsAtMin: number;
   /** Local minute-of-day for the morning forecast nudge. */
   forecastAtMin: number;
   /** Local minute-of-day for the evening resolve nudge. */
@@ -185,6 +194,7 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
+  dayStartsAtMin: 5 * 60,
   forecastAtMin: 8 * 60,
   resolveAtMin: 21 * 60 + 30,
 };

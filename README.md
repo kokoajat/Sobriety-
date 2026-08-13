@@ -130,6 +130,18 @@ halpa: nopea, luotettava, ei vaadi päätöstä. Kilpailijan pitää olla yhtä 
 Siksi vaihtoehtoja ei keksitä risteyksessä vaan rauhassa etukäteen, ja risteyksessä
 näytetään yksi nimetty vaihtoehto oman onnistumishistoriasi kanssa.
 
+**Päivä ei vaihdu keskiyöllä vaan klo 05.** Ilta joka jatkuu puolenyön yli on
+yksi ilta, ja kalenterirajaan katkaistuna sen jälkipuolisko päätyisi päivälle
+jolle ei tehty ennustetta — jolloin illan ennuste jäisi kokonaan pisteyttämättä.
+Raja on säädettävissä Tiedot-välilehdellä.
+
+**Sessio ei kelpaa pisteytysyksiköksi, vaikka se on luontevampi kokemuksena.**
+Kalibrointi vaatii yksikön joka on olemassa myös silloin kun mitään ei tapahdu.
+Sessio on määritelmällisesti juomisjakso: jokaisen session toteuma olisi "join",
+perustaso 100 %, erottelukyky nolla. Yksikköä joka syntyy vasta ennustettavasta
+tapahtumasta ei voi ennustaa. Päivänsisäinen rakenne on risteyksissä, ei
+yksikössä.
+
 **Ainoa putkilaskuri mittaa mukanaoloa.** Se katkeaa vain väliin jätetystä
 päivästä. Juominen ei katkaise sitä — ei koskaan.
 
@@ -158,7 +170,7 @@ assets/            julkaistun käännöksen tiedostot, generoitu
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 72 testiä ydinlogiikalle
+npm test           # 107 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 

@@ -3,9 +3,11 @@ import {
   addDays,
   dateKey,
   dayPhase,
+  dayRelativeMinute,
   engagedDates,
   isResolved,
   scoreableRows,
+  unresolvedBefore,
   withinWindow,
 } from './day';
 import { DEFAULT_SETTINGS, type Day } from './types';
@@ -20,6 +22,51 @@ describe('dateKey', () => {
 
   it('zero-pads months and days', () => {
     expect(dateKey(new Date(2026, 0, 5))).toBe('2026-01-05');
+  });
+
+  describe('with a 05:00 day boundary', () => {
+    const start = 5 * 60;
+
+    it('keeps a 00:35 fork in the evening that produced it', () => {
+      expect(dateKey(new Date(2026, 7, 14, 0, 35), start)).toBe('2026-08-13');
+    });
+
+    it('keeps 04:59 in the previous day', () => {
+      expect(dateKey(new Date(2026, 7, 14, 4, 59), start)).toBe('2026-08-13');
+    });
+
+    it('starts the new day at 05:00 sharp', () => {
+      expect(dateKey(new Date(2026, 7, 14, 5, 0), start)).toBe('2026-08-14');
+    });
+
+    it('leaves ordinary daytime moments alone', () => {
+      expect(dateKey(new Date(2026, 7, 14, 14, 0), start)).toBe('2026-08-14');
+      expect(dateKey(new Date(2026, 7, 14, 23, 30), start)).toBe('2026-08-14');
+    });
+
+    it('rolls the month back correctly just after midnight', () => {
+      expect(dateKey(new Date(2026, 8, 1, 2, 0), start)).toBe('2026-08-31');
+    });
+  });
+});
+
+describe('dayRelativeMinute', () => {
+  const start = 5 * 60;
+
+  it('is 0 at the boundary itself', () => {
+    expect(dayRelativeMinute(start, start)).toBe(0);
+  });
+
+  it('counts 00:35 as late in the day, not early', () => {
+    expect(dayRelativeMinute(35, start)).toBe(1175);
+  });
+
+  it('never returns a negative minute', () => {
+    expect(dayRelativeMinute(0, start)).toBe(1140);
+  });
+
+  it('is the identity when the day starts at midnight', () => {
+    expect(dayRelativeMinute(600, 0)).toBe(600);
   });
 });
 
@@ -57,6 +104,19 @@ describe('dayPhase', () => {
       observation: { date: '2026-08-13', drank: true, forks: [], resolvedAt: 1 },
     };
     expect(dayPhase(resolved, at(23), DEFAULT_SETTINGS)).toBe('closed');
+  });
+
+  it('still asks to resolve after midnight, rather than flipping back to live', () => {
+    // The bug this replaces: at 00:35 the raw clock minute (35) fell below the
+    // evening threshold, so a session running past midnight lost its way back
+    // to the resolve step and the day was stranded unscored.
+    expect(dayPhase(withForecast, new Date(2026, 7, 14, 0, 35), DEFAULT_SETTINGS)).toBe(
+      'awaiting-resolve',
+    );
+  });
+
+  it('is live again once the new day has actually begun', () => {
+    expect(dayPhase(withForecast, new Date(2026, 7, 14, 9, 0), DEFAULT_SETTINGS)).toBe('live');
   });
 
   it('stays live after a fork is logged, since a fork does not end the day', () => {
@@ -156,6 +216,38 @@ describe('engagedDates', () => {
       },
     ];
     expect(engagedDates(days).size).toBe(0);
+  });
+});
+
+describe('unresolvedBefore', () => {
+  const open = (date: string): Day => ({
+    date,
+    forecast: { date, p: 0.5, forks: [], madeAt: 0 },
+  });
+  const closed = (date: string): Day => ({
+    ...open(date),
+    observation: { date, drank: false, forks: [], resolvedAt: 1 },
+  });
+
+  it('finds an earlier day whose forecast was never resolved', () => {
+    expect(unresolvedBefore([open('2026-08-13')], '2026-08-14')?.date).toBe('2026-08-13');
+  });
+
+  it('returns the most recent one when several were stranded', () => {
+    const days = [open('2026-08-11'), open('2026-08-13')];
+    expect(unresolvedBefore(days, '2026-08-14')?.date).toBe('2026-08-13');
+  });
+
+  it('ignores days that were closed', () => {
+    expect(unresolvedBefore([closed('2026-08-13')], '2026-08-14')).toBeUndefined();
+  });
+
+  it('ignores today, which has its own place in the flow', () => {
+    expect(unresolvedBefore([open('2026-08-14')], '2026-08-14')).toBeUndefined();
+  });
+
+  it('ignores a day that was never forecast, since there is nothing to score', () => {
+    expect(unresolvedBefore([{ date: '2026-08-13' }], '2026-08-14')).toBeUndefined();
   });
 });
 

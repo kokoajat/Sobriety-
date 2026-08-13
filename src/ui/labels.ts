@@ -45,6 +45,12 @@ export function formatScore(x: number, digits = 3): string {
   return Number.isFinite(x) ? x.toFixed(digits) : '–';
 }
 
+/** `2026-08-13` as `to 13.8.` — enough to recognise which evening is meant. */
+export function formatDate(key: string): string {
+  const d = new Date(`${key}T12:00:00`);
+  return `${WEEKDAYS_SHORT[d.getDay()].toLowerCase()} ${d.getDate()}.${d.getMonth() + 1}.`;
+}
+
 export function formatMinute(min: number): string {
   const h = Math.floor(min / 60) % 24;
   const m = min % 60;

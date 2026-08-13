@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { dayPhase } from './core/day';
+import { dayPhase, unresolvedBefore } from './core/day';
 import { useStore } from './store';
 import { ForecastView } from './ui/ForecastView';
 import { ForkView } from './ui/ForkView';
@@ -7,6 +7,7 @@ import { ResolveView } from './ui/ResolveView';
 import { InsightView } from './ui/InsightView';
 import { PrepareView } from './ui/PrepareView';
 import { DataView } from './ui/DataView';
+import { formatDate } from './ui/labels';
 
 type Tab = 'today' | 'fork' | 'insight' | 'prepare' | 'data';
 
@@ -77,9 +78,38 @@ function TodayView({
   onFork: () => void;
 }) {
   const [resolving, setResolving] = useState(false);
+  const [closingDate, setClosingDate] = useState<string | null>(null);
+
+  // A day left open before the boundary moved off midnight can still be closed;
+  // until it is, the forecast it holds never reaches the scores.
+  const stranded = unresolvedBefore(store.days, store.today);
+
+  if (closingDate) {
+    return (
+      <ResolveView store={store} date={closingDate} onDone={() => setClosingDate(null)} />
+    );
+  }
+
+  const banner = stranded ? (
+    <div className="block">
+      <h2>{formatDate(stranded.date)} jäi päättämättä</h2>
+      <p className="hint">
+        Sen ennuste odottaa toteumaa eikä ole vielä mukana luvuissa. Muistatko miten se
+        päivä meni?
+      </p>
+      <button type="button" className="secondary" onClick={() => setClosingDate(stranded.date)}>
+        Sulje se nyt
+      </button>
+    </div>
+  ) : null;
 
   if (phase === 'awaiting-forecast') {
-    return <ForecastView store={store} onDone={() => undefined} />;
+    return (
+      <>
+        {banner}
+        <ForecastView store={store} onDone={() => undefined} />
+      </>
+    );
   }
   if (resolving || phase === 'awaiting-resolve') {
     return <ResolveView store={store} onDone={() => setResolving(false)} />;
@@ -90,6 +120,7 @@ function TodayView({
 
   return (
     <section className="view">
+      {banner}
       <header className="view-head">
         <h1>{phase === 'closed' ? 'Päivä suljettu' : 'Päivä käynnissä'}</h1>
         <p className="lede">
