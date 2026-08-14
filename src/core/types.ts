@@ -14,6 +14,8 @@
  *     person ("did you succeed")
  */
 
+import type { Band } from './screening';
+
 /** What the drink would do, asked forward — to choose a substitute, not to file a report. */
 export type BuiltinDemand =
   | 'settle' // rauhoittua
@@ -109,6 +111,22 @@ export interface Episode {
   endedAt?: number;
 }
 
+/**
+ * What the one-time safety screen left behind.
+ *
+ * Stored inside settings rather than as a record type of its own, because it is
+ * a property of the installation and not an event worth a history. It is written
+ * once, read to decide what the safety page says, and never recomputed. `band`
+ * is absent when the user skipped — a skip is a legitimate answer, and the app
+ * has to be able to tell it apart from "not asked yet" so it stops asking.
+ */
+export interface ScreeningRecord {
+  at: number;
+  auditC?: number;
+  dependenceSigns?: number;
+  band?: Band;
+}
+
 export interface Settings {
   /** Length of the first wait. */
   waitMs: number;
@@ -132,6 +150,8 @@ export interface Settings {
    * information can have it in one tap.
    */
   triviaOn: boolean;
+  /** Absent until the safety screen has been answered or skipped. */
+  screening?: ScreeningRecord;
 }
 
 export const DEFAULT_SETTINGS: Settings = {

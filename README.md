@@ -179,6 +179,48 @@ merkinnöissäsi kestänyt** ennen kuin se meni ohi. Se muuttaa "kestä loputtom
 luvuksi, jonka olet jo useamman kerran voittanut. Mediaani, ei keskiarvo — yksi
 poikkeuksellisen pitkä kerta ei saa siirtää tyypillistä tapausta.
 
+## Turvaseula, kerran
+
+Ensimmäisellä avauksella sovellus kysyy viisi kysymystä. Se on ainoa kohta, jossa
+sovellus kysyy juomisesta yleisesti eikä tästä hetkestä — ja se on siellä yhtä
+asiaa varten: **sovellus ei muuten pysty erottamaan perjantai-illan kahta olutta
+fyysisestä riippuvuudesta.** Jälkimmäiselle kymmenen minuutin odotus ei ole oikea
+interventio, ja äkillinen lopettaminen voi tappaa. Ennen seulaa ainoa tapa kuulla
+se oli se, että sattui osumaan oikea tietoiskurivi.
+
+**Kysymykset 1–3 ovat AUDIT-C** — AUDIT:n kolme kulutuskysymystä (Saunders ym.
+1993), itsenäisenä seulana validoitu (Bush ym. 1998). Kukin 0–4 pistettä, summa
+0–12. Raja-arvo on tässä ≥3 kaikille, vaikka kirjallisuus käyttää ≥4 miehille ja
+≥3 naisille: matalamman rajan hinta on keskustelu jota joku ei tarvinnut, korkeamman
+hinta on joku joka olisi tarvinnut.
+
+**Kysymykset 4–5 eivät kuulu AUDIT-C:hen**, ja ne on merkitty sellaisiksi sekä
+koodissa (`beyondAuditC`) että käyttöliittymässä. Syy: AUDIT-C mittaa *kulutusta*,
+ja se vaara jonka takia koko seula tehdään on *fyysinen riippuvuus*. Ne eivät ole
+sama asia. Siksi päivittäisyys ja aamuoireet kysytään erikseen, ja **kumpi tahansa
+niistä ohittaa minkä tahansa AUDIT-C-summan.** Ylimpään luokkaan ei pääse
+juomamäärällä, vain riippuvuuden merkillä.
+
+Ristiriita muun sovelluksen kanssa on todellinen — tämä on mittari sovelluksessa,
+jonka ensimmäinen sääntö on ettei se mittaa käyttäjää. Se ratkeaa rajaamalla, ei
+kieltämällä:
+
+- Pisteitä ei näytetä koskaan, ei tuloksessa eikä myöhemmin. Luku josta kerrotaan
+  on luku jota aletaan parantaa.
+- Mitään ei lasketa uudelleen, seurata ajassa tai esittää edistymisenä.
+- Vastaus kuvaa **työkalua, ei ihmistä**. "Tämä ei ole oikea työkalu tähän yksin"
+  on väite sovelluksesta.
+- Matala tulos ei kehu. Kehu vähemmästä juomisesta on sama vipu kuin häpeä
+  enemmästä, toisin päin osoitettuna.
+
+Seulan voi ohittaa yhdellä napautuksella joka ruudulla, ja ohitus muistetaan.
+Portti himosovelluksen ovella olisi pahempi kuin seulan puuttuminen.
+
+**Apua**-linkki on pysyvästi etusivulla — ei vain silloin kun seula on hälyttänyt.
+Linkki joka ilmestyy vasta kun sovellus on päättänyt että olet pulassa, on linkki
+jota kukaan ei halua painaa. Sen takaa löytyvät numerot ja vieroitusvaroitus
+riippumatta siitä, mitä seulaan vastasi tai vastasiko lainkaan.
+
 ## Mitä tämä ei ole
 
 Tämä ei ole hoitoa eikä korvaa sitä. Malli on suunnitteluhypoteesi, joka nojaa
@@ -215,6 +257,7 @@ src/ui/factFigures.tsx  10 inline-SVG-kohtausta, osa animoituja
   rotation.ts      kierrätys: koko pakka ennen toistoa, ei kiinteää järjestystä
   stats.ts         rehelliset tunnusluvut, NaN alle viiden havainnon
   demands.ts       tarpeiden nimet, omat tarpeet
+  screening.ts     AUDIT-C + kaksi riippuvuuskysymystä, kerran, ei seurantaa
 src/storage/db.ts  IndexedDB, vienti/tuonti/poisto
 src/ui/            näkymät: yksi ruutu kerrallaan, ei välilehtipalkkia
 app.html           Vite-sisääntulo (ei index.html — ks. Julkaisu)
@@ -224,7 +267,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 98 testiä ydinlogiikalle
+npm test           # 117 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 

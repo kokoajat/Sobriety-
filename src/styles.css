@@ -828,3 +828,51 @@ select {
     animation: none;
   }
 }
+
+/* Screening -------------------------------------------------------------- */
+
+.screen-step {
+  margin: 0;
+  align-self: flex-start;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
+.choice-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Every option looks identical. An answer that is visually the "right" one
+   collects answers about the interface rather than about the person. */
+.choice {
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.choice:active {
+  background: var(--accent-soft);
+}
+
+/* The only emphasised block in the app, reserved for the one thing that can
+   kill someone: stopping a daily habit abruptly and alone. */
+.card-warning {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}

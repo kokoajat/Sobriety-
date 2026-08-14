@@ -14,12 +14,14 @@ import { DemandView } from './ui/DemandView';
 import { AfterView } from './ui/AfterView';
 import { PrepareView } from './ui/PrepareView';
 import { HistoryView } from './ui/HistoryView';
+import { ScreeningView } from './ui/ScreeningView';
+import { SafetyView } from './ui/SafetyView';
 import { eraseAll } from './storage/db';
 import { medianTimeToPassMs } from './core/stats';
 import { formatMinutes } from './ui/labels';
 import type { Episode } from './core/types';
 
-type Mode = 'home' | 'demand' | 'after' | 'prepare' | 'history';
+type Mode = 'home' | 'demand' | 'after' | 'prepare' | 'history' | 'safety' | 'screening';
 
 export function App() {
   const store = useStore();
@@ -102,6 +104,22 @@ export function App() {
     );
   }
 
+  // The safety screen. Ahead of the home screen on first open, and reachable
+  // again from the safety page — but never ahead of a wait that is already
+  // running, which is why it sits below that check.
+  if (mode === 'screening' || !store.settings.screening) {
+    return (
+      <main className="app">
+        <ScreeningView
+          onDone={async (record) => {
+            await store.saveSettings({ ...store.settings, screening: record });
+            setMode('home');
+          }}
+        />
+      </main>
+    );
+  }
+
   if (mode === 'after' && justClosed) {
     return (
       <main className="app">
@@ -137,6 +155,18 @@ export function App() {
     return (
       <main className="app">
         <HistoryView store={store} onBack={() => setMode('home')} />
+      </main>
+    );
+  }
+
+  if (mode === 'safety') {
+    return (
+      <main className="app">
+        <SafetyView
+          store={store}
+          onBack={() => setMode('home')}
+          onRescreen={() => setMode('screening')}
+        />
       </main>
     );
   }
@@ -183,6 +213,14 @@ function HomeView({
         </button>
         <button type="button" className="quiet" onClick={() => onGo('history')}>
           Historia
+        </button>
+        {/*
+          Permanent, and never phrased as an emergency: a link that only appears
+          when the app has decided you are in trouble is a link nobody wants to
+          be seen tapping. This one is always here, so tapping it means nothing.
+        */}
+        <button type="button" className="quiet" onClick={() => onGo('safety')}>
+          Apua
         </button>
       </div>
     </section>
