@@ -10,10 +10,11 @@
  * Nothing here argues. The user knows the arguments.
  */
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { formatCountdown, isElapsed, progress, remainingMs } from '../core/waiting';
 import { demandLabel } from '../core/demands';
 import { rankSupplies } from '../core/stats';
+import { FactPanel } from './FactPanel';
 import { useNow, type Store } from '../store';
 import type { Episode } from '../core/types';
 
@@ -24,6 +25,7 @@ interface Props {
 
 export function WaitView({ store, episode }: Props) {
   const now = useNow(true);
+  const [reading, setReading] = useState(store.settings.factsOn);
   const remaining = remainingMs(episode, now, store.settings);
   const done = isElapsed(episode, now, store.settings);
   const ratio = progress(episode, now, store.settings);
@@ -41,15 +43,32 @@ export function WaitView({ store, episode }: Props) {
     <section className="screen">
       <p className="wait-demand">{demandLabel(episode.demand, store.demands)}</p>
 
-      <Ring ratio={ratio} label={formatCountdown(remaining)} done={done} />
+      {/* The ring shrinks rather than disappears: the reading is a distraction
+          from the wait, not a replacement for it. Time must stay visible. */}
+      <Ring ratio={ratio} label={formatCountdown(remaining)} done={done} small={reading} />
 
-      {done ? (
+      {reading ? (
+        <FactPanel store={store} />
+      ) : done ? (
         <p className="wait-note">Aika kului. Miten menee?</p>
       ) : (
         <p className="wait-note">Ei tarvitse päättää mitään. Vain odottaa.</p>
       )}
 
-      {supply && (
+      <button
+        type="button"
+        className="quiet"
+        onClick={() => {
+          const next = !reading;
+          setReading(next);
+          // Remembered, so the choice is made once rather than every time.
+          void store.saveSettings({ ...store.settings, factsOn: next });
+        }}
+      >
+        {reading ? 'Piilota luettava' : 'Anna jotain luettavaa'}
+      </button>
+
+      {supply && !reading && (
         <div className="card">
           <p className="card-label">Kirjoitit tähän aiemmin</p>
           <p className="card-body">{supply.label}</p>
@@ -88,7 +107,17 @@ export function WaitView({ store, episode }: Props) {
  * Emptying rather than filling: a bar that fills up is a goal with a finish line
  * to fall short of. A ring that drains is just time passing, which is all this is.
  */
-function Ring({ ratio, label, done }: { ratio: number; label: string; done: boolean }) {
+function Ring({
+  ratio,
+  label,
+  done,
+  small,
+}: {
+  ratio: number;
+  label: string;
+  done: boolean;
+  small?: boolean;
+}) {
   const size = 240;
   const stroke = 6;
   const r = (size - stroke) / 2;
@@ -96,7 +125,7 @@ function Ring({ ratio, label, done }: { ratio: number; label: string; done: bool
 
   return (
     <svg
-      className="ring"
+      className={small ? 'ring ring-small' : 'ring'}
       viewBox={`0 0 ${size} ${size}`}
       role="timer"
       aria-label={`Aikaa jäljellä ${label}`}

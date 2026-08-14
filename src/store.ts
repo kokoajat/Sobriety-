@@ -11,6 +11,7 @@ import * as db from './storage/db';
 import { close, isOpen } from './core/waiting';
 import { findDemandByLabel, newCustomDemand } from './core/demands';
 import { recordAttempt } from './core/stats';
+import { recordExposure, type Exposure } from './core/rotation';
 import {
   DEFAULT_SETTINGS,
   type CustomDemand,
@@ -31,6 +32,7 @@ export interface Store {
   episodes: Episode[];
   supplies: Supply[];
   demands: CustomDemand[];
+  exposures: Exposure[];
   settings: Settings;
   /** The episode currently running, if any. */
   current?: Episode;
@@ -41,6 +43,7 @@ export interface Store {
   addSupply: (label: string, demand: Demand) => Promise<void>;
   archiveSupply: (id: string) => Promise<void>;
   addDemand: (label: string) => Promise<Demand | undefined>;
+  markFactShown: (id: string) => Promise<void>;
   archiveDemand: (id: Demand) => Promise<void>;
   saveSettings: (settings: Settings) => Promise<void>;
   reload: () => Promise<void>;
@@ -51,18 +54,21 @@ export function useStore(): Store {
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [supplies, setSupplies] = useState<Supply[]>([]);
   const [demands, setDemands] = useState<CustomDemand[]>([]);
+  const [exposures, setExposures] = useState<Exposure[]>([]);
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
 
   const reload = useCallback(async () => {
-    const [e, v, d, s] = await Promise.all([
+    const [e, v, d, x, s] = await Promise.all([
       db.episodes.all(),
       db.supplies.all(),
       db.demands.all(),
+      db.exposures.all(),
       db.settings.get(),
     ]);
     setEpisodes(e.sort((a, b) => a.startedAt - b.startedAt));
     setSupplies(v);
     setDemands(d);
+    setExposures(x);
     setSettings(s);
     setReady(true);
   }, []);
@@ -208,6 +214,24 @@ export function useStore(): Store {
     [demands],
   );
 
+  /**
+   * Remember that a line was read.
+   *
+   * Written through on every line rather than batched at the end of the wait:
+   * the wait is the one moment the app is most likely to be closed abruptly, and
+   * losing the record would mean showing the same lines again next time.
+   */
+  const markFactShown = useCallback(
+    async (id: string) => {
+      const next = recordExposure(exposures, id);
+      const updated = next.find((e) => e.id === id);
+      if (!updated) return;
+      await db.exposures.put(updated);
+      setExposures(next);
+    },
+    [exposures],
+  );
+
   const saveSettings = useCallback(async (next: Settings) => {
     await db.settings.put(next);
     setSettings(next);
@@ -218,6 +242,7 @@ export function useStore(): Store {
     episodes,
     supplies,
     demands,
+    exposures,
     settings,
     current,
     begin,
@@ -228,6 +253,7 @@ export function useStore(): Store {
     archiveSupply,
     addDemand,
     archiveDemand,
+    markFactShown,
     saveSettings,
     reload,
   };

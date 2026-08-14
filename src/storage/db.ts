@@ -14,6 +14,7 @@
  * damage it.
  */
 
+import type { Exposure } from '../core/rotation';
 import type { CustomDemand, Episode, Settings, Supply } from '../core/types';
 import { DEFAULT_SETTINGS } from '../core/types';
 
@@ -24,13 +25,14 @@ const STORE_EPISODES = 'episodes';
 const STORE_SUPPLIES = 'supplies';
 const STORE_DEMANDS = 'demands';
 const STORE_SETTINGS = 'settings';
+const STORE_EXPOSURES = 'exposures';
 
 function open(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
     request.onupgradeneeded = () => {
       const db = request.result;
-      for (const name of [STORE_EPISODES, STORE_SUPPLIES, STORE_DEMANDS]) {
+      for (const name of [STORE_EPISODES, STORE_SUPPLIES, STORE_DEMANDS, STORE_EXPOSURES]) {
         if (!db.objectStoreNames.contains(name)) {
           db.createObjectStore(name, { keyPath: 'id' });
         }
@@ -76,6 +78,11 @@ export const demands = {
   put: (d: CustomDemand) => run<IDBValidKey>(STORE_DEMANDS, 'readwrite', (s) => s.put(d)),
 };
 
+export const exposures = {
+  all: () => run<Exposure[]>(STORE_EXPOSURES, 'readonly', (s) => s.getAll()),
+  put: (e: Exposure) => run<IDBValidKey>(STORE_EXPOSURES, 'readwrite', (s) => s.put(e)),
+};
+
 export const settings = {
   async get(): Promise<Settings> {
     const stored = await run<Settings | undefined>(STORE_SETTINGS, 'readonly', (s) =>
@@ -93,17 +100,27 @@ export interface ExportBundle {
   episodes: Episode[];
   supplies: Supply[];
   demands: CustomDemand[];
+  exposures: Exposure[];
   settings: Settings;
 }
 
 export async function exportAll(): Promise<ExportBundle> {
-  const [e, v, d, s] = await Promise.all([
+  const [e, v, d, x, s] = await Promise.all([
     episodes.all(),
     supplies.all(),
     demands.all(),
+    exposures.all(),
     settings.get(),
   ]);
-  return { version: 1, exportedAt: Date.now(), episodes: e, supplies: v, demands: d, settings: s };
+  return {
+    version: 1,
+    exportedAt: Date.now(),
+    episodes: e,
+    supplies: v,
+    demands: d,
+    exposures: x,
+    settings: s,
+  };
 }
 
 /** Merge a bundle back in; the imported copy wins per record id. */
@@ -112,6 +129,7 @@ export async function importAll(bundle: ExportBundle): Promise<void> {
   for (const e of bundle.episodes ?? []) await episodes.put(e);
   for (const v of bundle.supplies ?? []) await supplies.put(v);
   for (const d of bundle.demands ?? []) await demands.put(d);
+  for (const x of bundle.exposures ?? []) await exposures.put(x);
   await settings.put({ ...DEFAULT_SETTINGS, ...bundle.settings });
 }
 

@@ -46,6 +46,32 @@ prosentti on huhu. `stats.ts` palauttaa silloin `NaN`, ja käyttöliittymä kirj
 "liian vähän vielä" numeron sijaan. Tällä alueella väärä mutta itsevarma väite
 omasta käyttäytymisestä on pahempi kuin ei väitettä lainkaan.
 
+### Luettavaa odotuksen ajaksi
+
+Kellon tuijottaminen on huono ainoa tekeminen kärsimättömälle mielelle, eikä
+kävelylle pääse aina. Odotusnäytöllä voi siksi avata lyhyiden lauseiden virran:
+yksi kerrallaan, vaihtuu itsestään yhdeksän sekunnin välein tai napauttamalla.
+Kello kutistuu mutta ei katoa — luettava on häiriö odotuksen ajaksi, ei korvaaja
+sille.
+
+Sisältöä ohjaa kaksi sääntöä. **Jokainen rivi kuvaa alkoholia, ei lukijaa.**
+"Alkoholi lyhentää REM-unta" on tietoa; "juomisesi pilaa unesi" olisi tuomio, ja
+tuomio klo 23 sinnittelevälle ihmiselle on annos häpeää. Testi vahtii, ettei
+yksikään rivi puhuttele lukijaa hänen omasta juomisestaan. **Ja joukossa on
+toipumisfaktoja**, koska pelkkä haittalista himon aikana lannistaa — lannistunut
+on se tila jossa juodaan. Noin kolmannes riveistä katsoo eteenpäin, ja sitäkin
+vahtii testi.
+
+Rivejä on 70. Määrä on tarkoituksella maltillinen: seitsemänkymmentä joka pitää
+paikkansa on parempi kuin kaksisataa, joissa on keksittyjä lukuja. Lisääminen on
+rivin lisäämistä `facts.ts`:n taulukkoon — id:t eivät saa muuttua, koska kierrätys
+muistaa ne.
+
+Kierrätys jakaa koko pakan ennen kuin mikään toistuu, näyttää vähiten hiljattain
+nähdyn ensin ja arpoo lopullisen valinnan pakan kärjen sisällä. Kiinteä järjestys
+muuttuisi tapetiksi jonka silmä ohittaa; puhdas satunnaisuus näyttäisi saman rivin
+kahdesti samalla odotuksella.
+
 ### Se yksi luku joka on hyödyllinen
 
 Kun merkintöjä on tarpeeksi, sovellus kertoo **kauanko himo on sinun omissa
@@ -81,6 +107,8 @@ laskurin, ei valikkoa.
 src/core/          puhdas logiikka, ei riippuvuuksia UI:hin — testattu
   types.ts         domain-malli
   waiting.ts       odotuksen tila: jäljellä, edistymä, jatkaminen, sulkeminen
+  facts.ts         70 riviä luettavaa, kategorioittain
+  rotation.ts      kierrätys: koko pakka ennen toistoa, ei kiinteää järjestystä
   stats.ts         rehelliset tunnusluvut, NaN alle viiden havainnon
   demands.ts       tarpeiden nimet, omat tarpeet
 src/storage/db.ts  IndexedDB, vienti/tuonti/poisto
@@ -92,7 +120,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 48 testiä ydinlogiikalle
+npm test           # 65 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 

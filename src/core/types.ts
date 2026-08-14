@@ -114,9 +114,23 @@ export interface Settings {
   waitMs: number;
   /** Added by "hetki lisää". */
   extensionMs: number;
+  /**
+   * Whether the reading panel opens by itself during a wait.
+   *
+   * Remembered rather than asked each time: someone who wants something to read
+   * at 23:00 wants it every time, and someone who finds it intrusive should not
+   * have to decline it twice.
+   */
+  factsOn: boolean;
+  /** Seconds each line stays before the next one fades in. */
+  factSeconds: number;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   waitMs: 10 * 60 * 1000,
   extensionMs: 5 * 60 * 1000,
+  // Off by default. Reading is an offer, not something that starts talking at
+  // someone who opened the app to hold on for ten minutes.
+  factsOn: false,
+  factSeconds: 9,
 };
