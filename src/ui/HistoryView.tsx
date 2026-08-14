@@ -145,17 +145,27 @@ export function HistoryView({ store, onBack }: { store: Store; onBack: () => voi
 
           <div className="card">
             <p className="card-label">Viimeisimmät</p>
-            <ul className="stock">
+            {/*
+              Stacked, not two columns. These rows carry a timestamp and a
+              free-text need the user wrote themselves, and a side-by-side layout
+              made the long one push past the card while squeezing the date into
+              four wrapped lines. A row here has no fixed width to fit into.
+            */}
+            <ul className="event-list">
               {[...closed]
                 .sort((a, b) => b.startedAt - a.startedAt)
                 .slice(0, 12)
                 .map((e) => (
-                  <li key={e.id}>
-                    <span>{formatWhen(e.startedAt)}</span>
-                    <span className="card-note">
-                      {demandLabel(e.demand, store.demands).toLowerCase()} ·{' '}
+                  <li key={e.id} className="event">
+                    <p className="event-when">{formatWhen(e.startedAt)}</p>
+                    <p className="event-what">
+                      {demandLabel(e.demand, store.demands).toLowerCase()}
+                    </p>
+                    <p className="event-meta">
+                      {/* Every outcome styled identically — see labels.ts. */}
                       {OUTCOME_LABELS[e.outcome]} · {formatDurationShort(e.waitedMs)}
-                    </span>
+                      {e.situation !== undefined && ` · ${situationLabel(e.situation).toLowerCase()}`}
+                    </p>
                   </li>
                 ))}
             </ul>

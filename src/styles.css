@@ -334,19 +334,32 @@ select {
 .stock li {
   display: flex;
   align-items: baseline;
-  gap: 0.6rem;
+  /* Two columns while both fit, one column when they do not. Labels here can be
+     anything the user typed, and squeezing a long one into a narrow column
+     stacked it four words deep next to an almost empty right-hand side. */
+  flex-wrap: wrap;
+  gap: 0.15rem 0.6rem;
   padding: 0.55rem 0;
   border-bottom: 1px solid var(--line);
   font-size: 0.9375rem;
 }
 
+/* The basis is the drop point: below roughly this much room for the label, the
+   note moves to its own line instead of crushing it. */
 .stock li > span:first-child {
-  flex: 1;
+  flex: 1 1 11rem;
+  /* Without this a flex item refuses to shrink below its content, so a long
+     label written by the user pushes the row out past the card edge. */
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
+/* Safe here only because every note in a .stock row is short ("3 x", "60 %").
+   The recent-episodes list carries long text and uses .event instead. */
 .stock .card-note {
   margin: 0;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .remove {
@@ -976,4 +989,48 @@ select {
 .quiet-links {
   flex-wrap: wrap;
   justify-content: center;
+}
+
+
+/* Recent episodes -------------------------------------------------------- */
+
+.event-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.event {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+  min-width: 0;
+}
+
+.event:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Tabular figures so the times line up down the column, which is most of what
+   makes a list of timestamps readable at a glance. */
+.event-when {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+.event-what {
+  margin: 0.15rem 0 0;
+  font-size: 0.9375rem;
+  overflow-wrap: anywhere;
+}
+
+.event-meta {
+  margin: 0.1rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
 }
