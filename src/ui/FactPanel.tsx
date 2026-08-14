@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { FACTS, CATEGORY_LABELS, type Fact } from '../core/facts';
 import { TRIVIA } from '../core/trivia';
 import { pickNextFact } from '../core/rotation';
+import { FactScene, type FactFigure } from './factFigures';
 import type { Store } from '../store';
 
 export function FactPanel({ store }: { store: Store }) {
@@ -68,6 +69,7 @@ export function FactPanel({ store }: { store: Store }) {
       <button type="button" className="fact" onClick={advance} aria-live="polite">
         <span key={turn} className="fact-inner">
           <span className="fact-category">{CATEGORY_LABELS[fact.category]}</span>
+          {fact.figure && <FactScene figure={fact.figure as FactFigure} />}
           <span className="fact-text">{fact.text}</span>
         </span>
       </button>

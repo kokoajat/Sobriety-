@@ -206,3 +206,32 @@ describe('sourced claims', () => {
     expect(research.some((f) => /aineiston oma varaus/.test(f.text))).toBe(true);
   });
 });
+
+describe('illustrated lines', () => {
+  const all = [...FACTS, ...TRIVIA];
+  const illustrated = all.filter((f) => f.figure);
+
+  it('names only figures the renderer knows about', () => {
+    // A typo here would render nothing and fail silently on someone's phone.
+    const known = new Set([
+      'risk-curve', 'sleep-arch', 'liver-rate', 'octopus-hearts', 'hexagons',
+      'saturn-float', 'light-travel', 'ice-expand', 'fold-double', 'moon-drift',
+    ]);
+    expect(illustrated.filter((f) => !known.has(f.figure!))).toEqual([]);
+  });
+
+  it('stays rare, so a picture still means something', () => {
+    expect(illustrated.length / all.length).toBeLessThan(0.05);
+  });
+
+  it('uses each scene at most once, since a repeated drawing reads as an error', () => {
+    const used = illustrated.map((f) => f.figure);
+    expect(new Set(used).size).toBe(used.length);
+  });
+});
+
+describe('corpus balance between the two sources', () => {
+  it('has more useless knowledge than alcohol lines, as intended', () => {
+    expect(TRIVIA.length).toBeGreaterThan(FACTS.length);
+  });
+});

@@ -44,6 +44,14 @@ export interface Fact {
   id: string;
   text: string;
   category: FactCategory;
+  /**
+   * Key into the inline-SVG scenes in `ui/factFigures.tsx`.
+   *
+   * Set only where a picture does work the sentence cannot — the shape of a
+   * curve, two sizes side by side, something moving. Illustrating an already
+   * clear line just puts decoration between the reader and the text.
+   */
+  figure?: string;
 }
 
 export const CATEGORY_LABELS: Record<FactCategory, string> = {
@@ -61,7 +69,7 @@ export const CATEGORY_LABELS: Record<FactCategory, string> = {
 
 export const FACTS: Fact[] = [
   // Uni ---------------------------------------------------------------------
-  { id: 'sleep-1', category: 'sleep', text: 'Alkoholi nopeuttaa nukahtamista mutta lyhentää REM-unta. Uni kevenee loppuyöstä.' },
+  { id: 'sleep-1', category: 'sleep', figure: 'sleep-arch', text: 'Alkoholi nopeuttaa nukahtamista mutta lyhentää REM-unta. Uni kevenee loppuyöstä.' },
   { id: 'sleep-2', category: 'sleep', text: 'Yön jälkipuolisko rikkoutuu, kun elimistö käsittelee alkoholin. Heräilyä tulee lisää, vaikka sitä ei aamulla muistaisi.' },
   { id: 'sleep-3', category: 'sleep', text: 'Alkoholi rentouttaa nielun lihaksia. Se lisää kuorsausta ja hengityskatkoja.' },
   { id: 'sleep-4', category: 'sleep', text: 'Nukahtamiseen käytetty alkoholi menettää tehonsa nopeasti. Muutamassa viikossa sama annos ei enää auta nukahtamaan.' },
@@ -80,7 +88,7 @@ export const FACTS: Fact[] = [
   { id: 'mind-9', category: 'mind', text: 'Alkoholi kaventaa tarkkaavaisuutta: huomio kiinnittyy siihen mikä on lähellä ja nyt, ja seuraukset katoavat näkyvistä.' },
 
   // Keho --------------------------------------------------------------------
-  { id: 'body-1', category: 'body', text: 'Maksa käsittelee alkoholia melko vakionopeudella, noin annoksen tunnissa. Kahvi, suihku tai lenkki eivät nopeuta sitä.' },
+  { id: 'body-1', category: 'body', figure: 'liver-rate', text: 'Maksa käsittelee alkoholia melko vakionopeudella, noin annoksen tunnissa. Kahvi, suihku tai lenkki eivät nopeuta sitä.' },
   { id: 'body-2', category: 'body', text: 'Rasvamaksa voi kehittyä muutamassa viikossa runsasta käyttöä. Se myös korjaantuu vastaavassa ajassa, jos käyttö loppuu.' },
   { id: 'body-3', category: 'body', text: 'Alkoholi kohottaa verenpainetta. Vaikutus näkyy jo tasoilla, joita moni pitää tavanomaisina.' },
   { id: 'body-4', category: 'body', text: 'Kansainvälinen syöväntutkimuslaitos IARC luokittelee alkoholin ryhmän 1 karsinogeeniksi — samaan luokkaan kuin tupakan ja asbestin.' },
@@ -221,7 +229,7 @@ export const FACTS: Fact[] = [
   { id: 'res-4', category: 'research', text: 'Alkoholiin liittyi 6,8 prosenttia miesten ja 2,2 prosenttia naisten kuolemista maailmanlaajuisesti vuonna 2016.' },
   { id: 'res-5', category: 'research', text: '15–49-vuotiailla alkoholi oli suurin yksittäinen kuolemanriskin tekijä. Miesten kuolemista siinä ikäryhmässä noin 12 prosenttia liittyi alkoholiin.' },
   { id: 'res-6', category: 'research', text: 'Suojaava vaikutus löytyi vain sepelvaltimotaudille, ja pienimmillään riski oli noin 0,9 annoksen kohdalla päivässä. Syöpäriskin kasvu kumosi hyödyn kokonaisuudessa.' },
-  { id: 'res-7', category: 'research', text: 'Absoluuttisina lukuina: sadastatuhannesta raittiista noin 914 sairastuu vuodessa johonkin 23:sta alkoholiin liittyvästä ongelmasta. Yhden päivittäisen annoksen juovista 918.' },
+  { id: 'res-7', category: 'research', figure: 'risk-curve', text: 'Absoluuttisina lukuina: sadastatuhannesta raittiista noin 914 sairastuu vuodessa johonkin 23:sta alkoholiin liittyvästä ongelmasta. Yhden päivittäisen annoksen juovista 918.' },
   { id: 'res-8', category: 'research', text: 'Kahdella annoksella päivässä luku on 977 ja viidellä 1252 sadastatuhannesta. Riski ei kasva tasaisesti vaan kiihtyen.' },
   { id: 'res-9', category: 'research', text: 'Ero raittiin ja yhden päivittäisen annoksen välillä on neljä tapausta sadassatuhannessa vuodessa. Se on todellinen mutta pieni — ja juuri siksi luku kannattaa tietää oikein.' },
   { id: 'res-10', category: 'research', text: 'Tilastotieteilijä David Spiegelhalter huomautti, ettei alkuperäinen tutkimus julkaissut absoluuttisia riskejä lainkaan, jolloin lukija ei voinut arvioida suuruusluokkaa.' },

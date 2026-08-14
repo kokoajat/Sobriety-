@@ -637,3 +637,130 @@ select {
   accent-color: var(--accent);
   flex: none;
 }
+
+/* Illustrated lines ------------------------------------------------------ */
+
+.scene {
+  display: block;
+  width: 100%;
+  max-width: 15rem;
+  margin: 0.25rem 0 0.75rem;
+  color: var(--ink-soft);
+}
+
+.scene-fill {
+  fill: var(--accent);
+}
+
+.scene-stroke {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.scene-line,
+.scene-line-box {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+}
+
+.scene-dashed {
+  stroke-dasharray: 4 4;
+}
+
+.scene-text,
+.scene-tiny {
+  fill: currentColor;
+  font-size: 9px;
+}
+
+.scene-tiny {
+  font-size: 7.5px;
+}
+
+.scene-water {
+  fill: var(--accent);
+  opacity: 0.18;
+}
+
+/* Motion. Each loop is slow and small: a card that jitters is a card nobody
+   finishes reading. */
+.scene-beat {
+  transform-origin: center;
+  animation: beat 1.6s ease-in-out infinite;
+}
+
+.scene-beat-1 { animation-delay: 0.2s; }
+.scene-beat-2 { animation-delay: 0.4s; }
+
+@keyframes beat {
+  0%, 100% { transform: scale(1); }
+  18% { transform: scale(1.14); }
+  36% { transform: scale(1); }
+}
+
+.scene-bob {
+  animation: bob 4s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+.scene-photon {
+  animation: photon 4s linear infinite;
+}
+
+@keyframes photon {
+  from { transform: translateX(0); }
+  to { transform: translateX(128px); }
+}
+
+.scene-drift {
+  animation: drift 5s linear infinite;
+}
+
+.scene-drift-2 {
+  animation-delay: 2.5s;
+}
+
+@keyframes drift {
+  0% { transform: translateX(0); opacity: 0; }
+  12% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateX(130px); opacity: 0; }
+}
+
+.scene-rise {
+  animation: rise 4s ease-in-out infinite;
+  transform-origin: bottom;
+}
+
+@keyframes rise {
+  0%, 100% { transform: scaleY(0.7); }
+  50% { transform: scaleY(1); }
+}
+
+.scene-recede {
+  animation: recede 5s ease-in-out infinite;
+}
+
+@keyframes recede {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(9px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-beat,
+  .scene-bob,
+  .scene-photon,
+  .scene-drift,
+  .scene-rise,
+  .scene-recede {
+    animation: none;
+  }
+}

@@ -85,8 +85,8 @@ paikkansa on parempi kuin kolmesataa, joissa on keksittyjä lukuja. Lisääminen
 rivin lisäämistä `facts.ts`:n taulukkoon — id:t eivät saa muuttua, koska kierrätys
 muistaa ne.
 
-Valintaruudusta saa mukaan myös **turhan tiedon korpuksen**: 151 riviä
-ällistyttävää ja hyödytöntä. Se on oletuksena pois päältä ja omassa
+Valintaruudusta saa mukaan myös **turhan tiedon korpuksen**: 312 riviä
+ällistyttävää ja hyödytöntä — enemmän kuin alkoholirivejä. Se on oletuksena pois päältä ja omassa
 tiedostossaan, koska sen tehtävä on eri: alkoholirivit kertovat, nämä vain
 viihdyttävät. Himon aikana jälkimmäinen työ on yhtä oikeutettu kuin edellinen —
 kärsimätön mieli jolle ei anneta mitään pureskeltavaa löytää jääkaapin.
@@ -107,6 +107,28 @@ Napauttaminen antaa uudelle riville täyden lukuajan. Jaettu ajastin olisi pitä
 oman aikataulunsa riippumatta napautuksista, jolloin 8,5 sekunnin kohdalla
 napautettu rivi olisi vaihtunut puolessa sekunnissa — mikä näyttää siltä että
 sovellus ei kuuntele.
+
+#### Kuvat
+
+Kymmenellä rivillä on piirros: sykkivät sydämet, kennoston kuusikulmiot,
+Saturnus kellumassa, valon matka Auringosta, veden laajeneminen jäätyessä,
+taitosten kaksinkertaistuminen, Kuun loittoneminen — ja alkoholipuolella unen
+rakenne, maksan käsittelynopeus ja GBD-tutkimuksen riskiluvut pylväinä.
+
+Piirros lisätään vain sinne, missä kuva tekee työn jota lause ei tee: käyrän
+muoto, kaksi kokoa rinnakkain, jokin joka liikkuu. Jo valmiiksi selvän rivin
+kuvittaminen asettaisi koristeen lukijan ja tekstin väliin, ja klo 23 se on
+haitta. Testi vahtii että kuvitettuja on alle viisi prosenttia riveistä ja
+ettei yhtäkään kohtausta käytetä kahdesti.
+
+Riskikuvaajan pylväät alkavat todellisesta nollasta. Akselin katkaiseminen
+yhdeksänsataan tekisi neljän tapauksen erosta sadassatuhannessa näyttävän
+jyrkänteen — juuri sen lukuvirheen, jonka viereiset rivit ovat olemassa
+korjatakseen.
+
+Kaikki on inline-SVG:tä ja CSS-animaatiota: kuvatiedosto tarkoittaisi
+verkkokutsua, joita tässä sovelluksessa ei tehdä. Animaatiot kunnioittavat
+prefers-reduced-motion.
 
 ### Rauhoittumiskeinot
 
@@ -166,7 +188,8 @@ src/core/          puhdas logiikka, ei riippuvuuksia UI:hin — testattu
   types.ts         domain-malli
   waiting.ts       odotuksen tila: jäljellä, edistymä, jatkaminen, sulkeminen
   facts.ts         159 riviä alkoholista, kategorioittain
-  trivia.ts        151 riviä turhaa tietoa, valinnainen
+  trivia.ts        312 riviä turhaa tietoa, valinnainen
+src/ui/factFigures.tsx  10 inline-SVG-kohtausta, osa animoituja
   breathing.ts     hengitysvaihe kuluneesta ajasta, ympyrän koko
   techniques.ts    9 rauhoittumiskeinoa, kukin näyttöasteineen
   rotation.ts      kierrätys: koko pakka ennen toistoa, ei kiinteää järjestystä
@@ -181,7 +204,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 94 testiä ydinlogiikalle
+npm test           # 98 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 
