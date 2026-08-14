@@ -11,6 +11,17 @@
  * occupying the mind is as legitimate a job as informing it.
  */
 
+/*
+ * Lines advance on a tap and never on their own.
+ *
+ * They used to rotate every nine seconds. That was wrong for the one situation
+ * this panel exists for: reading speed varies, some lines are twice as long as
+ * others, and a line that vanishes mid-sentence is worse than no line — it turns
+ * reading into keeping up, which is the opposite of what a ten-minute wait is
+ * for. Nothing here is on a schedule now, so a line stays as long as it is
+ * wanted and the next one arrives exactly when the reader asks for it.
+ */
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FACTS, CATEGORY_LABELS, type Fact } from '../core/facts';
 import { TRIVIA } from '../core/trivia';
@@ -22,8 +33,7 @@ export function FactPanel({ store }: { store: Store }) {
   const [fact, setFact] = useState<Fact | undefined>();
   // Lines already shown during this wait, so one wait never repeats itself.
   const shown = useRef<string[]>([]);
-  // Bumped on every advance: restarts the entrance animation and, crucially,
-  // re-arms the timeout below so a tap gives a full reading interval.
+  // Bumped on every advance, purely to restart the entrance animation.
   const [turn, setTurn] = useState(0);
 
   const trivia = store.settings.triviaOn;
@@ -38,34 +48,27 @@ export function FactPanel({ store }: { store: Store }) {
     setFact(next);
     setTurn((t) => t + 1);
     void store.markFactShown(next.id);
-    // Exposures are read through a ref so this stays stable: rebuilding it on
-    // every write would re-arm the timeout on every line and the interval would
-    // never actually elapse.
+    // Exposures are read through a ref so this callback stays stable across the
+    // writes it causes; otherwise the mount effect below would re-run and skip a
+    // line on every advance.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trivia]);
 
+  // The first line only. Everything after it is asked for.
   useEffect(() => {
     advance();
   }, [advance]);
-
-  /**
-   * One timeout per line, re-armed after each advance.
-   *
-   * A shared interval would keep its own schedule regardless of taps: tapping at
-   * 8.5 seconds meant the next line arrived half a second later, which reads as
-   * the app ignoring you. Re-arming gives every line the full interval however
-   * it arrived.
-   */
-  useEffect(() => {
-    const seconds = Math.max(3, store.settings.factSeconds);
-    const id = setTimeout(advance, seconds * 1000);
-    return () => clearTimeout(id);
-  }, [turn, advance, store.settings.factSeconds]);
 
   if (!fact) return null;
 
   return (
     <div className="fact-block">
+      {/*
+        Above the box rather than below it: an instruction under the thing it
+        describes is read after the confusion it was meant to prevent.
+      */}
+      <p className="fact-hint">Napauta tekstiä, kun olet valmis seuraavaan.</p>
+
       <button type="button" className="fact" onClick={advance} aria-live="polite">
         <span key={turn} className="fact-inner">
           <span className="fact-category">{CATEGORY_LABELS[fact.category]}</span>

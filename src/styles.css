@@ -1034,3 +1034,12 @@ select {
   color: var(--ink-soft);
   font-size: 0.8125rem;
 }
+
+/* Sits above the reading box. Muted and small — it is a one-time instruction,
+   not a label that should compete with the line it explains. */
+.fact-hint {
+  margin: 0 0 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  text-align: center;
+}

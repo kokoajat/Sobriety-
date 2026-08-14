@@ -103,10 +103,16 @@ romahti tuoreella pakalla taulukon järjestykseksi, ja arpa osui ikuisesti samaa
 kourallisen. Kiinteä järjestys muuttuisi tapetiksi jonka silmä ohittaa; puhdas
 satunnaisuus näyttäisi saman rivin kahdesti samalla odotuksella.
 
-Napauttaminen antaa uudelle riville täyden lukuajan. Jaettu ajastin olisi pitänyt
-oman aikataulunsa riippumatta napautuksista, jolloin 8,5 sekunnin kohdalla
-napautettu rivi olisi vaihtunut puolessa sekunnissa — mikä näyttää siltä että
-sovellus ei kuuntele.
+**Rivi vaihtuu vain napauttamalla.** Aiemmin se vaihtui yhdeksän sekunnin välein,
+ja se oli väärin juuri siihen tilanteeseen, jota varten paneeli on olemassa:
+lukunopeus vaihtelee, osa riveistä on kaksi kertaa toisia pidempiä, ja kesken
+lauseen katoava rivi on huonompi kuin ei riviä lainkaan — se muuttaa lukemisen
+perässä pysymiseksi, mikä on kymmenen minuutin odotuksen vastakohta. Mikään ei ole
+enää aikataulussa: rivi pysyy niin kauan kuin sitä katsotaan, ja seuraava tulee
+täsmälleen silloin kun sitä pyydetään.
+
+Ohje on **laatikon yläpuolella**, koska ohje selitettävän asian alapuolella
+luetaan vasta sen hämmennyksen jälkeen, jonka se oli tarkoitettu estämään.
 
 #### Näyttö pysyy auki
 

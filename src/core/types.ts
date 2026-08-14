@@ -150,8 +150,6 @@ export interface Settings {
    * have to decline it twice.
    */
   factsOn: boolean;
-  /** Seconds each line stays before the next one fades in. */
-  factSeconds: number;
   /**
    * Mix the useless-knowledge corpus into the reading.
    *
@@ -170,6 +168,5 @@ export const DEFAULT_SETTINGS: Settings = {
   // Off by default. Reading is an offer, not something that starts talking at
   // someone who opened the app to hold on for ten minutes.
   factsOn: false,
-  factSeconds: 9,
   triviaOn: false,
 };
