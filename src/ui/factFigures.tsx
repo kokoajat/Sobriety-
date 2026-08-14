@@ -35,7 +35,30 @@ export type FactFigure =
   | 'four-colour'
   | 'venus-day'
   | 'water-ball'
-  | 'hummingbird';
+  | 'hummingbird'
+  | 'gaba-scale'
+  | 'rebound'
+  | 'blackout-gap'
+  | 'brain-volume'
+  | 'heat-loss'
+  | 'iarc-group'
+  | 'withdrawal-clock'
+  | 'kindling'
+  | 'cue-arrow'
+  | 'slip-fork'
+  | 'glass-shape'
+  | 'j-curve-broken'
+  | 'dementia-share'
+  | 'breast-1000'
+  | 'recovery-weeks'
+  | 'octopus-gap'
+  | 'heart-count'
+  | 'vessels-earth'
+  | 'trench-everest'
+  | 'mercator'
+  | 'birthday-23'
+  | 'monty-hall'
+  | 'iss-sunrises';
 
 export function FactScene({ figure }: { figure: FactFigure }) {
   return (
@@ -70,6 +93,29 @@ const LABELS: Record<FactFigure, string> = {
   'venus-day': 'Venuksen vuorokausi ja vuosi',
   'water-ball': 'Maapallon kaikki vesi yhtenä pallona',
   hummingbird: 'Kolibri lentää myös taaksepäin',
+  'gaba-scale': 'Rauhoittava ja kiihdyttävä järjestelmä vaakakupeissa',
+  rebound: 'Vastasäätö jää päälle kun aine loppuu',
+  'blackout-gap': 'Aukko muistin tallennuksessa',
+  'brain-volume': 'Aivojen tilavuuden vertailu',
+  'heat-loss': 'Verisuonet laajenevat, lämpö karkaa',
+  'iarc-group': 'Ryhmän 1 karsinogeenit',
+  'withdrawal-clock': 'Vieroitusoireiden alkamisaika',
+  kindling: 'Vieroitus voimistuu kerta kerralta',
+  'cue-arrow': 'Vihje laukaisee himon',
+  'slip-fork': 'Lipsahduksen jälkeen kaksi tietä',
+  'glass-shape': 'Sama määrä eri muotoisissa laseissa',
+  'j-curve-broken': 'Havaittu kuoppa katoaa geneettisessä asetelmassa',
+  'dementia-share': 'Varhaisen dementian osuus',
+  'breast-1000': 'Yksitoista tapausta tuhannesta',
+  'recovery-weeks': 'Mikä palautuu ja milloin',
+  'octopus-gap': 'Mustekala mahtuu nokkansa kokoisesta aukosta',
+  'heart-count': 'Sydämen lyönnit vuorokaudessa',
+  'vessels-earth': 'Verisuonten pituus verrattuna maapalloon',
+  'trench-everest': 'Syvänne on syvempi kuin Everest korkea',
+  mercator: 'Grönlanti ja Afrikka kartalla ja oikeasti',
+  'birthday-23': 'Syntymäpäiväparadoksi',
+  'monty-hall': 'Kolme ovea',
+  'iss-sunrises': 'Auringonnousut avaruusasemalla',
 };
 
 /** Bars for 914 / 918 / 977 / 1252 per 100 000, scaled to the frame. */
@@ -387,6 +433,233 @@ const SCENES: Record<FactFigure, JSX.Element> = {
       <path className="scene-line" d="M60 74 h-22 m6 -5 l-6 5 l6 5" />
       <path className="scene-line" d="M140 74 h22 m-6 -5 l6 5 l-6 5" />
       <text className="scene-tiny" x="100" y="78" textAnchor="middle">molempiin</text>
+    </g>
+  ),
+
+  'gaba-scale': (
+    <g>
+      <path className="scene-line" d="M100 20 v14 M60 34 h80" />
+      <path className="scene-stroke" d="M60 34 v14" />
+      <path className="scene-stroke" d="M140 34 v22" />
+      <rect className="scene-fill" x="42" y="48" width="36" height="10" rx="2" />
+      <rect className="scene-fill" x="122" y="56" width="36" height="10" rx="2" opacity="0.45" />
+      <text className="scene-tiny" x="60" y="76" textAnchor="middle">rauhoittava</text>
+      <text className="scene-tiny" x="140" y="82" textAnchor="middle">kiihdyttävä</text>
+    </g>
+  ),
+  rebound: (
+    <g>
+      <line className="scene-line" x1="14" y1="52" x2="188" y2="52" />
+      <path className="scene-stroke" d="M14 52 q22 24 44 24 q22 0 34 -24" />
+      <path className="scene-stroke scene-dashed" d="M92 52 q20 -28 42 -28 q30 0 40 22" />
+      <text className="scene-tiny" x="46" y="88">aine vaikuttaa</text>
+      <text className="scene-tiny" x="186" y="18" textAnchor="end">vastasäätö jää</text>
+    </g>
+  ),
+  'blackout-gap': (
+    <g>
+      <rect className="scene-fill" x="16" y="38" width="52" height="20" rx="3" />
+      <rect className="scene-line-box" x="74" y="38" width="52" height="20" rx="3" strokeDasharray="4 3" />
+      <rect className="scene-fill" x="132" y="38" width="52" height="20" rx="3" />
+      <text className="scene-tiny" x="100" y="76" textAnchor="middle">ei tallennu</text>
+    </g>
+  ),
+  'brain-volume': (
+    <g>
+      <path className="scene-stroke" d="M62 26 q26 0 26 22 q0 24 -26 24 q-26 0 -26 -24 q0 -22 26 -22" />
+      <path className="scene-stroke" d="M142 30 q22 0 22 19 q0 20 -22 20 q-22 0 -22 -20 q0 -19 22 -19" />
+      <text className="scene-tiny" x="62" y="86" textAnchor="middle">vähän</text>
+      <text className="scene-tiny" x="142" y="86" textAnchor="middle">runsaasti</text>
+    </g>
+  ),
+  'heat-loss': (
+    <g>
+      <path className="scene-line" d="M20 62 h160" />
+      <path className="scene-stroke" d="M40 62 q0 -14 12 -14 q12 0 12 14" />
+      <path className="scene-stroke" d="M92 62 q0 -20 18 -20 q18 0 18 20" />
+      {[52, 110, 158].map((x, i) => (
+        <path key={x} className={`scene-line scene-escape scene-escape-${i}`} d={`M${x} 40 v-18 m-5 6 l5 -6 l5 6`} />
+      ))}
+      <text className="scene-tiny" x="100" y="82" textAnchor="middle">tuntuu lämpimältä, lämpö karkaa</text>
+    </g>
+  ),
+  'iarc-group': (
+    <g>
+      <rect className="scene-line-box" x="20" y="24" width="160" height="46" rx="6" />
+      <text className="scene-tiny" x="100" y="20" textAnchor="middle">RYHMÄ 1</text>
+      {['tupakka', 'asbesti', 'alkoholi'].map((t, i) => (
+        <g key={t}>
+          <circle className="scene-fill" cx={52 + i * 48} cy="42" r="7" opacity={i === 2 ? 1 : 0.4} />
+          <text className="scene-tiny" x={52 + i * 48} y="62" textAnchor="middle">{t}</text>
+        </g>
+      ))}
+    </g>
+  ),
+  'withdrawal-clock': (
+    <g>
+      <line className="scene-line" x1="20" y1="56" x2="180" y2="56" />
+      {[0, 6, 24].map((h, i) => (
+        <g key={h}>
+          <line className="scene-line" x1={20 + i * 80} y1="50" x2={20 + i * 80} y2="62" />
+          <text className="scene-tiny" x={20 + i * 80} y="76" textAnchor="middle">{h} h</text>
+        </g>
+      ))}
+      <rect className="scene-fill" x="100" y="34" width="80" height="10" rx="3" />
+      <text className="scene-tiny" x="140" y="28" textAnchor="middle">oireet</text>
+    </g>
+  ),
+  kindling: (
+    <g>
+      <line className="scene-line" x1="16" y1="76" x2="188" y2="76" />
+      {[14, 26, 40, 56].map((h, i) => (
+        <rect key={i} className="scene-fill" x={30 + i * 40} y={76 - h} width={22} height={h} rx="2" />
+      ))}
+      <text className="scene-tiny" x="100" y="90" textAnchor="middle">kerta kerralta</text>
+    </g>
+  ),
+  'cue-arrow': (
+    <g>
+      <text className="scene-tiny" x="34" y="42" textAnchor="middle">kello</text>
+      <text className="scene-tiny" x="34" y="54" textAnchor="middle">paikka</text>
+      <text className="scene-tiny" x="34" y="66" textAnchor="middle">ääni</text>
+      <path className="scene-line" d="M64 54 h56 m-8 -6 l8 6 l-8 6" />
+      <path className="scene-fill scene-pulse" d="M156 74 q-18 -14 -18 -28 q0 -14 11 -14 q7 0 7 9 q0 -9 7 -9 q11 0 11 14 q0 14 -18 28 z" />
+      <text className="scene-tiny" x="156" y="88" textAnchor="middle">himo</text>
+    </g>
+  ),
+  'slip-fork': (
+    <g>
+      <path className="scene-line" d="M16 52 h56" />
+      <circle className="scene-fill" cx="76" cy="52" r="5" />
+      <path className="scene-stroke" d="M84 50 q40 -22 96 -22" />
+      <path className="scene-stroke scene-dashed" d="M84 56 q40 22 96 22" />
+      <text className="scene-tiny" x="184" y="24" textAnchor="end">jatkuu</text>
+      <text className="scene-tiny" x="184" y="88" textAnchor="end">"kaikki pilalla"</text>
+    </g>
+  ),
+  'glass-shape': (
+    <g>
+      <path className="scene-stroke" d="M40 24 h44 l-6 56 h-32 z" />
+      <path className="scene-fill" d="M43 44 h38 l-5 34 h-28 z" opacity="0.7" />
+      <path className="scene-stroke" d="M126 24 h30 l-4 56 h-22 z" />
+      <path className="scene-fill" d="M128 36 h26 l-3.5 42 h-19 z" opacity="0.7" />
+      <text className="scene-tiny" x="100" y="92" textAnchor="middle">sama määrä</text>
+    </g>
+  ),
+  'j-curve-broken': (
+    <g>
+      <line className="scene-line" x1="16" y1="70" x2="188" y2="70" />
+      <path className="scene-stroke" d="M20 40 q24 24 52 24 q40 0 72 -34" />
+      <path className="scene-stroke scene-dashed" d="M20 44 q60 -6 124 -22" />
+      <text className="scene-tiny" x="30" y="86">itse ilmoitettu</text>
+      <text className="scene-tiny" x="186" y="86" textAnchor="end">perimä</text>
+    </g>
+  ),
+  'dementia-share': (
+    <g>
+      <rect className="scene-line-box" x="20" y="34" width="160" height="26" rx="4" />
+      <rect className="scene-fill" x="20" y="34" width="91" height="26" rx="4" />
+      <text className="scene-tiny" x="100" y="78" textAnchor="middle">alle 65-vuotiaana alkaneista</text>
+    </g>
+  ),
+  'breast-1000': (
+    <g>
+      {Array.from({ length: 40 }, (_, i) => (
+        <circle
+          key={i}
+          className="scene-fill"
+          cx={26 + (i % 10) * 17}
+          cy={30 + Math.floor(i / 10) * 15}
+          r="4.6"
+          opacity={i < 11 ? 1 : 0.18}
+        />
+      ))}
+      <text className="scene-tiny" x="100" y="90" textAnchor="middle">11 / 1000 lisää</text>
+    </g>
+  ),
+  'recovery-weeks': (
+    <g>
+      <line className="scene-line" x1="20" y1="78" x2="184" y2="78" />
+      {[
+        { l: 'uni', w: 40 },
+        { l: 'verenpaine', w: 66 },
+        { l: 'maksa-arvot', w: 92 },
+      ].map((b, i) => (
+        <g key={b.l}>
+          <rect className="scene-fill" x="20" y={22 + i * 17} width={b.w} height="11" rx="3" opacity={0.9 - i * 0.22} />
+          <text className="scene-tiny" x={b.w + 26} y={31 + i * 17}>{b.l}</text>
+        </g>
+      ))}
+      <text className="scene-tiny" x="20" y="90">viikkoja</text>
+    </g>
+  ),
+  'octopus-gap': (
+    <g>
+      <path className="scene-stroke" d="M46 30 q26 0 26 22 q0 10 -8 16" />
+      <path className="scene-stroke" d="M46 30 q-26 0 -26 22 q0 10 8 16" />
+      <path className="scene-line" d="M78 52 h34 m-8 -5 l8 5 l-8 5" />
+      <rect className="scene-line-box" x="126" y="24" width="52" height="56" rx="4" />
+      <circle className="scene-fill scene-squeeze" cx="152" cy="52" r="7" />
+      <text className="scene-tiny" x="152" y="92" textAnchor="middle">nokan kokoinen</text>
+    </g>
+  ),
+  'heart-count': (
+    <g>
+      <path className="scene-fill scene-beat" d="M100 72 q-22 -16 -22 -32 q0 -16 13 -16 q9 0 9 11 q0 -11 9 -11 q13 0 13 16 q0 16 -22 32 z" />
+      <text className="scene-text" x="100" y="22" textAnchor="middle">~100 000 / vrk</text>
+    </g>
+  ),
+  'vessels-earth': (
+    <g>
+      <circle className="scene-stroke" cx="46" cy="50" r="26" />
+      <text className="scene-tiny" x="46" y="88" textAnchor="middle">40 000 km</text>
+      <line className="scene-fill" x1="90" y1="50" x2="186" y2="50" strokeWidth="10" stroke="currentColor" />
+      <text className="scene-tiny" x="138" y="88" textAnchor="middle">yli 100 000 km</text>
+    </g>
+  ),
+  'trench-everest': (
+    <g>
+      <line className="scene-line" x1="14" y1="46" x2="188" y2="46" />
+      <path className="scene-fill" d="M40 46 l24 -34 l24 34 z" />
+      <path className="scene-fill" d="M118 46 l52 0 l-26 42 z" opacity="0.55" />
+      <text className="scene-tiny" x="64" y="60" textAnchor="middle">8,8 km</text>
+      <text className="scene-tiny" x="144" y="40" textAnchor="middle">11 km</text>
+    </g>
+  ),
+  mercator: (
+    <g>
+      <path className="scene-stroke" d="M30 22 q20 -4 26 10 q6 14 -4 28 q-12 16 -24 4 q-10 -12 2 -42" />
+      <text className="scene-tiny" x="42" y="88" textAnchor="middle">kartalla</text>
+      <path className="scene-stroke" d="M116 20 q30 -2 40 22 q10 24 -6 42 q-18 20 -34 2 q-14 -16 0 -66" />
+      <circle className="scene-fill" cx="128" cy="52" r="6" />
+      <text className="scene-tiny" x="136" y="92" textAnchor="middle">oikeasti</text>
+    </g>
+  ),
+  'birthday-23': (
+    <g>
+      {Array.from({ length: 23 }, (_, i) => (
+        <circle key={i} className="scene-fill" cx={26 + (i % 12) * 14} cy={34 + Math.floor(i / 12) * 18} r="5" opacity="0.8" />
+      ))}
+      <text className="scene-text" x="100" y="80" textAnchor="middle">23 → yli 50 %</text>
+    </g>
+  ),
+  'monty-hall': (
+    <g>
+      {[0, 1, 2].map((i) => (
+        <g key={i}>
+          <rect className="scene-line-box" x={30 + i * 50} y="22" width="38" height="50" rx="3" />
+          <circle className="scene-fill" cx={58 + i * 50} cy="48" r="2.5" />
+        </g>
+      ))}
+      <text className="scene-tiny" x="100" y="88" textAnchor="middle">vaihda: 1/3 → 2/3</text>
+    </g>
+  ),
+  'iss-sunrises': (
+    <g>
+      <circle className="scene-stroke" cx="100" cy="50" r="20" />
+      <ellipse className="scene-line scene-dashed" cx="100" cy="50" rx="42" ry="30" />
+      <circle className="scene-fill scene-orbit" cx="142" cy="50" r="4" style={{ transformOrigin: '100px 50px' }} />
+      <text className="scene-tiny" x="100" y="92" textAnchor="middle">16 / vrk</text>
     </g>
   ),
 

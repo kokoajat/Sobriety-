@@ -77,11 +77,11 @@ export const FACTS: Fact[] = [
   { id: 'sleep-6', category: 'sleep', text: 'Alkoholi siirtää sisäistä kelloa. Nukkumaanmenoaika venyy huomaamatta.' },
 
   // Aivot ja mieli ----------------------------------------------------------
-  { id: 'mind-1', category: 'mind', text: 'Alkoholi voimistaa rauhoittavaa GABA-järjestelmää ja vaimentaa kiihdyttävää glutamaattia. Aivot vastaavat säätämällä molempia toiseen suuntaan.' },
-  { id: 'mind-2', category: 'mind', text: 'Se vastasäätö on syy siihen, miksi seuraavana päivänä olo on kireämpi kuin ennen juomista. Aivot ovat yhä säädetty alkoholia vastaan, jota ei enää ole.' },
+  { id: 'mind-1', category: 'mind', figure: 'gaba-scale', text: 'Alkoholi voimistaa rauhoittavaa GABA-järjestelmää ja vaimentaa kiihdyttävää glutamaattia. Aivot vastaavat säätämällä molempia toiseen suuntaan.' },
+  { id: 'mind-2', category: 'mind', figure: 'rebound', text: 'Se vastasäätö on syy siihen, miksi seuraavana päivänä olo on kireämpi kuin ennen juomista. Aivot ovat yhä säädetty alkoholia vastaan, jota ei enää ole.' },
   { id: 'mind-3', category: 'mind', text: 'Ahdistus voi olla krapulassa suurempi kuin lähtötilanteessa. Ilmiö on niin tavallinen, että sillä on oma nimensä.' },
-  { id: 'mind-4', category: 'mind', text: 'Sammuminen ei ole tajuttomuutta vaan muistin tallennuksen katkos. Ihminen toimii ja puhuu, mutta hippokampus ei kirjaa mitään.' },
-  { id: 'mind-5', category: 'mind', text: 'Runsas käyttö pienentää aivojen tilavuutta. Osa muutoksesta korjaantuu, kun käyttö loppuu.' },
+  { id: 'mind-4', category: 'mind', figure: 'blackout-gap', text: 'Sammuminen ei ole tajuttomuutta vaan muistin tallennuksen katkos. Ihminen toimii ja puhuu, mutta hippokampus ei kirjaa mitään.' },
+  { id: 'mind-5', category: 'mind', figure: 'brain-volume', text: 'Runsas käyttö pienentää aivojen tilavuutta. Osa muutoksesta korjaantuu, kun käyttö loppuu.' },
   { id: 'mind-6', category: 'mind', text: 'Alkoholi ei poista ahdistusta. Se siirtää sitä muutaman tunnin päähän, usein suurempana.' },
   { id: 'mind-7', category: 'mind', text: 'Masennuslääkkeiden teho heikkenee alkoholin kanssa. Sama koskee useimpia mielialalääkkeitä.' },
   { id: 'mind-8', category: 'mind', text: 'Arviointikyky heikkenee ennen kuin ihminen huomaa sen itse. Tunne omasta selvyydestä ei ole luotettava mittari.' },
@@ -91,10 +91,10 @@ export const FACTS: Fact[] = [
   { id: 'body-1', category: 'body', figure: 'liver-rate', text: 'Maksa käsittelee alkoholia melko vakionopeudella, noin annoksen tunnissa. Kahvi, suihku tai lenkki eivät nopeuta sitä.' },
   { id: 'body-2', category: 'body', text: 'Rasvamaksa voi kehittyä muutamassa viikossa runsasta käyttöä. Se myös korjaantuu vastaavassa ajassa, jos käyttö loppuu.' },
   { id: 'body-3', category: 'body', text: 'Alkoholi kohottaa verenpainetta. Vaikutus näkyy jo tasoilla, joita moni pitää tavanomaisina.' },
-  { id: 'body-4', category: 'body', text: 'Kansainvälinen syöväntutkimuslaitos IARC luokittelee alkoholin ryhmän 1 karsinogeeniksi — samaan luokkaan kuin tupakan ja asbestin.' },
+  { id: 'body-4', category: 'body', figure: 'iarc-group', text: 'Kansainvälinen syöväntutkimuslaitos IARC luokittelee alkoholin ryhmän 1 karsinogeeniksi — samaan luokkaan kuin tupakan ja asbestin.' },
   { id: 'body-5', category: 'body', text: 'Yhteys on osoitettu ainakin suun, nielun, ruokatorven, maksan, paksusuolen ja rintasyövän riskiin.' },
   { id: 'body-6', category: 'body', text: 'Rintasyövän riski kasvaa jo pienillä määrillä. Kynnysarvoa, jonka alapuolella riskiä ei olisi, ei ole löytynyt.' },
-  { id: 'body-7', category: 'body', text: 'Alkoholi laajentaa ihon verisuonia. Se tuntuu lämmöltä, mutta lisää lämmönhukkaa — kylmässä yhdistelmä on vaarallinen.' },
+  { id: 'body-7', category: 'body', figure: 'heat-loss', text: 'Alkoholi laajentaa ihon verisuonia. Se tuntuu lämmöltä, mutta lisää lämmönhukkaa — kylmässä yhdistelmä on vaarallinen.' },
   { id: 'body-8', category: 'body', text: 'Alkoholi estää vasopressiinin toimintaa, jolloin munuaiset poistavat nestettä enemmän kuin pitäisi.' },
   { id: 'body-9', category: 'body', text: 'Alkoholi ärsyttää mahalaukun limakalvoa ja lisää närästystä ja refluksia.' },
   { id: 'body-10', category: 'body', text: 'Haima on alkoholille erityisen herkkä. Haimatulehdus on kivulias ja voi olla henkeä uhkaava.' },
@@ -116,18 +116,18 @@ export const FACTS: Fact[] = [
   { id: 'tol-2', category: 'tolerance', figure: 'tolerance-shift', text: 'Kun sietokyky on kasvanut, saman vaikutuksen saamiseksi tarvitaan enemmän. Elimistön kuormitus kasvaa samassa tahdissa, vaikka humala tuntuu pienemmältä.' },
   { id: 'tol-3', category: 'tolerance', text: 'Päivittäisen runsaan käytön äkillinen lopettaminen voi aiheuttaa kouristuksia. Vieroitus kuuluu silloin lääkärille.' },
   { id: 'tol-4', category: 'tolerance', text: 'Delirium tremens on hengenvaarallinen vieroitustila. Se ei ole harvinaisuus päivittäin runsaasti juovilla.' },
-  { id: 'tol-5', category: 'tolerance', text: 'Vieroitusoireet alkavat tyypillisesti 6–24 tunnin kuluessa viimeisestä annoksesta.' },
+  { id: 'tol-5', category: 'tolerance', figure: 'withdrawal-clock', text: 'Vieroitusoireet alkavat tyypillisesti 6–24 tunnin kuluessa viimeisestä annoksesta.' },
   { id: 'tol-6', category: 'tolerance', text: 'Jos käsi vapisee aamulla ja juominen helpottaa sitä, kyse on vieroituksesta. Se on syy hakeutua lääkäriin, ei jatkaa omin päin.' },
   { id: 'tol-7', category: 'tolerance', text: 'Aamujuominen ei ole määrän merkki vaan riippuvuuden merkki. Se on yksi selkeimmistä.' },
 
   // Himon mekaniikka --------------------------------------------------------
   { id: 'crav-1', category: 'craving', text: 'Riippuvuus ei ole tahdonvoiman puutetta. Se on oppimista: aivot ovat oppineet, että tietty tilanne johtaa palkintoon.' },
-  { id: 'crav-2', category: 'craving', text: 'Vihje voi laukaista himon ilman että sitä tunnistaa. Kellonaika, paikka, ääni, ihminen, tuoksu.' },
+  { id: 'crav-2', category: 'craving', figure: 'cue-arrow', text: 'Vihje voi laukaista himon ilman että sitä tunnistaa. Kellonaika, paikka, ääni, ihminen, tuoksu.' },
   { id: 'crav-3', category: 'craving', figure: 'urge-wave', text: 'Himo on aalto. Se nousee, käy huipussa ja laskee. Se ei kasva loputtomiin, vaikka huipulla tuntuu siltä.' },
   { id: 'crav-4', category: 'craving', text: 'Kliinisenä nyrkkisääntönä yksittäinen himo laantuu useimmiten noin kahdessakymmenessä minuutissa.' },
   { id: 'crav-5', category: 'craving', text: 'Palkkiojärjestelmä säätyy ajan mittaan: sama määrä tuottaa vähemmän mielihyvää ja enemmän pakkoa.' },
   { id: 'crav-6', category: 'craving', text: 'Retkahdusta edeltää yleensä sarja pieniä päätöksiä, joista yksikään ei tuntunut päätökseltä.' },
-  { id: 'crav-7', category: 'craving', text: 'Yksi lipsahdus ei kumoa mitään. Ajatus "kaikki on nyt pilalla" on tunnetuin yksittäinen syy siihen, että lipsahduksesta tulee pidempi jakso.' },
+  { id: 'crav-7', category: 'craving', figure: 'slip-fork', text: 'Yksi lipsahdus ei kumoa mitään. Ajatus "kaikki on nyt pilalla" on tunnetuin yksittäinen syy siihen, että lipsahduksesta tulee pidempi jakso.' },
   { id: 'crav-8', category: 'craving', text: 'Himon voimakkuus ja sen kesto eivät liity toisiinsa. Kova himo ei kestä pidempään kuin heikko.' },
   { id: 'crav-9', category: 'craving', text: 'Odottaminen ei vaadi päätöstä lopettaa. Se vaatii vain päätöksen odottaa, ja sen voi perua koska tahansa.' },
   { id: 'crav-10', category: 'craving', text: 'Välittömän palkinnon vetovoima laskee jyrkästi, kun sen ja tämän hetken väliin tulee viivettä. Siksi kymmenen minuuttia muuttaa valintaa enemmän kuin sen pituus antaisi olettaa.' },
@@ -160,7 +160,7 @@ export const FACTS: Fact[] = [
   { id: 'meas-4', category: 'measure', text: 'Toleranssi vääristää oman arvion: mitä enemmän juo, sitä vähemmältä oma käyttö tuntuu.' },
   { id: 'meas-5', category: 'measure', text: 'Muistikuva juodusta määrästä on järjestelmällisesti pienempi kuin todellinen määrä. Ero kasvaa illan mittaan.' },
   { id: 'meas-6', category: 'measure', text: 'Kotona kaadettu annos on lähes aina suurempi kuin ravintola-annos.' },
-  { id: 'meas-7', category: 'measure', text: 'Leveä lasi saa saman määrän näyttämään pienemmältä kuin kapea. Kaadettu määrä kasvaa lasin muodon mukaan.' },
+  { id: 'meas-7', category: 'measure', figure: 'glass-shape', text: 'Leveä lasi saa saman määrän näyttämään pienemmältä kuin kapea. Kaadettu määrä kasvaa lasin muodon mukaan.' },
   { id: 'meas-8', category: 'measure', text: 'Alkoholi jakautuu kehon nesteisiin. Sama annos tuottaa pienikokoiselle korkeamman pitoisuuden.' },
   { id: 'meas-9', category: 'measure', text: 'Promillet nousevat nopeammin tyhjään vatsaan. Ruoka hidastaa imeytymistä muttei vähennä kokonaismäärää.' },
   { id: 'meas-10', category: 'measure', text: 'Kuohuva alkoholi imeytyy tavallista nopeammin.' },
@@ -191,7 +191,7 @@ export const FACTS: Fact[] = [
 
   // Lisää: sietokyky ja vieroitus
   { id: 'tol-8', category: 'tolerance', text: 'Sietokyky laskee tauon aikana. Vanha tuttu määrä on paluun jälkeen aiempaa vaarallisempi.' },
-  { id: 'tol-9', category: 'tolerance', text: 'Vieroitusoireet voivat voimistua kerta kerralta. Ilmiötä kutsutaan kindlingiksi, ja se tekee jokaisesta seuraavasta vieroituksesta riskialttiimman.' },
+  { id: 'tol-9', category: 'tolerance', figure: 'kindling', text: 'Vieroitusoireet voivat voimistua kerta kerralta. Ilmiötä kutsutaan kindlingiksi, ja se tekee jokaisesta seuraavasta vieroituksesta riskialttiimman.' },
   { id: 'tol-10', category: 'tolerance', text: 'Levottomuus, hikoilu ja pahoinvointi aamulla ovat vieroitusta, eivät krapulaa, jos ne helpottavat juomalla.' },
 
   // Lisää: himon mekaniikka
@@ -247,7 +247,7 @@ export const FACTS: Fact[] = [
 
   // Millwood ym. 2019, Lancet: China Kadoorie Biobank, geneettinen koeasetelma.
   { id: 'res-20', category: 'research', text: 'Kiinassa seurattiin 512 000 aikuista ja tutkittiin 161 000:lta kaksi geenimuunnosta, jotka määräävät kuinka paljon ihminen sietää alkoholia. Asetelma toimii kuin luonnon tekemä satunnaistettu koe.' },
-  { id: 'res-21', category: 'research', text: 'Itse ilmoitetun kulutuksen mukaan kohtuukäyttäjillä oli matalampi aivohalvausriski. Perimän ennustaman kulutuksen mukaan tuota kuoppaa ei ollut lainkaan.' },
+  { id: 'res-21', category: 'research', figure: 'j-curve-broken', text: 'Itse ilmoitetun kulutuksen mukaan kohtuukäyttäjillä oli matalampi aivohalvausriski. Perimän ennustaman kulutuksen mukaan tuota kuoppaa ei ollut lainkaan.' },
   { id: 'res-22', category: 'research', text: 'Ero näiden kahden välillä on koko J-käyrä-kiistan ydin: kohtuukäyttäjät ovat keskimäärin terveempiä ihmisiä muutenkin, eikä terveys johdu juomisesta.' },
 
   // Zhao ym. 2023, JAMA Network Open: 107 kohorttia, 4,8 miljoonaa ihmistä.
@@ -261,7 +261,7 @@ export const FACTS: Fact[] = [
 
   // Schwarzinger ym. 2018, Lancet Public Health: Ranska 2008-13.
   { id: 'res-28', category: 'research', text: 'Ranskassa käytiin läpi yli miljoonan dementiapotilaan sairaalatiedot vuosilta 2008–2013. Alkoholin käyttöhäiriö osoittautui suurimmaksi ehkäistävissä olevaksi dementian riskitekijäksi.' },
-  { id: 'res-29', category: 'research', text: 'Alle 65-vuotiaana alkaneita dementioita oli aineistossa noin 57 000. Niistä useampi kuin joka toinen liittyi pitkäaikaiseen runsaaseen juomiseen.' },
+  { id: 'res-29', category: 'research', figure: 'dementia-share', text: 'Alle 65-vuotiaana alkaneita dementioita oli aineistossa noin 57 000. Niistä useampi kuin joka toinen liittyi pitkäaikaiseen runsaaseen juomiseen.' },
 
   // Daviet ym. 2022, Nature Communications: UK Biobank, 36 678 aivokuvaa.
   { id: 'res-30', category: 'research', text: 'Britanniassa kuvattiin 36 678 keski-ikäisen ja iäkkään aivot. Kulutuksen nousu yhdestä kahteen yksikköön päivässä vastasi 50-vuotiaalla noin kahta vuotta aivojen ikääntymistä.' },
@@ -269,7 +269,7 @@ export const FACTS: Fact[] = [
   { id: 'res-32', category: 'research', text: 'Sama tutkimus ei löytänyt juuri eroa nollan ja yhden päivittäisen yksikön väliltä. Se on aineiston oma varaus, ja se kuuluu kertoa yhtä lailla.' },
 
   // Million Women Study, Allen ym. 2009, JNCI.
-  { id: 'res-33', category: 'research', text: 'Britannian Million Women Study seurasi 1,28 miljoonaa keski-ikäistä naista. Jokainen säännöllinen päivittäinen annos lisäsi rintasyöpiä noin yhdellätoista tapauksella tuhatta naista kohti 75 ikävuoteen mennessä.' },
+  { id: 'res-33', category: 'research', figure: 'breast-1000', text: 'Britannian Million Women Study seurasi 1,28 miljoonaa keski-ikäistä naista. Jokainen säännöllinen päivittäinen annos lisäsi rintasyöpiä noin yhdellätoista tapauksella tuhatta naista kohti 75 ikävuoteen mennessä.' },
 
   /*
    * Vastapaino.
@@ -285,7 +285,7 @@ export const FACTS: Fact[] = [
   { id: 'rec-17', category: 'recovery', text: 'Yksikin väliin jäänyt kerta on kokonaan pois kertymästä. Vaikutukset eivät odota lopullista päätöstä.' },
   { id: 'rec-18', category: 'recovery', text: 'Vieroituksen jälkeinen levottomuus ja unettomuus ovat ohimeneviä. Ne ovat merkki siitä että vastasäätö purkautuu, ei siitä että jokin olisi pysyvästi rikki.' },
   { id: 'rec-19', category: 'recovery', text: 'Maksa uusiutuu merkittävästi. Se on ihmisen sisäelimistä ainoa joka tekee niin, ja se tekee sen myös vaurioituneena, jos vaurio ei ole edennyt liian pitkälle.' },
-  { id: 'rec-20', category: 'recovery', text: 'Verenpaine, leposyke ja unen laatu ovat niitä joissa muutos näkyy ensimmäisenä — yleensä viikoissa, ei vuosissa.' },
+  { id: 'rec-20', category: 'recovery', figure: 'recovery-weeks', text: 'Verenpaine, leposyke ja unen laatu ovat niitä joissa muutos näkyy ensimmäisenä — yleensä viikoissa, ei vuosissa.' },
   { id: 'rec-21', category: 'recovery', text: 'Rahaa säästyy huomaamatta. Kaksi annosta päivässä on vuodessa neljänumeroinen summa useimmilla hinnoilla.' },
   { id: 'crav-20', category: 'craving', text: 'Tämä hetki on jo alkanut kulua. Himon huippu on lyhyempi kuin sen aikana tuntuu, eikä sitä tarvitse voittaa — vain istua sen ajan.' },
   { id: 'crav-21', category: 'craving', text: 'Odottaminen ei ole kieltäytymistä. Se on vain sen selvittämistä, mitä mieli haluaa kymmenen minuutin päästä.' },

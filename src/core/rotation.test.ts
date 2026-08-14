@@ -219,16 +219,23 @@ describe('illustrated lines', () => {
       'urge-wave', 'bac-curve', 'standard-drink', 'life-expectancy',
       'cancer-share', 'tolerance-shift', 'snowflake', 'bamboo-grow',
       'chess-branch', 'benford', 'four-colour', 'venus-day', 'water-ball',
-      'hummingbird',
+      'hummingbird', 'gaba-scale', 'rebound', 'blackout-gap', 'brain-volume',
+      'heat-loss', 'iarc-group', 'withdrawal-clock', 'kindling', 'cue-arrow',
+      'slip-fork', 'glass-shape', 'j-curve-broken', 'dementia-share',
+      'breast-1000', 'recovery-weeks', 'octopus-gap', 'heart-count',
+      'vessels-earth', 'trench-everest', 'mercator', 'birthday-23',
+      'monty-hall', 'iss-sunrises',
     ]);
     expect(illustrated.filter((f) => !known.has(f.figure!))).toEqual([]);
   });
 
-  it('stays the exception rather than the rule', () => {
-    // Loosened from 5% when more scenes were asked for: pictures are now a
-    // normal part of the reading, but a corpus where most lines carry a drawing
-    // would make the drawing meaningless and the card slow to read.
-    expect(illustrated.length / all.length).toBeLessThan(0.15);
+  it('illustrates about a tenth of the corpus', () => {
+    // The target, set deliberately rather than drifted into: roughly one line in
+    // ten carries a drawing. Both bounds matter — too few and the feature is a
+    // curiosity, too many and the picture stops meaning "look at this one".
+    const share = illustrated.length / all.length;
+    expect(share).toBeGreaterThan(0.08);
+    expect(share).toBeLessThan(0.13);
   });
 
   it('uses each scene at most once, since a repeated drawing reads as an error', () => {

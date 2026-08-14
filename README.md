@@ -122,7 +122,8 @@ koskeva ilmoitus ole sen arvoinen.
 
 #### Kuvat
 
-Kahdellakymmenelläneljällä rivillä on piirros: sykkivät sydämet, kennoston kuusikulmiot,
+Neljälläkymmenelläseitsemällä rivillä on piirros, eli tasan kymmenellä
+prosentilla korpuksesta: sykkivät sydämet, kennoston kuusikulmiot,
 Saturnus kellumassa, valon matka Auringosta, veden laajeneminen jäätyessä,
 taitosten kaksinkertaistuminen, Kuun loittoneminen — ja alkoholipuolella unen
 rakenne, maksan käsittelynopeus ja GBD-tutkimuksen riskiluvut pylväinä.
@@ -130,9 +131,12 @@ rakenne, maksan käsittelynopeus ja GBD-tutkimuksen riskiluvut pylväinä.
 Piirros lisätään vain sinne, missä kuva tekee työn jota lause ei tee: käyrän
 muoto, kaksi kokoa rinnakkain, jokin joka liikkuu. Jo valmiiksi selvän rivin
 kuvittaminen asettaisi koristeen lukijan ja tekstin väliin, ja klo 23 se on
-haitta. Testi vahtii, ettei yhtäkään kohtausta käytetä kahdesti ja että
-kuvitetut pysyvät poikkeuksena — korpus jossa useimmilla riveillä on piirros
-tekisi piirroksesta merkityksettömän.
+haitta.
+
+Testi vahtii osuutta **molemmista suunnista**: yli kahdeksan ja alle kolmentoista
+prosentin. Alaraja siksi, ettei ominaisuus näivety kuriositeetiksi; yläraja
+siksi, että piirros lakkaa merkitsemästä "katso tätä" jos se on joka rivillä.
+Yhtäkään kohtausta ei käytetä kahdesti — toistuva piirros luetaan virheeksi.
 
 Sovelluksen kannalta tärkein niistä on **himon aalto**: nousu, huippu ja lasku,
 piste kulkemassa sitä pitkin. Se on koko premissi yhtenä muotona.

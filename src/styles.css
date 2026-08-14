@@ -798,3 +798,33 @@ select {
     animation: none;
   }
 }
+
+/* Motion for the third batch of scenes. */
+.scene-escape { animation: escape 3.2s ease-out infinite; }
+.scene-escape-1 { animation-delay: 0.5s; }
+.scene-escape-2 { animation-delay: 1s; }
+@keyframes escape {
+  0% { opacity: 0; transform: translateY(6px); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.scene-pulse { transform-origin: center; animation: beat 1.8s ease-in-out infinite; }
+
+.scene-squeeze { animation: squeeze 4s ease-in-out infinite; }
+@keyframes squeeze {
+  0%, 100% { transform: translateX(-16px) scaleX(1); }
+  50% { transform: translateX(6px) scaleX(0.5); }
+}
+
+.scene-orbit { animation: orbit 9s linear infinite; }
+@keyframes orbit { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-escape,
+  .scene-pulse,
+  .scene-squeeze,
+  .scene-orbit {
+    animation: none;
+  }
+}
