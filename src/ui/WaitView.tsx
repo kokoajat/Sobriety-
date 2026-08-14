@@ -15,6 +15,7 @@ import { formatCountdown, isElapsed, progress, remainingMs } from '../core/waiti
 import { demandLabel } from '../core/demands';
 import { rankSupplies } from '../core/stats';
 import { FactPanel } from './FactPanel';
+import { TechniquePanel } from './TechniquePanel';
 import { useNow, type Store } from '../store';
 import type { Episode } from '../core/types';
 
@@ -25,7 +26,12 @@ interface Props {
 
 export function WaitView({ store, episode }: Props) {
   const now = useNow(true);
-  const [reading, setReading] = useState(store.settings.factsOn);
+  // At most one companion is open at a time. The wait screen must stay a screen
+  // you can take in at a glance, not a dashboard with panels stacked on it.
+  const [companion, setCompanion] = useState<'none' | 'reading' | 'technique'>(
+    store.settings.factsOn ? 'reading' : 'none',
+  );
+  const busy = companion !== 'none';
   const remaining = remainingMs(episode, now, store.settings);
   const done = isElapsed(episode, now, store.settings);
   const ratio = progress(episode, now, store.settings);
@@ -45,30 +51,42 @@ export function WaitView({ store, episode }: Props) {
 
       {/* The ring shrinks rather than disappears: the reading is a distraction
           from the wait, not a replacement for it. Time must stay visible. */}
-      <Ring ratio={ratio} label={formatCountdown(remaining)} done={done} small={reading} />
+      <Ring ratio={ratio} label={formatCountdown(remaining)} done={done} small={busy} />
 
-      {reading ? (
+      {companion === 'reading' ? (
         <FactPanel store={store} />
+      ) : companion === 'technique' ? (
+        <TechniquePanel />
       ) : done ? (
         <p className="wait-note">Aika kului. Miten menee?</p>
       ) : (
         <p className="wait-note">Ei tarvitse päättää mitään. Vain odottaa.</p>
       )}
 
-      <button
-        type="button"
-        className="quiet"
-        onClick={() => {
-          const next = !reading;
-          setReading(next);
-          // Remembered, so the choice is made once rather than every time.
-          void store.saveSettings({ ...store.settings, factsOn: next });
-        }}
-      >
-        {reading ? 'Piilota luettava' : 'Anna jotain luettavaa'}
-      </button>
+      <div className="quiet-links">
+        <button
+          type="button"
+          className="quiet"
+          onClick={() => {
+            const next = companion === 'reading' ? 'none' : 'reading';
+            setCompanion(next);
+            // The reading choice is remembered; the technique one is not, since
+            // which technique suits a moment changes with the moment.
+            void store.saveSettings({ ...store.settings, factsOn: next === 'reading' });
+          }}
+        >
+          {companion === 'reading' ? 'Piilota luettava' : 'Luettavaa'}
+        </button>
+        <button
+          type="button"
+          className="quiet"
+          onClick={() => setCompanion(companion === 'technique' ? 'none' : 'technique')}
+        >
+          {companion === 'technique' ? 'Piilota keino' : 'Rauhoittumiskeino'}
+        </button>
+      </div>
 
-      {supply && !reading && (
+      {supply && !busy && (
         <div className="card">
           <p className="card-label">Kirjoitit tähän aiemmin</p>
           <p className="card-body">{supply.label}</p>

@@ -429,3 +429,185 @@ select {
     transition: none;
   }
 }
+
+/* Techniques -------------------------------------------------------------- */
+
+.technique-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.technique-choice {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.technique-name {
+  font-size: 1rem;
+}
+
+.technique-summary,
+.technique-meta {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+.technique-meta {
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.technique {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.technique-heading {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.technique-steps {
+  margin: 0;
+  padding-left: 1.1rem;
+  align-self: stretch;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.technique-steps li + li {
+  margin-top: 0.4rem;
+}
+
+.technique-evidence {
+  margin: 0;
+  align-self: stretch;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+/* Breathing guide --------------------------------------------------------- */
+
+.breath {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.breath-stage {
+  position: relative;
+  width: 11rem;
+  height: 11rem;
+  display: grid;
+  place-items: center;
+}
+
+.breath-target,
+.breath-disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.breath-target {
+  border: 1px dashed var(--line);
+}
+
+.breath-disc {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  /* Matches the 200 ms tick, so motion is continuous rather than stepped. */
+  transition: transform 200ms linear;
+}
+
+.breath-count {
+  position: relative;
+  font-size: 2.25rem;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.breath-phase {
+  margin: 0;
+  font-size: 1.0625rem;
+}
+
+.breath-cycles {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+
+/* Figures ----------------------------------------------------------------- */
+
+.figure {
+  width: 100%;
+  max-width: 11rem;
+  color: var(--ink-soft);
+}
+
+.figure-line path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.figure-line .figure-faint {
+  opacity: 0.4;
+  stroke-dasharray: 3 3;
+}
+
+.figure-dot {
+  fill: var(--accent);
+}
+
+.figure-halo {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  opacity: 0.5;
+  animation: halo 2.4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes halo {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .figure-halo {
+    animation: none;
+    opacity: 0.5;
+  }
+  .breath-disc {
+    transition: none;
+  }
+}

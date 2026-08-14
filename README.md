@@ -72,6 +72,28 @@ nähdyn ensin ja arpoo lopullisen valinnan pakan kärjen sisällä. Kiinteä jä
 muuttuisi tapetiksi jonka silmä ohittaa; puhdas satunnaisuus näyttäisi saman rivin
 kahdesti samalla odotuksella.
 
+### Rauhoittumiskeinot
+
+Odotusnäytöltä avautuu myös yhdeksän ohjattua keinoa. Hengitystekniikat piirtävät
+ympyrän, joka kasvaa sisäänhengityksellä, pysähtyy pidätyksen ajaksi ja kutistuu
+uloshengityksellä; painelukohdat piirtävät kaavakuvan kädestä, ranteesta tai
+kasvoista, merkki oikeassa kohdassa. Loput ovat sanallisia: viisi aistia, jännitä
+ja päästä, kylmä vesi.
+
+**Näyttö merkitään näkyviin jokaiseen keinoon.** Ne eivät ole samanarvoisia, ja
+tasavertaisena valikkona esittäminen väittäisi että ovat. Pidennetylle
+uloshengitykselle on vahva näyttö akuutin vireystilan laskusta; akupainannalle
+näyttö on ohut ja ristiriitainen, ja niin myös lukee. Se ei tee niistä
+hyödyttömiä: hetkessä auttaa luotettavasti se, että käsille annetaan määrätty
+tehtävä ja hengitys hidastuu, ja nimetyn kohdan painelu minuutin ajan tekee
+molemmat. Sanamuoto pitäytyy siinä väitteessä eikä väitä pisteen vapauttavan
+mitään.
+
+Vaihe lasketaan kuluneesta ajasta eikä laskurista. Puhelimen näyttö nukahtaa ja
+välilehti jäädytetään, ja mikä tahansa vaiheita eteenpäin laskeva ajastin ajautuu
+minuutissa eri tahtiin kuin näkyvä ympyrä. Kuluneesta ajasta johdettu ei voi
+ajautua.
+
 ### Se yksi luku joka on hyödyllinen
 
 Kun merkintöjä on tarpeeksi, sovellus kertoo **kauanko himo on sinun omissa
@@ -108,6 +130,8 @@ src/core/          puhdas logiikka, ei riippuvuuksia UI:hin — testattu
   types.ts         domain-malli
   waiting.ts       odotuksen tila: jäljellä, edistymä, jatkaminen, sulkeminen
   facts.ts         70 riviä luettavaa, kategorioittain
+  breathing.ts     hengitysvaihe kuluneesta ajasta, ympyrän koko
+  techniques.ts    9 rauhoittumiskeinoa, kukin näyttöasteineen
   rotation.ts      kierrätys: koko pakka ennen toistoa, ei kiinteää järjestystä
   stats.ts         rehelliset tunnusluvut, NaN alle viiden havainnon
   demands.ts       tarpeiden nimet, omat tarpeet
@@ -120,7 +144,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 65 testiä ydinlogiikalle
+npm test           # 81 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 
