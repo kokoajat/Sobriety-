@@ -308,6 +308,40 @@ Aineisto meni kahteen paikkaan: yhdeksän lähteistettyä riviä `facts.ts`:n
 tuli viisi eteenpäin katsovaa riviä: pelkillä kumoamisilla vastaaminen jättäisi
 himon hetkeen listan asioista jotka eivät toimi.
 
+## Kysymys, johon vastaus jakautuu kahtia
+
+**Mitä odottaa** -sivun kohta *"Viikko ilman, sitten pari päivää — vie se
+lähemmäs?"* on sivun ensimmäinen, jossa yhtä vastausta ei ole. Kysymys on kaksi
+kysymystä, ja niiden sekoittaminen tekisi kohdasta väärän kumpaankin suuntaan:
+
+- **Haittojen vähentämisenä:** vähemmän on vähemmän. Jos vaihtoehto on
+  päivittäinen juominen, harvemmat juomispäivät laskevat kokonaismäärää, ja
+  useimmat elinhaitat seuraavat kokonaismäärää.
+- **Reittinä kokonaan eroon:** näyttö osoittaa toiseen suuntaan.
+
+Eläinpuolella tulos on epämukava: **juuri tällä aikataululla tutkijat saavat
+eläimet juomaan enemmän.** Intermittoivassa saatavuudessa toistuvat juomisen ja
+tauon jaksot johtavat asteittaiseen kulutuksen ja preferenssin kasvuun — selvästi
+korkeampaan kuin jatkuvassa saatavuudessa — ja tauon jälkeen juominen nousee
+ohimenevästi yli lähtötason (alkoholideprivaatioefekti).
+
+Kohta paikantaa heikon kohdan täsmällisesti: **ei viikko ilman, vaan
+uudelleenaloitus**, joka tekee kolme asiaa kerralla — vahvistaa vanhan
+vihjeyhteyden sen sijaan että sammuttaisi sen (ks. *Muisti ei pyyhkiydy*, jonka
+viereen kohta on sijoitettu), laukaisee deprivaatioefektin, ja lisää yhden
+vieroituskierroksen (ks. *kindling* sivun ensimmäisessä kohdassa).
+
+Varaukset samassa laatikossa: kiihtyminen on **jyrsijätulos** eikä vastaavaa
+koetta voi ihmisellä tehdä; myönteisin ihmislöydös on Dry January (vähentynyt
+juominen puoli vuotta myöhemmin) — **mutta osallistujat olivat itse
+ilmoittautuneita eikä väestöotoksessa samoja hyötyjä havaittu**; ja lähin suora
+"vähennä vai lopeta" -vertailu on tupakasta, 49 % vs. 39 % neljän viikon
+raittiudessa riippumatta siitä kumpaa osallistuja itse toivoi.
+
+Ja se kohta, joka on turvallisuusasia eikä tilastoa: jos juominen on ollut
+runsasta ja päivittäistä, viikon tauko on itsessään vieroitus — jolloin sivun
+ensimmäinen kohta koskee jokaista kierrosta.
+
 ## Lihasvoima: sama epäsuhta toisin päin
 
 Liikuntakohdassa akuutti mekanismiväite oli vahvempi kuin kliininen tulos. Täällä
@@ -486,7 +520,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 202 testiä ydinlogiikalle
+npm test           # 209 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 

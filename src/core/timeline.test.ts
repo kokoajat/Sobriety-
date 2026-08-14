@@ -168,3 +168,45 @@ describe('the muscle lines in the reading corpus', () => {
       .toBe(true);
   });
 });
+
+describe('the cycling phase', () => {
+  const cycling = PHASES.find((p) => p.id === 'cycling')!;
+
+  it('exists, and sits next to the mechanism that explains it', () => {
+    // "Muisti ei pyyhkiydy" is why restarting undoes the week off, so the two
+    // are read together.
+    const ids = PHASES.map((p) => p.id);
+    expect(cycling).toBeDefined();
+    expect(ids.indexOf('cycling')).toBe(ids.indexOf('memory') - 1);
+  });
+
+  it('names the uncomfortable finding rather than softening it', () => {
+    expect(cycling.body).toMatch(/juuri tällä aikataululla tutkijat saavat eläimet juomaan enemmän/);
+  });
+
+  it('locates the weak point at the restart, not at the abstinent week', () => {
+    expect(cycling.body).toMatch(/ei siis ole se viikko ilman vaan uudelleenaloitus/);
+  });
+
+  it('splits the question instead of answering it with one verdict', () => {
+    // Harm reduction and quitting are different questions with different
+    // answers, and collapsing them would make the entry wrong either way.
+    expect(cycling.caveat).toMatch(/jakautuu kahtia/);
+    expect(cycling.caveat).toMatch(/vähemmän on vähemmän/);
+  });
+
+  it('labels the escalation evidence as rodent evidence', () => {
+    expect(cycling.caveat).toMatch(/jyrsijätulos/);
+  });
+
+  it('carries the human finding that points the other way, with its failed replication', () => {
+    expect(cycling.caveat).toMatch(/Dry January/);
+    expect(cycling.caveat).toMatch(/väestöotoksessa samoja hyötyjä/);
+  });
+
+  it('flags that a repeated week off is a repeated withdrawal', () => {
+    // The one genuinely dangerous reading of this schedule, pointed back at the
+    // kindling entry rather than restated loosely.
+    expect(cycling.caveat).toMatch(/viikon tauko on itsessään vieroitus/);
+  });
+});

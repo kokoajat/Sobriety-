@@ -119,6 +119,16 @@ export const PHASES: Phase[] = [
       'Tämä ei tee liikunnasta hyödytöntä — se siirtää hyödyn toiseen kohtaan. Anhedoniavaihe yllä on se, mikä ratkaisee ovatko alkuviikot siedettäviä, ja se on juuri se kohta johon liikunnalla on paras osoitettu vaikutus. Reseptori- ja neurogeneesiväitteet sen sijaan nojaavat jyrsijöihin ja hyvin pieniin ihmisaineistoihin: tunnetuin dopamiinireseptorilöydös on 19 ihmisen tutkimus metamfetamiinin käyttäjillä.',
   },
   {
+    id: 'cycling',
+    window: 'Toistuva kaava',
+    heading: 'Viikko ilman, sitten pari päivää — vie se lähemmäs?',
+    body: 'Tämä on tutkittu eläimillä tarkasti, ja vastaus on epämukava: juuri tällä aikataululla tutkijat saavat eläimet juomaan enemmän. Kun alkoholia on tarjolla vain joka toinen päivä, toistuvat juomisen ja tauon jaksot johtavat asteittaiseen kulutuksen ja preferenssin kasvuun — selvästi korkeampaan kuin jos alkoholia olisi jatkuvasti saatavilla. Tauon jälkeen juominen nousee lisäksi ohimenevästi yli lähtötason. Kaavan heikko kohta ei siis ole se viikko ilman vaan uudelleenaloitus, joka tekee kolme asiaa kerralla: vahvistaa vanhan vihjeyhteyden sen sijaan että sammuttaisi sen, laukaisee deprivaatioefektin, ja lisää yhden vieroituskierroksen lisää.',
+    source:
+      'Intermittent access two-bottle choice -malli, käytössä 1970-luvulta; deprivaatioefekti on toistettu useilla rottakannoilla. Ihmispuolelta Dry January -seuranta (de Visser ym. 2016) ja tupakan äkillinen vs. asteittainen lopettaminen (Lindson-Hawley ym. 2016).',
+    caveat:
+      'Kysymys jakautuu kahtia, eikä puolia pidä sekoittaa. Haittojen vähentämisenä vähemmän on vähemmän: jos vaihtoehto on päivittäinen juominen, harvemmat juomispäivät laskevat kokonaismäärää, ja useimmat elinhaitat seuraavat kokonaismäärää. Reittinä kokonaan eroon näyttö osoittaa toiseen suuntaan. Yllä oleva kiihtyminen on jyrsijätulos, eikä vastaavaa koetta voi ihmisellä tehdä. Myönteisin ihmislöydös on Dry January: onnistunut kuukausi liittyi vähentyneeseen juomiseen vielä puoli vuotta myöhemmin — mutta osallistujat olivat itse ilmoittautuneita, eikä väestöotoksessa samoja hyötyjä havaittu. Lähin suora vertailu "vähennä vai lopeta" on tupakasta: 697 osallistujaa, neljän viikon raittius 49 prosenttia äkillisesti lopettaneilla ja 39 prosenttia asteittain vähentäneillä — riippumatta siitä kumpaa osallistuja itse toivoi. Eri aine, mutta paras satunnaistettu vertailu tästä kysymyksestä. Ja jos juominen on ollut runsasta ja päivittäistä, viikon tauko on itsessään vieroitus: sivun ensimmäinen kohta koskee silloin jokaista kierrosta.',
+  },
+  {
     id: 'memory',
     window: 'Vuosia',
     heading: 'Muisti ei pyyhkiydy — sen rinnalle rakennetaan toinen',
