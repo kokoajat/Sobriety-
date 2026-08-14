@@ -179,6 +179,17 @@ merkinnöissäsi kestänyt** ennen kuin se meni ohi. Se muuttaa "kestä loputtom
 luvuksi, jonka olet jo useamman kerran voittanut. Mediaani, ei keskiarvo — yksi
 poikkeuksellisen pitkä kerta ei saa siirtää tyypillistä tapausta.
 
+Mukaan lasketaan **vain ne kerrat, joina himo meni ohi ennen kuin aika loppui.**
+Tämä rajaus on koko luvun oikeellisuus. `close` kattaa `waitedMs`:n tavoitteeseen,
+jottei taskussa unohtunut puhelin kirjaudu kolmen tunnin tahdonvoimana — mutta
+sivuvaikutuksena jokainen kellon soiton *jälkeen* vastattu kerta tallentuu tasan
+tavoitteen mittaisena. Se on normaali kulku: odotat, aika loppuu, vastaat. Kun ne
+laskettiin mukaan, sovellus kertoi "himo on mennyt ohi 10 minuutissa" kenelle
+tahansa, joka vastasi vasta lopuksi — eli raportoi oman asetuksensa takaisin
+löydöksenä käyttäjästä. Loppuun asti kestäneestä odotuksesta tiedetään vain, että
+himo kesti *vähintään* tavoitteen verran. Se on alaraja, ei kesto, joten se
+jätetään pois eikä sekoiteta mukaan.
+
 ## Kolme asiaa, jotka on rakennettu neurotieteestä eikä intuitiosta
 
 Nämä eivät ole tietoiskurivejä vaan mekanismeja. Jokainen on jäljitettävissä
@@ -352,7 +363,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 155 testiä ydinlogiikalle
+npm test           # 161 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 

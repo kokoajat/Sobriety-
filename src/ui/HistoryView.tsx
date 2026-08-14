@@ -25,7 +25,7 @@ export function HistoryView({ store, onBack }: { store: Store; onBack: () => voi
     store.episodes,
   ]);
   const counts = outcomeCounts(closed);
-  const typical = medianTimeToPassMs(closed);
+  const typical = medianTimeToPassMs(closed, store.settings);
   const rows = byDemand(closed);
   const places = bySituation(closed);
 
@@ -87,6 +87,17 @@ export function HistoryView({ store, onBack }: { store: Store; onBack: () => voi
               <p className="card-note">
                 Sinun omissa merkinnöissäsi se on mennyt ohi {formatMinutes(typical)}. Tämä on
                 se luku, jonka olet jo useamman kerran voittanut.
+              </p>
+              {/*
+                Said out loud, because the restriction is what makes the number
+                mean anything: only the times the urge ended while the clock was
+                still running are in it. A wait that ran out tells you the urge
+                lasted at least ten minutes, not how long it lasted.
+              */}
+              <p className="card-note">
+                Mukana ovat vain ne kerrat, joina himo meni ohi ennen kuin aika loppui.
+                Loppuun asti kestäneistä tiedetään vain, että ne kestivät vähintään
+                odotuksen verran — se ei ole kesto vaan alaraja.
               </p>
             </div>
           )}

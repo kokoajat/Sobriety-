@@ -10,6 +10,7 @@ import {
   recordAttempt,
 } from './stats';
 import type { SituationKey } from './situations';
+import { DEFAULT_SETTINGS } from './types';
 import type { Episode, Outcome, Supply } from './types';
 
 const MIN = 60_000;
@@ -77,7 +78,7 @@ describe('outcomeCounts', () => {
 
 describe('medianTimeToPassMs', () => {
   it('is NaN until there is a real sample', () => {
-    expect(medianTimeToPassMs([ep('passed'), ep('passed')])).toBeNaN();
+    expect(medianTimeToPassMs([ep('passed'), ep('passed')], DEFAULT_SETTINGS)).toBeNaN();
   });
 
   it('uses only the urges that passed', () => {
@@ -89,23 +90,35 @@ describe('medianTimeToPassMs', () => {
       ep('passed', 8 * MIN),
       ep('took', 30 * MIN),
     ];
-    expect(medianTimeToPassMs(episodes)).toBe(6 * MIN);
+    expect(medianTimeToPassMs(episodes, DEFAULT_SETTINGS)).toBe(6 * MIN);
   });
 
   it('is not dragged by one very long hold', () => {
+    // The long one is an episode extended six times — target 40 minutes — that
+    // ended at 35. A mean would report nine minutes here; the median reports a
+    // duration that actually happened.
+    const long: Episode = {
+      id: 'long',
+      startedAt: 0,
+      demand: 'settle',
+      waitedMs: 35 * MIN,
+      extensions: 6,
+      outcome: 'passed',
+      endedAt: 1,
+    };
     const episodes = [
       ep('passed', 2 * MIN),
       ep('passed', 3 * MIN),
       ep('passed', 4 * MIN),
       ep('passed', 5 * MIN),
-      ep('passed', 40 * MIN),
+      long,
     ];
-    expect(medianTimeToPassMs(episodes)).toBe(4 * MIN);
+    expect(medianTimeToPassMs(episodes, DEFAULT_SETTINGS)).toBe(4 * MIN);
   });
 
   it('requires at least the minimum sample, whatever that is set to', () => {
     const episodes = [...Array(MIN_SAMPLE - 1)].map(() => ep('passed'));
-    expect(medianTimeToPassMs(episodes)).toBeNaN();
+    expect(medianTimeToPassMs(episodes, DEFAULT_SETTINGS)).toBeNaN();
   });
 });
 
@@ -278,5 +291,59 @@ describe('bySituation', () => {
       ...Array.from({ length: 3 }, (_, i) => at('bed', i + 10)),
     ];
     expect(bySituation(episodes).map((r) => r.situation)).toEqual(['bed', 'out']);
+  });
+});
+
+describe('medianTimeToPassMs and the timer ceiling', () => {
+  // The bug this covers: `close` caps waitedMs at the target, so every episode
+  // answered after the bell stores exactly the target. Counting those made the
+  // app report its own setting back as a finding about the user.
+  const full = DEFAULT_SETTINGS.waitMs;
+  const capped = (extensions = 0): Episode => ({
+    id: Math.random().toString(),
+    startedAt: 0,
+    demand: 'settle',
+    waitedMs: full + extensions * DEFAULT_SETTINGS.extensionMs,
+    extensions,
+    outcome: 'passed',
+    endedAt: 1,
+  });
+
+  it('withholds a figure when every wait ran to the end', () => {
+    const episodes = [...Array(20)].map(() => capped());
+    expect(medianTimeToPassMs(episodes, DEFAULT_SETTINGS)).toBeNaN();
+  });
+
+  it('never simply returns the configured wait length', () => {
+    const episodes = [...Array(20)].map(() => capped());
+    expect(medianTimeToPassMs(episodes, DEFAULT_SETTINGS)).not.toBe(full);
+  });
+
+  it('excludes capped episodes but keeps the early ones', () => {
+    const episodes = [
+      ...[...Array(10)].map(() => capped()),
+      ...[2, 3, 4, 5, 6].map((m) => ep('passed', m * MIN)),
+    ];
+    expect(medianTimeToPassMs(episodes, DEFAULT_SETTINGS)).toBe(4 * MIN);
+  });
+
+  it('accounts for extensions when deciding what counts as capped', () => {
+    // An extended wait has a larger target, so its ceiling is higher too.
+    const extended = [...Array(20)].map(() => capped(2));
+    expect(medianTimeToPassMs(extended, DEFAULT_SETTINGS)).toBeNaN();
+  });
+
+  it('counts a wait that ended one second early', () => {
+    const early = [...Array(MIN_SAMPLE)].map(() => ep('passed', full - 1000));
+    expect(medianTimeToPassMs(early, DEFAULT_SETTINGS)).toBe(full - 1000);
+  });
+
+  it('re-applies the sample floor after the exclusion, not before it', () => {
+    // Twenty episodes, but only four of them informative: still nothing to say.
+    const episodes = [
+      ...[...Array(16)].map(() => capped()),
+      ...[2, 3, 4, 5].map((m) => ep('passed', m * MIN)),
+    ];
+    expect(medianTimeToPassMs(episodes, DEFAULT_SETTINGS)).toBeNaN();
   });
 });

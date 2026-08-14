@@ -15,7 +15,8 @@
  */
 
 import type { SituationKey } from './situations';
-import type { Demand, Episode, Supply } from './types';
+import { targetMs } from './waiting';
+import type { Demand, Episode, Settings, Supply } from './types';
 
 /** Below this, rates are withheld rather than shown. */
 export const MIN_SAMPLE = 5;
@@ -61,10 +62,27 @@ function median(values: number[]): number {
  * The single most useful thing this app can tell someone, and the reason the wait
  * is the core mechanism: it turns "hold on indefinitely" into a number they have
  * already beaten before.
+ *
+ * Only episodes closed *before the timer ran out* count, and that restriction is
+ * the whole correctness of the figure.
+ *
+ * `close` caps `waitedMs` at the target so a phone left in a pocket cannot record
+ * hours of willpower. The side effect is that every episode answered after the
+ * bell — which is the normal flow, and was every case in a four-scenario browser
+ * check — stores exactly the target. Averaging those in produced "himo on mennyt
+ * ohi 10 minuutissa" for anyone who simply answered when the clock ran out: the
+ * app reporting its own setting back as a discovery about the user. Circular, and
+ * confident, which is the combination this module exists to prevent.
+ *
+ * An episode that ran to zero says the urge lasted *at least* the target. That is
+ * a lower bound, not a duration, so it is excluded rather than blended in.
  */
-export function medianTimeToPassMs(episodes: Episode[]): number {
+export function medianTimeToPassMs(episodes: Episode[], settings: Settings): number {
   const waits = episodes
     .filter((e) => e.outcome === 'passed' && e.endedAt !== undefined)
+    // Strict: a capped episode stores exactly the target, so `<` separates the
+    // two cases cleanly without needing a tolerance.
+    .filter((e) => e.waitedMs < targetMs(e, settings))
     .map((e) => e.waitedMs);
   return waits.length < MIN_SAMPLE ? NaN : median(waits);
 }

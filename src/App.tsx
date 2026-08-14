@@ -205,7 +205,7 @@ function HomeView({
   onGo: (mode: Mode) => void;
 }) {
   const closed = store.episodes.filter((e) => e.endedAt !== undefined);
-  const typical = medianTimeToPassMs(closed);
+  const typical = medianTimeToPassMs(closed, store.settings);
 
   return (
     <section className="screen screen-home">
