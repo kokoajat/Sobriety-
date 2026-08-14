@@ -230,4 +230,56 @@ export const FACTS: Fact[] = [
   { id: 'res-13', category: 'research', text: '"Ei turvallista tasoa" tarkoittaa, ettei käyrältä löydy kynnystä. Se ei tarkoita, että yksi annos olisi vaarallinen. Molemmat ovat totta yhtä aikaa.' },
   { id: 'res-14', category: 'research', text: 'Alkoholin luokittelu ryhmän 1 karsinogeeniksi on vuodelta 1988. Karsinogeeneille ei yleensä määritellä turvallista alarajaa, ja siitä "ei turvallista määrää" osittain seuraa.' },
   { id: 'res-15', category: 'research', text: 'Vanhat tutkimukset, joissa kohtuukäyttö näytti suojaavalta, kärsivät usein siitä että raittiiden joukossa oli terveytensä vuoksi lopettaneita. Ilmiöllä on nimi: abstainer bias.' },
+
+  // Wood ym. 2018, Lancet: 83 seurantatutkimusta, 599 912 juovaa henkilöä.
+  { id: 'res-16', category: 'research', text: 'Lancetin vuoden 2018 yhdistelmäanalyysi kokosi 83 seurantatutkimusta ja lähes 600 000 juovaa ihmistä. Kuolleisuus oli matalimmillaan noin sadan grammin viikkokulutuksella tai sen alle.' },
+  { id: 'res-17', category: 'research', text: 'Sata grammaa viikossa on noin kahdeksan annosta. Monen maan viralliset rajat ovat tätä korkeammalla, ja tutkimuksen johtopäätös oli että niitä pitäisi laskea.' },
+  { id: 'res-18', category: 'research', text: 'Samassa aineistossa 40-vuotiaan elinajanodote oli 100–200 gramman viikkokulutuksella noin puoli vuotta lyhyempi, 200–350 grammalla 1–2 vuotta ja yli 350 grammalla 4–5 vuotta.' },
+  { id: 'res-19', category: 'research', text: 'Aivohalvauksen, sydämen vajaatoiminnan ja kuolemaan johtavan verenpainetaudin riski kasvoi kulutuksen mukana suoraviivaisesti. Näissä ei ollut minkäänlaista suojaavaa aluetta.' },
+
+  // Millwood ym. 2019, Lancet: China Kadoorie Biobank, geneettinen koeasetelma.
+  { id: 'res-20', category: 'research', text: 'Kiinassa seurattiin 512 000 aikuista ja tutkittiin 161 000:lta kaksi geenimuunnosta, jotka määräävät kuinka paljon ihminen sietää alkoholia. Asetelma toimii kuin luonnon tekemä satunnaistettu koe.' },
+  { id: 'res-21', category: 'research', text: 'Itse ilmoitetun kulutuksen mukaan kohtuukäyttäjillä oli matalampi aivohalvausriski. Perimän ennustaman kulutuksen mukaan tuota kuoppaa ei ollut lainkaan.' },
+  { id: 'res-22', category: 'research', text: 'Ero näiden kahden välillä on koko J-käyrä-kiistan ydin: kohtuukäyttäjät ovat keskimäärin terveempiä ihmisiä muutenkin, eikä terveys johdu juomisesta.' },
+
+  // Zhao ym. 2023, JAMA Network Open: 107 kohorttia, 4,8 miljoonaa ihmistä.
+  { id: 'res-23', category: 'research', text: 'Vuoden 2023 meta-analyysi kokosi 107 seurantatutkimusta, lähes 4,8 miljoonaa ihmistä ja yli 425 000 kuolemaa.' },
+  { id: 'res-24', category: 'research', text: 'Kun raittiiden vertailuryhmän vinouma korjattiin, vähäisen juomisen näennäinen suojaava vaikutus kuolleisuuteen katosi kokonaan.' },
+  { id: 'res-25', category: 'research', text: 'Vinouma syntyy siitä, että "raittiiden" joukkoon päätyy usein ihmisiä jotka ovat lopettaneet sairauden takia. Silloin juovat näyttävät terveemmiltä ilman että juominen on syy.' },
+
+  // Rumgay ym. 2021, Lancet Oncology.
+  { id: 'res-26', category: 'research', text: 'Vuonna 2020 alkoholin arvioitiin aiheuttaneen maailmassa 741 300 uutta syöpätapausta. Se on 4,1 prosenttia kaikista uusista syövistä.' },
+  { id: 'res-27', category: 'research', text: 'Samassa arviossa runsas käyttö selitti valtaosan tapauksista, mutta enintään kahden annoksen päivävauhti selitti silti yli sata tuhatta tapausta.' },
+
+  // Schwarzinger ym. 2018, Lancet Public Health: Ranska 2008-13.
+  { id: 'res-28', category: 'research', text: 'Ranskassa käytiin läpi yli miljoonan dementiapotilaan sairaalatiedot vuosilta 2008–2013. Alkoholin käyttöhäiriö osoittautui suurimmaksi ehkäistävissä olevaksi dementian riskitekijäksi.' },
+  { id: 'res-29', category: 'research', text: 'Alle 65-vuotiaana alkaneita dementioita oli aineistossa noin 57 000. Niistä useampi kuin joka toinen liittyi pitkäaikaiseen runsaaseen juomiseen.' },
+
+  // Daviet ym. 2022, Nature Communications: UK Biobank, 36 678 aivokuvaa.
+  { id: 'res-30', category: 'research', text: 'Britanniassa kuvattiin 36 678 keski-ikäisen ja iäkkään aivot. Kulutuksen nousu yhdestä kahteen yksikköön päivässä vastasi 50-vuotiaalla noin kahta vuotta aivojen ikääntymistä.' },
+  { id: 'res-31', category: 'research', text: 'Samassa aineistossa nousu kahdesta kolmeen yksikköön vastasi noin kolmea ja puolta vuotta. Vaikutus kiihtyy, ei kerry tasaisesti.' },
+  { id: 'res-32', category: 'research', text: 'Sama tutkimus ei löytänyt juuri eroa nollan ja yhden päivittäisen yksikön väliltä. Se on aineiston oma varaus, ja se kuuluu kertoa yhtä lailla.' },
+
+  // Million Women Study, Allen ym. 2009, JNCI.
+  { id: 'res-33', category: 'research', text: 'Britannian Million Women Study seurasi 1,28 miljoonaa keski-ikäistä naista. Jokainen säännöllinen päivittäinen annos lisäsi rintasyöpiä noin yhdellätoista tapauksella tuhatta naista kohti 75 ikävuoteen mennessä.' },
+
+  /*
+   * Vastapaino.
+   *
+   * Added because the balance test failed when the sourced research lines went
+   * in: thirty-odd findings about harm pushed the forward-looking share below a
+   * quarter of the corpus. The rule was not loosened to make the test pass. A
+   * craving met with nothing but a list of damage produces the state people
+   * drink in, and being right about the damage does not excuse that.
+   */
+  { id: 'rec-15', category: 'recovery', text: 'Riski laskee kun kulutus laskee. Samat käyrät jotka nousevat kulutuksen mukana, laskevat myös alaspäin mentäessä.' },
+  { id: 'rec-16', category: 'recovery', text: 'Mikään näistä luvuista ei ole tuomio jo tapahtuneesta. Ne kuvaavat sitä mitä tapahtuu tästä eteenpäin, ja se osa on yhä auki.' },
+  { id: 'rec-17', category: 'recovery', text: 'Yksikin väliin jäänyt kerta on kokonaan pois kertymästä. Vaikutukset eivät odota lopullista päätöstä.' },
+  { id: 'rec-18', category: 'recovery', text: 'Vieroituksen jälkeinen levottomuus ja unettomuus ovat ohimeneviä. Ne ovat merkki siitä että vastasäätö purkautuu, ei siitä että jokin olisi pysyvästi rikki.' },
+  { id: 'rec-19', category: 'recovery', text: 'Maksa uusiutuu merkittävästi. Se on ihmisen sisäelimistä ainoa joka tekee niin, ja se tekee sen myös vaurioituneena, jos vaurio ei ole edennyt liian pitkälle.' },
+  { id: 'rec-20', category: 'recovery', text: 'Verenpaine, leposyke ja unen laatu ovat niitä joissa muutos näkyy ensimmäisenä — yleensä viikoissa, ei vuosissa.' },
+  { id: 'rec-21', category: 'recovery', text: 'Rahaa säästyy huomaamatta. Kaksi annosta päivässä on vuodessa neljänumeroinen summa useimmilla hinnoilla.' },
+  { id: 'crav-20', category: 'craving', text: 'Tämä hetki on jo alkanut kulua. Himon huippu on lyhyempi kuin sen aikana tuntuu, eikä sitä tarvitse voittaa — vain istua sen ajan.' },
+  { id: 'crav-21', category: 'craving', text: 'Odottaminen ei ole kieltäytymistä. Se on vain sen selvittämistä, mitä mieli haluaa kymmenen minuutin päästä.' },
+  { id: 'crav-22', category: 'craving', text: 'Jokainen kerta jolloin himo menee ohi ilman juomaa, heikentää sitä yhteyttä hieman. Se ei tunnu miltään ensimmäisillä kerroilla, mutta se kertyy.' },
 ];

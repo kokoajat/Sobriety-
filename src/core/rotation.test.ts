@@ -195,4 +195,14 @@ describe('sourced claims', () => {
   it('gives absolute numbers alongside the relative claim', () => {
     expect(research.some((f) => /914|918/.test(f.text))).toBe(true);
   });
+
+  it('draws on more than one study, so no single paper carries the section', () => {
+    // Sample sizes are the cheapest fingerprint of distinct sources.
+    const cohorts = research.filter((f) => /\d{2,3}[  ]?\d{3}|miljoona/.test(f.text));
+    expect(cohorts.length).toBeGreaterThanOrEqual(6);
+  });
+
+  it('carries each study caveat next to its finding', () => {
+    expect(research.some((f) => /aineiston oma varaus/.test(f.text))).toBe(true);
+  });
 });
