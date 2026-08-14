@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { coverage, pickNextFact, recordExposure, type Exposure } from './rotation';
 import { FACTS, type Fact } from './facts';
+import { TRIVIA } from './trivia';
 
 const fact = (id: string): Fact => ({ id, text: id, category: 'body' });
 const corpus = ['a', 'b', 'c', 'd'].map(fact);
@@ -117,5 +118,63 @@ describe('the shipped corpus', () => {
   it('is long enough that a single wait cannot exhaust it', () => {
     // Ten minutes at roughly nine seconds a line is about seventy screens.
     expect(FACTS.length).toBeGreaterThanOrEqual(60);
+  });
+});
+
+describe('randomness across a fresh corpus', () => {
+  // The bug this covers: a fixed-size window off the front of an all-unseen
+  // corpus made every draw come from the same handful of lines, so the stream
+  // felt scripted rather than random.
+  const fresh = Array.from({ length: 60 }, (_, i) => fact(`f${i}`));
+
+  it('can reach the far end of an untouched corpus', () => {
+    const last = pickNextFact(fresh, [], [], () => 0.999)!.id;
+    expect(last).toBe('f59');
+  });
+
+  it('spreads first draws across the whole corpus, not one corner', () => {
+    const drawn = new Set(
+      Array.from({ length: 40 }, (_, i) => pickNextFact(fresh, [], [], () => i / 40)!.id),
+    );
+    // A front-window implementation could only ever produce eight distinct ids.
+    expect(drawn.size).toBeGreaterThan(20);
+  });
+
+  it('still prefers genuinely older lines once timestamps differ', () => {
+    const exposures = fresh.map((f, i) => ({ id: f.id, lastShownAt: i + 1, shows: 1 }));
+    // Only the oldest few are eligible, so the newest can never come up first.
+    const picks = Array.from({ length: 20 }, (_, i) => pickNextFact(fresh, exposures, [], () => i / 20)!.id);
+    expect(picks).not.toContain('f59');
+  });
+});
+
+describe('the trivia corpus', () => {
+  it('has no duplicate ids', () => {
+    expect(new Set(TRIVIA.map((t) => t.id)).size).toBe(TRIVIA.length);
+  });
+
+  it('never collides with an alcohol line id, since both share one exposure store', () => {
+    const alcohol = new Set(FACTS.map((f) => f.id));
+    expect(TRIVIA.filter((t) => alcohol.has(t.id))).toEqual([]);
+  });
+
+  it('is all one category, so it can be filtered in or out cleanly', () => {
+    expect(TRIVIA.every((t) => t.category === 'trivia')).toBe(true);
+  });
+
+  it('is large enough that ordinary use does not cycle it in a day', () => {
+    expect(TRIVIA.length).toBeGreaterThanOrEqual(120);
+  });
+
+  it('deals the combined corpus without repeating across both sources', () => {
+    const pool = [...FACTS, ...TRIVIA];
+    let exposures: Exposure[] = [];
+    const seen: string[] = [];
+    for (let i = 0; i < 80; i += 1) {
+      const next = pickNextFact(pool, exposures, seen, () => 0.5)!;
+      seen.push(next.id);
+      exposures = recordExposure(exposures, next.id, i);
+    }
+    expect(new Set(seen).size).toBe(80);
   });
 });

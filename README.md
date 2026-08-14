@@ -62,15 +62,33 @@ toipumisfaktoja**, koska pelkkä haittalista himon aikana lannistaa — lannistu
 on se tila jossa juodaan. Noin kolmannes riveistä katsoo eteenpäin, ja sitäkin
 vahtii testi.
 
-Rivejä on 70. Määrä on tarkoituksella maltillinen: seitsemänkymmentä joka pitää
-paikkansa on parempi kuin kaksisataa, joissa on keksittyjä lukuja. Lisääminen on
+Alkoholirivejä on 116. Määrä on tarkoituksella maltillinen: sata joka pitää
+paikkansa on parempi kuin kolmesataa, joissa on keksittyjä lukuja. Lisääminen on
 rivin lisäämistä `facts.ts`:n taulukkoon — id:t eivät saa muuttua, koska kierrätys
 muistaa ne.
 
-Kierrätys jakaa koko pakan ennen kuin mikään toistuu, näyttää vähiten hiljattain
-nähdyn ensin ja arpoo lopullisen valinnan pakan kärjen sisällä. Kiinteä järjestys
-muuttuisi tapetiksi jonka silmä ohittaa; puhdas satunnaisuus näyttäisi saman rivin
-kahdesti samalla odotuksella.
+Valintaruudusta saa mukaan myös **turhan tiedon korpuksen**: 151 riviä
+ällistyttävää ja hyödytöntä. Se on oletuksena pois päältä ja omassa
+tiedostossaan, koska sen tehtävä on eri: alkoholirivit kertovat, nämä vain
+viihdyttävät. Himon aikana jälkimmäinen työ on yhtä oikeutettu kuin edellinen —
+kärsimätön mieli jolle ei anneta mitään pureskeltavaa löytää jääkaapin.
+
+Turhat tiedot on kirjoitettu itse eikä poimittu netin trivia-listoilta:
+kopioiminen tarkoittaisi jonkun toisen lisenssiä ja jonkun toisen
+faktantarkistusta, ja puolet netissä kiertävästä triviasta on väärin. Siellä
+missä suosittu väite on myytti, rivi sanoo sen sijaan niin.
+
+Kierrätys jakaa koko pakan ennen kuin mikään toistuu ja näyttää vähiten
+hiljattain nähdyn ensin. **Kaikki yhtä vanhat ovat yhtä todennäköisiä**: tämä oli
+alun perin väärin, koska kiinteän kokoisen ikkunan ottaminen pakan kärjestä
+romahti tuoreella pakalla taulukon järjestykseksi, ja arpa osui ikuisesti samaan
+kourallisen. Kiinteä järjestys muuttuisi tapetiksi jonka silmä ohittaa; puhdas
+satunnaisuus näyttäisi saman rivin kahdesti samalla odotuksella.
+
+Napauttaminen antaa uudelle riville täyden lukuajan. Jaettu ajastin olisi pitänyt
+oman aikataulunsa riippumatta napautuksista, jolloin 8,5 sekunnin kohdalla
+napautettu rivi olisi vaihtunut puolessa sekunnissa — mikä näyttää siltä että
+sovellus ei kuuntele.
 
 ### Rauhoittumiskeinot
 
@@ -129,7 +147,8 @@ laskurin, ei valikkoa.
 src/core/          puhdas logiikka, ei riippuvuuksia UI:hin — testattu
   types.ts         domain-malli
   waiting.ts       odotuksen tila: jäljellä, edistymä, jatkaminen, sulkeminen
-  facts.ts         70 riviä luettavaa, kategorioittain
+  facts.ts         116 riviä alkoholista, kategorioittain
+  trivia.ts        151 riviä turhaa tietoa, valinnainen
   breathing.ts     hengitysvaihe kuluneesta ajasta, ympyrän koko
   techniques.ts    9 rauhoittumiskeinoa, kukin näyttöasteineen
   rotation.ts      kierrätys: koko pakka ennen toistoa, ei kiinteää järjestystä
@@ -144,7 +163,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 81 testiä ydinlogiikalle
+npm test           # 89 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 

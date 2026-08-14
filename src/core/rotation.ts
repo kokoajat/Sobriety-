@@ -19,7 +19,7 @@ export interface Exposure {
   shows: number;
 }
 
-/** How wide the random window at the front of the deck is. */
+/** Smallest pool the random pick is ever made from. */
 const WINDOW = 8;
 
 /**
@@ -48,11 +48,22 @@ export function pickNextFact(
 
   // Everything unseen comes before anything seen once, and so on.
   const minShows = Math.min(...pool.map(showsOf));
-  const tier = pool
-    .filter((f) => showsOf(f) === minShows)
-    .sort((a, b) => lastOf(a) - lastOf(b) || (a.id < b.id ? -1 : 1));
+  const tier = pool.filter((f) => showsOf(f) === minShows).sort((a, b) => lastOf(a) - lastOf(b));
 
-  const window = tier.slice(0, Math.min(WINDOW, tier.length));
+  /*
+   * Everything equally stale is equally eligible.
+   *
+   * Taking a fixed-size window off the front looks random but is not: in a fresh
+   * corpus every line shares the same timestamp, so the order collapses to
+   * whatever the array order happens to be and the draw is forever made from the
+   * same handful. Widening the window to cover every line tied at the oldest
+   * timestamp fixes it — on a new device that is the whole corpus, and later it
+   * is however many are genuinely equal-oldest.
+   */
+  const oldest = lastOf(tier[0]);
+  const equallyStale = tier.filter((f) => lastOf(f) === oldest);
+  const window = equallyStale.length >= WINDOW ? equallyStale : tier.slice(0, WINDOW);
+
   return window[Math.floor(random() * window.length)] ?? window[0];
 }
 

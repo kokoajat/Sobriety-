@@ -33,7 +33,9 @@ export type FactCategory =
   | 'craving'
   | 'social'
   | 'recovery'
-  | 'measure';
+  | 'measure'
+  /** The optional useless-knowledge corpus in `trivia.ts`. */
+  | 'trivia';
 
 export interface Fact {
   /** Stable forever: the rotation stores exposure against it. */
@@ -51,6 +53,7 @@ export const CATEGORY_LABELS: Record<FactCategory, string> = {
   social: 'Toimintakyky',
   recovery: 'Mitä palautuu',
   measure: 'Määrät ja mittarit',
+  trivia: 'Turhaa tietoa',
 };
 
 export const FACTS: Fact[] = [
@@ -146,4 +149,57 @@ export const FACTS: Fact[] = [
   { id: 'meas-4', category: 'measure', text: 'Toleranssi vääristää oman arvion: mitä enemmän juo, sitä vähemmältä oma käyttö tuntuu.' },
   { id: 'meas-5', category: 'measure', text: 'Muistikuva juodusta määrästä on järjestelmällisesti pienempi kuin todellinen määrä. Ero kasvaa illan mittaan.' },
   { id: 'meas-6', category: 'measure', text: 'Kotona kaadettu annos on lähes aina suurempi kuin ravintola-annos.' },
+  { id: 'meas-7', category: 'measure', text: 'Leveä lasi saa saman määrän näyttämään pienemmältä kuin kapea. Kaadettu määrä kasvaa lasin muodon mukaan.' },
+  { id: 'meas-8', category: 'measure', text: 'Alkoholi jakautuu kehon nesteisiin. Sama annos tuottaa pienikokoiselle korkeamman pitoisuuden.' },
+  { id: 'meas-9', category: 'measure', text: 'Promillet nousevat nopeammin tyhjään vatsaan. Ruoka hidastaa imeytymistä muttei vähennä kokonaismäärää.' },
+  { id: 'meas-10', category: 'measure', text: 'Kuohuva alkoholi imeytyy tavallista nopeammin.' },
+
+  // Lisää: uni
+  { id: 'sleep-7', category: 'sleep', text: 'Alkoholi lisää unenaikaista hikoilua ja sydämen sykettä. Keho tekee yötä töitä samalla kun sen pitäisi levätä.' },
+  { id: 'sleep-8', category: 'sleep', text: 'Syke pysyy koholla tuntikausia viimeisen annoksen jälkeen. Palautuminen unen aikana jää vajaaksi.' },
+  { id: 'sleep-9', category: 'sleep', text: 'Unessa nähdyt unet vähenevät alkoholin jälkeen ja palaavat rytäkällä, kun juominen loppuu. Vilkkaat unet ovat merkki REM-unen palautumisesta.' },
+  { id: 'sleep-10', category: 'sleep', text: 'Torkahtaminen sohvalle illalla ei ole rentoutumista vaan sedaatiota. Ne tuntuvat samalta mutta palauttavat eri tavalla.' },
+
+  // Lisää: aivot ja mieli
+  { id: 'mind-10', category: 'mind', text: 'Alkoholi heikentää uuden oppimista vielä seuraavana päivänä, vaikka olo tuntuisi normaalilta.' },
+  { id: 'mind-11', category: 'mind', text: 'Ensimmäisen annoksen piristävä vaikutus tulee nousevasta pitoisuudesta. Laskevalla käyrällä sama aine vaimentaa.' },
+  { id: 'mind-12', category: 'mind', text: 'Siksi toinen annos tuntuu tarpeelliselta: se palauttaa nousevan käyrän hetkeksi. Sama toistuu joka kerta.' },
+  { id: 'mind-13', category: 'mind', text: 'Alkoholi kaventaa kykyä kuvitella tulevaa. Huominen tuntuu kaukaisemmalta kuin se on.' },
+  { id: 'mind-14', category: 'mind', text: 'Unettomuus ja ahdistus ruokkivat toisiaan, ja alkoholi pahentaa molempia pidemmällä aikavälillä vaikka helpottaa kumpaakin hetkeksi.' },
+  { id: 'mind-15', category: 'mind', text: 'Krapula-ahdistus on voimakkaimmillaan noin vuorokauden kuluttua, ei heti aamulla.' },
+
+  // Lisää: keho
+  { id: 'body-23', category: 'body', text: 'Alkoholi häiritsee verensokerin säätelyä. Yöllinen matala verensokeri voi herättää hikisenä ja sydän hakaten.' },
+  { id: 'body-24', category: 'body', text: 'Alkoholi kuivattaa myös silmiä ja limakalvoja, ei vain suuta.' },
+  { id: 'body-25', category: 'body', text: 'Suoliston mikrobisto muuttuu runsaan käytön myötä ja alkaa päästää läpi aineita, joiden ei pitäisi päästä.' },
+  { id: 'body-26', category: 'body', text: 'Alkoholi lisää virtsahapon määrää ja voi laukaista kihtikohtauksen.' },
+  { id: 'body-27', category: 'body', text: 'Luuston uusiutuminen hidastuu runsaassa käytössä. Murtumat paranevat hitaammin.' },
+  { id: 'body-28', category: 'body', text: 'Alkoholi laskee kynnystä kaatua ja samalla kykyä suojata itseään kaatuessa.' },
+  { id: 'body-29', category: 'body', text: 'Punoitus kasvoilla juotaessa voi kertoa siitä, että elimistö käsittelee asetaldehydiä hitaasti. Silloin syöpäriski on tavallista korkeampi.' },
+  { id: 'body-30', category: 'body', text: 'Asetaldehydi on se väliaine, joka aiheuttaa suurimman osan krapulan oireista — ja myös suurimman osan solutason vahingosta.' },
+
+  // Lisää: sietokyky ja vieroitus
+  { id: 'tol-8', category: 'tolerance', text: 'Sietokyky laskee tauon aikana. Vanha tuttu määrä on paluun jälkeen aiempaa vaarallisempi.' },
+  { id: 'tol-9', category: 'tolerance', text: 'Vieroitusoireet voivat voimistua kerta kerralta. Ilmiötä kutsutaan kindlingiksi, ja se tekee jokaisesta seuraavasta vieroituksesta riskialttiimman.' },
+  { id: 'tol-10', category: 'tolerance', text: 'Levottomuus, hikoilu ja pahoinvointi aamulla ovat vieroitusta, eivät krapulaa, jos ne helpottavat juomalla.' },
+
+  // Lisää: himon mekaniikka
+  { id: 'crav-14', category: 'craving', text: 'Himo voimistuu hetkeksi kun sitä vastustaa. Se on aallon nousu, ei merkki siitä että vastustaminen epäonnistuu.' },
+  { id: 'crav-15', category: 'craving', text: 'Ajatus "vain yksi" on riippuvuuden vanhin lause. Se ei ole valhe vaan tarjous, jonka hinta jätetään mainitsematta.' },
+  { id: 'crav-16', category: 'craving', text: 'Nälkä, väsymys ja yksinäisyys laskevat kynnystä enemmän kuin mikään yksittäinen vihje.' },
+  { id: 'crav-17', category: 'craving', text: 'Himon voimakkuus laskee, kun sitä katsoo kuin säätä: se on tässä, se menee ohi, sitä ei tarvitse ratkaista.' },
+  { id: 'crav-18', category: 'craving', text: 'Vihjeiden poistaminen ympäriltä on tehokkaampaa kuin niiden vastustaminen. Vastustaminen kuluttaa, poissaolo ei.' },
+  { id: 'crav-19', category: 'craving', text: 'Toistuvasti vastustettu vihje menettää voimaansa hitaasti. Se ei tunnu miltään ensimmäisillä kerroilla.' },
+
+  // Lisää: toimintakyky
+  { id: 'soc-6', category: 'social', text: 'Alkoholi kaventaa näkökenttää ja hidastaa reaktioaikaa jo tasoilla, joilla ihminen tuntee itsensä selväksi.' },
+  { id: 'soc-7', category: 'social', text: 'Valvominen vaikuttaa suorituskykyyn samankaltaisesti kuin alkoholi. Yhdessä ne ovat enemmän kuin osiensa summa.' },
+  { id: 'soc-8', category: 'social', text: 'Alkoholi ei tee ujosta rohkeaa. Se poistaa hetkeksi kyvyn välittää seurauksista, mikä on eri asia.' },
+
+  // Lisää: mitä palautuu
+  { id: 'rec-10', category: 'recovery', text: 'Leposyke laskee usein muutamassa viikossa.' },
+  { id: 'rec-11', category: 'recovery', text: 'Vatsan ja suoliston oireet rauhoittuvat tavallisesti nopeasti.' },
+  { id: 'rec-12', category: 'recovery', text: 'Uni muuttuu ensin sekavammaksi ja sitten selvästi paremmaksi. Ensimmäisten öiden levottomuus on ohimenevää.' },
+  { id: 'rec-13', category: 'recovery', text: 'Mieliala heilahtelee ensimmäisinä viikkoina. Se tasaantuu, kun palkkiojärjestelmä säätyy takaisin.' },
+  { id: 'rec-14', category: 'recovery', text: 'Kyky tuntea mielihyvää tavallisista asioista palaa vähitellen. Se on hitainta mutta myös merkittävintä.' },
 ];

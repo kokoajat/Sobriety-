@@ -6,53 +6,82 @@
  * wait — which is why the timer never disappears when this opens, it only gets
  * smaller. The reading is the distraction; the waiting is still the mechanism.
  *
- * Lines advance on their own and on tap. Auto-advance because a person mid-urge
- * should not have to do anything to keep it going; on tap because nine seconds is
- * too slow for a fast reader and reading at someone else's pace is its own kind
- * of irritation.
+ * Two corpora: what alcohol does, and useless knowledge. The second is opt-in
+ * and off by default, and it is not a lesser feature — during a craving,
+ * occupying the mind is as legitimate a job as informing it.
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FACTS, CATEGORY_LABELS, type Fact } from '../core/facts';
+import { TRIVIA } from '../core/trivia';
 import { pickNextFact } from '../core/rotation';
 import type { Store } from '../store';
 
 export function FactPanel({ store }: { store: Store }) {
   const [fact, setFact] = useState<Fact | undefined>();
-  // Lines already shown during this wait, so a single wait never repeats itself.
+  // Lines already shown during this wait, so one wait never repeats itself.
   const shown = useRef<string[]>([]);
-  const [key, setKey] = useState(0);
+  // Bumped on every advance: restarts the entrance animation and, crucially,
+  // re-arms the timeout below so a tap gives a full reading interval.
+  const [turn, setTurn] = useState(0);
+
+  const trivia = store.settings.triviaOn;
+  const exposures = useRef(store.exposures);
+  exposures.current = store.exposures;
 
   const advance = useCallback(() => {
-    const next = pickNextFact(FACTS, store.exposures, shown.current);
+    const pool = trivia ? [...FACTS, ...TRIVIA] : FACTS;
+    const next = pickNextFact(pool, exposures.current, shown.current);
     if (!next) return;
     shown.current = [...shown.current, next.id];
     setFact(next);
-    setKey((k) => k + 1);
+    setTurn((t) => t + 1);
     void store.markFactShown(next.id);
-    // `store.exposures` is deliberately not a dependency: re-creating this on
-    // every write would restart the interval below on every single line.
+    // Exposures are read through a ref so this stays stable: rebuilding it on
+    // every write would re-arm the timeout on every line and the interval would
+    // never actually elapse.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [trivia]);
 
   useEffect(() => {
     advance();
   }, [advance]);
 
+  /**
+   * One timeout per line, re-armed after each advance.
+   *
+   * A shared interval would keep its own schedule regardless of taps: tapping at
+   * 8.5 seconds meant the next line arrived half a second later, which reads as
+   * the app ignoring you. Re-arming gives every line the full interval however
+   * it arrived.
+   */
   useEffect(() => {
-    const id = setInterval(advance, Math.max(3, store.settings.factSeconds) * 1000);
-    return () => clearInterval(id);
-  }, [advance, store.settings.factSeconds]);
+    const seconds = Math.max(3, store.settings.factSeconds);
+    const id = setTimeout(advance, seconds * 1000);
+    return () => clearTimeout(id);
+  }, [turn, advance, store.settings.factSeconds]);
 
   if (!fact) return null;
 
   return (
-    <button type="button" className="fact" onClick={advance} aria-live="polite">
-      {/* `key` restarts the entrance animation for each line. */}
-      <span key={key} className="fact-inner">
-        <span className="fact-category">{CATEGORY_LABELS[fact.category]}</span>
-        <span className="fact-text">{fact.text}</span>
-      </span>
-    </button>
+    <div className="fact-block">
+      <button type="button" className="fact" onClick={advance} aria-live="polite">
+        <span key={turn} className="fact-inner">
+          <span className="fact-category">{CATEGORY_LABELS[fact.category]}</span>
+          <span className="fact-text">{fact.text}</span>
+        </span>
+      </button>
+
+      <label className="fact-toggle">
+        <input
+          type="checkbox"
+          checked={trivia}
+          onChange={(e) =>
+            store.saveSettings({ ...store.settings, triviaOn: e.target.checked })
+          }
+        />
+        <span>Sekaan myös turhaa tietoa</span>
+      </label>
+    </div>
   );
 }

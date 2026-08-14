@@ -124,6 +124,14 @@ export interface Settings {
   factsOn: boolean;
   /** Seconds each line stays before the next one fades in. */
   factSeconds: number;
+  /**
+   * Mix the useless-knowledge corpus into the reading.
+   *
+   * Opt-in: someone who opened this to read about alcohol should not have
+   * octopus hearts arrive unasked. Someone who wants distraction rather than
+   * information can have it in one tap.
+   */
+  triviaOn: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -133,4 +141,5 @@ export const DEFAULT_SETTINGS: Settings = {
   // someone who opened the app to hold on for ten minutes.
   factsOn: false,
   factSeconds: 9,
+  triviaOn: false,
 };
