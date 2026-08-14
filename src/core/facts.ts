@@ -34,6 +34,8 @@ export type FactCategory =
   | 'social'
   | 'recovery'
   | 'measure'
+  /** Where a claim comes from, including where it is contested. */
+  | 'research'
   /** The optional useless-knowledge corpus in `trivia.ts`. */
   | 'trivia';
 
@@ -53,6 +55,7 @@ export const CATEGORY_LABELS: Record<FactCategory, string> = {
   social: 'Toimintakyky',
   recovery: 'Mitä palautuu',
   measure: 'Määrät ja mittarit',
+  research: 'Mistä tiedetään',
   trivia: 'Turhaa tietoa',
 };
 
@@ -202,4 +205,29 @@ export const FACTS: Fact[] = [
   { id: 'rec-12', category: 'recovery', text: 'Uni muuttuu ensin sekavammaksi ja sitten selvästi paremmaksi. Ensimmäisten öiden levottomuus on ohimenevää.' },
   { id: 'rec-13', category: 'recovery', text: 'Mieliala heilahtelee ensimmäisinä viikkoina. Se tasaantuu, kun palkkiojärjestelmä säätyy takaisin.' },
   { id: 'rec-14', category: 'recovery', text: 'Kyky tuntea mielihyvää tavallisista asioista palaa vähitellen. Se on hitainta mutta myös merkittävintä.' },
+
+  /*
+   * Mistä tiedetään.
+   *
+   * These name their source, and two of them state the case against the
+   * headline. An app that only quoted the strongest available claim would be
+   * doing to the reader what the tabloids did to this study — and a reader who
+   * later discovers the caveat elsewhere has reason to distrust everything else
+   * here. The whole picture is also simply more interesting than the slogan.
+   */
+  { id: 'res-1', category: 'research', text: 'Väite "mikään määrä ei ole turvallista" tulee Lancetin GBD 2016 -tutkimuksesta vuodelta 2018. Se kokosi 694 kulutusaineistoa ja 592 riskitutkimusta 195 maasta.' },
+  { id: 'res-2', category: 'research', text: 'Sen keskeinen tulos: terveyshaitat minimoiva kulutustaso on nolla. Käyrällä ei ole kynnystä, jonka alapuolella riski lakkaisi kasvamasta.' },
+  { id: 'res-3', category: 'research', text: 'Sama tutkimus arvioi alkoholin osuudeksi 2,8 miljoonaa kuolemaa vuonna 2016. Se oli maailman seitsemänneksi suurin kuolemien riskitekijä.' },
+  { id: 'res-4', category: 'research', text: 'Alkoholiin liittyi 6,8 prosenttia miesten ja 2,2 prosenttia naisten kuolemista maailmanlaajuisesti vuonna 2016.' },
+  { id: 'res-5', category: 'research', text: '15–49-vuotiailla alkoholi oli suurin yksittäinen kuolemanriskin tekijä. Miesten kuolemista siinä ikäryhmässä noin 12 prosenttia liittyi alkoholiin.' },
+  { id: 'res-6', category: 'research', text: 'Suojaava vaikutus löytyi vain sepelvaltimotaudille, ja pienimmillään riski oli noin 0,9 annoksen kohdalla päivässä. Syöpäriskin kasvu kumosi hyödyn kokonaisuudessa.' },
+  { id: 'res-7', category: 'research', text: 'Absoluuttisina lukuina: sadastatuhannesta raittiista noin 914 sairastuu vuodessa johonkin 23:sta alkoholiin liittyvästä ongelmasta. Yhden päivittäisen annoksen juovista 918.' },
+  { id: 'res-8', category: 'research', text: 'Kahdella annoksella päivässä luku on 977 ja viidellä 1252 sadastatuhannesta. Riski ei kasva tasaisesti vaan kiihtyen.' },
+  { id: 'res-9', category: 'research', text: 'Ero raittiin ja yhden päivittäisen annoksen välillä on neljä tapausta sadassatuhannessa vuodessa. Se on todellinen mutta pieni — ja juuri siksi luku kannattaa tietää oikein.' },
+  { id: 'res-10', category: 'research', text: 'Tilastotieteilijä David Spiegelhalter huomautti, ettei alkuperäinen tutkimus julkaissut absoluuttisia riskejä lainkaan, jolloin lukija ei voinut arvioida suuruusluokkaa.' },
+  { id: 'res-11', category: 'research', text: 'Sama kriitikko muistutti: "Ei ole turvallista tasoa ajaa autoa, mutta hallitus ei silti kehota välttämään ajamista."' },
+  { id: 'res-12', category: 'research', text: 'Saman tutkimusryhmän vuoden 2022 päivitys tarkensi tulosta iän mukaan: 15–39-vuotiailla haitat minimoiva taso on käytännössä nolla, yli 40-vuotiailla se voi olla hieman nollan yläpuolella.' },
+  { id: 'res-13', category: 'research', text: '"Ei turvallista tasoa" tarkoittaa, ettei käyrältä löydy kynnystä. Se ei tarkoita, että yksi annos olisi vaarallinen. Molemmat ovat totta yhtä aikaa.' },
+  { id: 'res-14', category: 'research', text: 'Alkoholin luokittelu ryhmän 1 karsinogeeniksi on vuodelta 1988. Karsinogeeneille ei yleensä määritellä turvallista alarajaa, ja siitä "ei turvallista määrää" osittain seuraa.' },
+  { id: 'res-15', category: 'research', text: 'Vanhat tutkimukset, joissa kohtuukäyttö näytti suojaavalta, kärsivät usein siitä että raittiiden joukossa oli terveytensä vuoksi lopettaneita. Ilmiöllä on nimi: abstainer bias.' },
 ];

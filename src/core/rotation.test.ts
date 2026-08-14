@@ -178,3 +178,21 @@ describe('the trivia corpus', () => {
     expect(new Set(seen).size).toBe(80);
   });
 });
+
+describe('sourced claims', () => {
+  const research = FACTS.filter((f) => f.category === 'research');
+
+  it('names where the headline claim comes from', () => {
+    expect(research.some((f) => /GBD 2016/.test(f.text))).toBe(true);
+  });
+
+  it('states the case against the headline, not only the headline', () => {
+    // Quoting only the strongest available claim would be doing to the reader
+    // what the tabloids did to this study.
+    expect(research.some((f) => /Spiegelhalter|ei tarkoita|tarkensi tulosta/.test(f.text))).toBe(true);
+  });
+
+  it('gives absolute numbers alongside the relative claim', () => {
+    expect(research.some((f) => /914|918/.test(f.text))).toBe(true);
+  });
+});

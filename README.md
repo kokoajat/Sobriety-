@@ -62,7 +62,14 @@ toipumisfaktoja**, koska pelkkä haittalista himon aikana lannistaa — lannistu
 on se tila jossa juodaan. Noin kolmannes riveistä katsoo eteenpäin, ja sitäkin
 vahtii testi.
 
-Alkoholirivejä on 116. Määrä on tarkoituksella maltillinen: sata joka pitää
+Alkoholirivejä on 131, ja niistä viisitoista on omassa kategoriassaan **Mistä
+tiedetään**: ne nimeävät lähteen ja kertovat myös sen, missä väite on kiistelty.
+Esimerkiksi "mikään määrä ei ole turvallista" tulee Lancetin GBD 2016
+-tutkimuksesta, ja sen rinnalla kerrotaan absoluuttiset luvut (914 vs. 918
+sadastatuhannesta vuodessa) sekä tutkimusryhmän oma vuoden 2022 tarkennus.
+Pelkän vahvimman väitteen siteeraaminen tekisi lukijalle saman minkä lehdistö
+teki tälle tutkimukselle — ja lukija joka löytää varauksen myöhemmin muualta saa
+syyn epäillä kaikkea muutakin täällä. Määrä on tarkoituksella maltillinen: sata joka pitää
 paikkansa on parempi kuin kolmesataa, joissa on keksittyjä lukuja. Lisääminen on
 rivin lisäämistä `facts.ts`:n taulukkoon — id:t eivät saa muuttua, koska kierrätys
 muistaa ne.
@@ -147,7 +154,7 @@ laskurin, ei valikkoa.
 src/core/          puhdas logiikka, ei riippuvuuksia UI:hin — testattu
   types.ts         domain-malli
   waiting.ts       odotuksen tila: jäljellä, edistymä, jatkaminen, sulkeminen
-  facts.ts         116 riviä alkoholista, kategorioittain
+  facts.ts         131 riviä alkoholista, kategorioittain
   trivia.ts        151 riviä turhaa tietoa, valinnainen
   breathing.ts     hengitysvaihe kuluneesta ajasta, ympyrän koko
   techniques.ts    9 rauhoittumiskeinoa, kukin näyttöasteineen
@@ -163,7 +170,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 89 testiä ydinlogiikalle
+npm test           # 92 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 
