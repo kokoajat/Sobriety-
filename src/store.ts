@@ -29,6 +29,8 @@ const newId = () =>
 
 export interface Store {
   ready: boolean;
+  /** Set when storage could not be read; the UI must say so rather than go blank. */
+  error?: string;
   episodes: Episode[];
   supplies: Supply[];
   demands: CustomDemand[];
@@ -51,26 +53,41 @@ export interface Store {
 
 export function useStore(): Store {
   const [ready, setReady] = useState(false);
+  const [error, setError] = useState<string | undefined>();
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [supplies, setSupplies] = useState<Supply[]>([]);
   const [demands, setDemands] = useState<CustomDemand[]>([]);
   const [exposures, setExposures] = useState<Exposure[]>([]);
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
 
+  /**
+   * Load everything, and stay usable if that fails.
+   *
+   * A rejected read used to leave `ready` false forever, and the not-ready branch
+   * rendered nothing — so a storage fault presented as a blank white screen with
+   * no way out and no clue what happened. Whatever goes wrong down there, the
+   * app now finishes loading and says what it was.
+   */
   const reload = useCallback(async () => {
-    const [e, v, d, x, s] = await Promise.all([
-      db.episodes.all(),
-      db.supplies.all(),
-      db.demands.all(),
-      db.exposures.all(),
-      db.settings.get(),
-    ]);
-    setEpisodes(e.sort((a, b) => a.startedAt - b.startedAt));
-    setSupplies(v);
-    setDemands(d);
-    setExposures(x);
-    setSettings(s);
-    setReady(true);
+    try {
+      const [e, v, d, x, s] = await Promise.all([
+        db.episodes.all(),
+        db.supplies.all(),
+        db.demands.all(),
+        db.exposures.all(),
+        db.settings.get(),
+      ]);
+      setEpisodes(e.sort((a, b) => a.startedAt - b.startedAt));
+      setSupplies(v);
+      setDemands(d);
+      setExposures(x);
+      setSettings(s);
+      setError(undefined);
+    } catch (cause) {
+      setError((cause as Error).message || 'Tallennettuja tietoja ei voitu lukea.');
+    } finally {
+      setReady(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -239,6 +256,7 @@ export function useStore(): Store {
 
   return {
     ready,
+    error,
     episodes,
     supplies,
     demands,

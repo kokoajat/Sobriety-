@@ -14,6 +14,7 @@ import { DemandView } from './ui/DemandView';
 import { AfterView } from './ui/AfterView';
 import { PrepareView } from './ui/PrepareView';
 import { HistoryView } from './ui/HistoryView';
+import { eraseAll } from './storage/db';
 import { medianTimeToPassMs } from './core/stats';
 import { formatMinutes } from './ui/labels';
 import type { Episode } from './core/types';
@@ -49,7 +50,46 @@ export function App() {
   }, [store.current, store.episodes]);
 
   if (!store.ready) {
-    return <main className="app" />;
+    return (
+      <main className="app">
+        <section className="screen screen-home">
+          <p className="home-note">Ladataan…</p>
+        </section>
+      </main>
+    );
+  }
+
+  // Storage failed. Say so plainly and offer the one thing that reliably fixes
+  // it, rather than presenting an empty screen the user cannot interpret.
+  if (store.error) {
+    return (
+      <main className="app">
+        <section className="screen screen-scroll">
+          <h1 className="ask">Tietoja ei voitu lukea</h1>
+          <p className="wait-note">
+            Selaimen tietokantaa ei saatu auki. Sovellus toimii silti, mutta aiempia
+            merkintöjä ei näy ennen kuin tämä ratkeaa.
+          </p>
+          <div className="card">
+            <p className="card-label">Virhe</p>
+            <p className="card-note">{store.error}</p>
+          </div>
+          <button type="button" className="action wide" onClick={() => window.location.reload()}>
+            Yritä uudelleen
+          </button>
+          <button
+            type="button"
+            className="quiet"
+            onClick={async () => {
+              await eraseAll();
+              window.location.reload();
+            }}
+          >
+            Tyhjennä tiedot ja aloita alusta
+          </button>
+        </section>
+      </main>
+    );
   }
 
   // A running wait outranks every other screen: reopening the app mid-urge must

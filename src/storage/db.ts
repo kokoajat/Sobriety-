@@ -19,7 +19,17 @@ import type { CustomDemand, Episode, Settings, Supply } from '../core/types';
 import { DEFAULT_SETTINGS } from '../core/types';
 
 const DB_NAME = 'kymmenen-minuuttia';
-const DB_VERSION = 1;
+
+/**
+ * Bump this whenever a store is added below.
+ *
+ * v2 added `exposures`. Shipping that store without a version bump is exactly
+ * what broke the app for everyone who had already opened it: `onupgradeneeded`
+ * never fired, the store was missing, and the first read threw. `openWithStores`
+ * now recovers from that class of mistake on its own, but the version is still
+ * the correct place to declare the change.
+ */
+const DB_VERSION = 2;
 
 const STORE_EPISODES = 'episodes';
 const STORE_SUPPLIES = 'supplies';
@@ -27,22 +37,45 @@ const STORE_DEMANDS = 'demands';
 const STORE_SETTINGS = 'settings';
 const STORE_EXPOSURES = 'exposures';
 
-function open(): Promise<IDBDatabase> {
+/** Keyed stores, all with `id`. */
+const KEYED_STORES = [STORE_EPISODES, STORE_SUPPLIES, STORE_DEMANDS, STORE_EXPOSURES];
+const ALL_STORES = [...KEYED_STORES, STORE_SETTINGS];
+
+function createMissingStores(db: IDBDatabase): void {
+  for (const name of KEYED_STORES) {
+    if (!db.objectStoreNames.contains(name)) db.createObjectStore(name, { keyPath: 'id' });
+  }
+  if (!db.objectStoreNames.contains(STORE_SETTINGS)) db.createObjectStore(STORE_SETTINGS);
+}
+
+function openAt(version?: number): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
-    request.onupgradeneeded = () => {
-      const db = request.result;
-      for (const name of [STORE_EPISODES, STORE_SUPPLIES, STORE_DEMANDS, STORE_EXPOSURES]) {
-        if (!db.objectStoreNames.contains(name)) {
-          db.createObjectStore(name, { keyPath: 'id' });
-        }
-      }
-      if (!db.objectStoreNames.contains(STORE_SETTINGS)) {
-        db.createObjectStore(STORE_SETTINGS);
-      }
-    };
+    const request = version === undefined ? indexedDB.open(DB_NAME) : indexedDB.open(DB_NAME, version);
+    request.onupgradeneeded = () => createMissingStores(request.result);
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
+    request.onblocked = () => reject(new Error('Tietokanta on avoinna toisessa välilehdessä.'));
+  });
+}
+
+/**
+ * Open the database, repairing it if a store is missing.
+ *
+ * A version bump only creates stores for users whose stored version is lower.
+ * If a release ever ships a new store without bumping — which has happened once
+ * and cost every existing user a blank screen — the stored version already
+ * equals the code's, no upgrade runs, and every read throws forever. So instead
+ * of trusting the number, this checks the actual stores present and forces one
+ * upgrade past whatever version is on disk when something is absent. Self-healing
+ * beats remembering.
+ */
+function open(): Promise<IDBDatabase> {
+  return openAt(DB_VERSION).then((db) => {
+    const missing = ALL_STORES.filter((name) => !db.objectStoreNames.contains(name));
+    if (missing.length === 0) return db;
+    const next = db.version + 1;
+    db.close();
+    return openAt(next);
   });
 }
 
