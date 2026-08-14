@@ -15,6 +15,7 @@
  */
 
 import type { Band } from './screening';
+import type { SituationKey } from './situations';
 
 /** What the drink would do, asked forward — to choose a substitute, not to file a report. */
 export type BuiltinDemand =
@@ -107,6 +108,15 @@ export interface Episode {
   /** How many times the user chose to keep waiting. */
   extensions: number;
   outcome: Outcome;
+  /**
+   * Where this was happening, if the user said.
+   *
+   * Asked *during* the wait rather than before it — see `situations.ts` for why
+   * the where matters at all, and `MovePanel` for why the question is safe to
+   * ask there and would not be safe to ask at the start. Optional forever: an
+   * episode without it is a complete record, not a partial one.
+   */
+  situation?: SituationKey;
   /** Set when the episode closes; absent while it is still running. */
   endedAt?: number;
 }

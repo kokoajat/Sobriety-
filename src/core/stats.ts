@@ -14,6 +14,7 @@
  *    no statement.
  */
 
+import type { SituationKey } from './situations';
 import type { Demand, Episode, Supply } from './types';
 
 /** Below this, rates are withheld rather than shown. */
@@ -94,6 +95,40 @@ export function byDemand(episodes: Episode[]): DemandRow[] {
       passRate: rate(row.passed, row.passed + row.took),
     }))
     .sort((a, b) => b.episodes - a.episodes);
+}
+
+export interface SituationRow {
+  situation: SituationKey;
+  episodes: number;
+}
+
+/**
+ * Which places these moments have happened in, most frequent first.
+ *
+ * The most actionable thing the app can produce in the calm hours, and the only
+ * statistic here that points at something the user can physically change: if
+ * four of five urges happened in one room, that room is the finding.
+ *
+ * Deliberately counts only, no pass rates. A pass rate per situation would need
+ * MIN_SAMPLE inside every cell before it meant anything, which almost nobody
+ * will reach, and a rate the app cannot honestly compute is a rate it should not
+ * imply exists. Counts of places are also not a score: a room cannot be a
+ * personal failure.
+ */
+export function bySituation(episodes: Episode[]): SituationRow[] {
+  const located = episodes.filter((e) => e.situation !== undefined);
+  // Below the sample floor this is anecdote, not pattern — same rule as
+  // everywhere else in this module, applied to the whole table rather than a
+  // single figure, because "your one urge was in the kitchen" says nothing.
+  if (located.length < MIN_SAMPLE) return [];
+
+  const table = new Map<SituationKey, number>();
+  for (const e of located) {
+    table.set(e.situation!, (table.get(e.situation!) ?? 0) + 1);
+  }
+  return [...table.entries()]
+    .map(([situation, episodes]) => ({ situation, episodes }))
+    .sort((a, b) => b.episodes - a.episodes || a.situation.localeCompare(b.situation));
 }
 
 export interface RankedSupply {

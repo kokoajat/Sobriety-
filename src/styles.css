@@ -876,3 +876,104 @@ select {
   border-color: var(--accent);
   background: var(--accent-soft);
 }
+
+/* Moves ------------------------------------------------------------------ */
+
+.move-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.move-question {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.move-heading {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.move-note,
+.move-evidence {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+.move-evidence {
+  border-top: 1px solid var(--line);
+  padding-top: 0.75rem;
+}
+
+.move-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Not buttons. Nothing here is tapped, rated or completed — the move happens in
+   the room, and turning it into a checkbox would make it a task to finish. */
+.move {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.75rem 0.875rem;
+}
+
+.move-text {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.move-why {
+  margin: 0.35rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+}
+
+/* Timeline --------------------------------------------------------------- */
+
+.phase-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.phase-heading {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.phase-caveat {
+  margin: 0.5rem 0 0;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+}
+
+.phase-source {
+  margin: 0.5rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+/* Four links wrap on a narrow phone rather than shrinking the row. */
+.quiet-links {
+  flex-wrap: wrap;
+  justify-content: center;
+}

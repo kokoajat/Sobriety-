@@ -12,6 +12,7 @@ import { close, isOpen } from './core/waiting';
 import { findDemandByLabel, newCustomDemand } from './core/demands';
 import { recordAttempt } from './core/stats';
 import { recordExposure, type Exposure } from './core/rotation';
+import type { SituationKey } from './core/situations';
 import {
   DEFAULT_SETTINGS,
   type CustomDemand,
@@ -40,6 +41,7 @@ export interface Store {
   current?: Episode;
   begin: (demand: Demand, supplyId?: string) => Promise<Episode>;
   extendCurrent: () => Promise<void>;
+  setSituation: (situation: SituationKey) => Promise<void>;
   closeCurrent: (outcome: Outcome) => Promise<void>;
   rateSupply: (supplyId: string, demand: Demand, helped: boolean) => Promise<void>;
   addSupply: (label: string, demand: Demand) => Promise<void>;
@@ -140,6 +142,18 @@ export function useStore(): Store {
     if (!current) return;
     await writeEpisode({ ...current, extensions: current.extensions + 1 });
   }, [current, writeEpisode]);
+
+  /**
+   * Note where this is happening. Re-settable while the wait runs, since the
+   * whole point of the panel is that the user may be about to move.
+   */
+  const setSituation = useCallback(
+    async (situation: SituationKey) => {
+      if (!current) return;
+      await writeEpisode({ ...current, situation });
+    },
+    [current, writeEpisode],
+  );
 
   const closeCurrent = useCallback(
     async (outcome: Outcome) => {
@@ -265,6 +279,7 @@ export function useStore(): Store {
     current,
     begin,
     extendCurrent,
+    setSituation,
     closeCurrent,
     rateSupply,
     addSupply,

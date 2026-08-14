@@ -2,12 +2,14 @@ import { describe, expect, it } from 'vitest';
 import {
   MIN_SAMPLE,
   byDemand,
+  bySituation,
   medianTimeToPassMs,
   outcomeCounts,
   pickSupply,
   rankSupplies,
   recordAttempt,
 } from './stats';
+import type { SituationKey } from './situations';
 import type { Episode, Outcome, Supply } from './types';
 
 const MIN = 60_000;
@@ -223,5 +225,58 @@ describe('recordAttempt', () => {
   it('leaves other supplies untouched', () => {
     const supplies = [supply('a', ['settle']), supply('b', ['settle'])];
     expect(recordAttempt(supplies, 'a', 'settle', true)[1]).toBe(supplies[1]);
+  });
+});
+
+describe('bySituation', () => {
+  const at = (situation?: SituationKey, i = 0): Episode => ({
+    id: `e${i}-${situation ?? 'none'}`,
+    startedAt: i,
+    demand: 'settle',
+    waitedMs: 0,
+    extensions: 0,
+    outcome: 'passed',
+    endedAt: i + 1,
+    situation,
+  });
+
+  it('withholds the whole table below the sample floor', () => {
+    // "Your one urge was in the kitchen" is anecdote wearing a table's clothes.
+    const few = Array.from({ length: MIN_SAMPLE - 1 }, (_, i) => at('home-alone', i));
+    expect(bySituation(few)).toEqual([]);
+  });
+
+  it('counts places once there are enough of them', () => {
+    const many = Array.from({ length: MIN_SAMPLE }, (_, i) => at('home-alone', i));
+    expect(bySituation(many)).toEqual([{ situation: 'home-alone', episodes: MIN_SAMPLE }]);
+  });
+
+  it('puts the most frequent place first, which is the actionable row', () => {
+    const episodes = [
+      ...Array.from({ length: 4 }, (_, i) => at('bed', i)),
+      ...Array.from({ length: 6 }, (_, i) => at('home-alone', i + 10)),
+    ];
+    expect(bySituation(episodes).map((r) => r.situation)).toEqual(['home-alone', 'bed']);
+  });
+
+  it('ignores episodes where the user never said, without dropping the rest', () => {
+    const episodes = [
+      ...Array.from({ length: MIN_SAMPLE }, (_, i) => at('out', i)),
+      ...Array.from({ length: 20 }, (_, i) => at(undefined, i + 100)),
+    ];
+    expect(bySituation(episodes)).toEqual([{ situation: 'out', episodes: MIN_SAMPLE }]);
+  });
+
+  it('does not reach the floor on unlocated episodes alone', () => {
+    const episodes = Array.from({ length: 30 }, (_, i) => at(undefined, i));
+    expect(bySituation(episodes)).toEqual([]);
+  });
+
+  it('is a stable order when two places tie', () => {
+    const episodes = [
+      ...Array.from({ length: 3 }, (_, i) => at('out', i)),
+      ...Array.from({ length: 3 }, (_, i) => at('bed', i + 10)),
+    ];
+    expect(bySituation(episodes).map((r) => r.situation)).toEqual(['bed', 'out']);
   });
 });

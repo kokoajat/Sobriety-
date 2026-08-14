@@ -16,12 +16,21 @@ import { PrepareView } from './ui/PrepareView';
 import { HistoryView } from './ui/HistoryView';
 import { ScreeningView } from './ui/ScreeningView';
 import { SafetyView } from './ui/SafetyView';
+import { TimelineView } from './ui/TimelineView';
 import { eraseAll } from './storage/db';
 import { medianTimeToPassMs } from './core/stats';
 import { formatMinutes } from './ui/labels';
 import type { Episode } from './core/types';
 
-type Mode = 'home' | 'demand' | 'after' | 'prepare' | 'history' | 'safety' | 'screening';
+type Mode =
+  | 'home'
+  | 'demand'
+  | 'after'
+  | 'prepare'
+  | 'history'
+  | 'safety'
+  | 'screening'
+  | 'timeline';
 
 export function App() {
   const store = useStore();
@@ -159,6 +168,14 @@ export function App() {
     );
   }
 
+  if (mode === 'timeline') {
+    return (
+      <main className="app">
+        <TimelineView onBack={() => setMode('home')} />
+      </main>
+    );
+  }
+
   if (mode === 'safety') {
     return (
       <main className="app">
@@ -213,6 +230,9 @@ function HomeView({
         </button>
         <button type="button" className="quiet" onClick={() => onGo('history')}>
           Historia
+        </button>
+        <button type="button" className="quiet" onClick={() => onGo('timeline')}>
+          Mitä odottaa
         </button>
         {/*
           Permanent, and never phrased as an emergency: a link that only appears

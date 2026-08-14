@@ -179,6 +179,89 @@ merkinnöissäsi kestänyt** ennen kuin se meni ohi. Se muuttaa "kestä loputtom
 luvuksi, jonka olet jo useamman kerran voittanut. Mediaani, ei keskiarvo — yksi
 poikkeuksellisen pitkä kerta ei saa siirtää tyypillistä tapausta.
 
+## Kolme asiaa, jotka on rakennettu neurotieteestä eikä intuitiosta
+
+Nämä eivät ole tietoiskurivejä vaan mekanismeja. Jokainen on jäljitettävissä
+yhteen löydökseen, ja jokainen muuttaa sitä mitä sovellus *tekee*, ei vain sitä
+mitä se sanoo.
+
+### 1. Paikan vaihtaminen on ensimmäinen keino, ei viimeinen
+
+Odotuksen aikana on kolme keinoa: **Vaihda paikkaa**, Luettavaa, Rauhoittumiskeino.
+Järjestys rivillä on väite näytöstä, ja siksi ensimmäinen on se, jolla näyttöä on
+eniten.
+
+Robins (1975) seurasi Vietnamista palanneita: noin viidennes oli täyttänyt
+heroiiniriippuvuuden kriteerit palveluksessa, mutta noin 5 % retkahti ensimmäisen
+vuoden aikana kotona ja noin 12 % kolmessa vuodessa. Mikään hoito ei ole päässyt
+lähelle noita lukuja. Ihmiset eivät muuttuneet — ympäristö, jossa vihjeet olivat,
+katosi.
+
+Kaksi mekanismia selittää sen:
+
+- **Bouton:** ekstinktio ei poista alkuperäistä assosiaatiota vaan rakentaa
+  kilpailevan — ja kilpaileva on kontekstisidonnainen, alkuperäinen ei ole. Uusi
+  oppiminen on siis vahvimmillaan uudessa paikassa.
+- **Everitt & Robbins:** toistuva käyttö siirtää ohjauksen dorsolateraaliseen
+  striatumiin, ja käyttäytyminen laukeaa vihjeestä ilman että päätöstä tehdään.
+  "En tiedä miksi kaadoin sen, en edes päättänyt" kuvaa tätä täsmällisesti.
+  Vihjeen poistaminen on helpompaa kuin sen voittaminen väittelyssä.
+
+Jokainen siirto näyttää mekanisminsa (`why`-kenttä). Syy on käytännöllinen: siirto
+jonka ymmärtää, tehdään ensi viikolla ilman sovellusta.
+
+### 2. Kysymys "missä olet" esitetään odotuksen aikana, ei ennen sitä
+
+Tämä on koko muutoksen suunnitteluratkaisu. Painikkeen painamisen jälkeen
+kysytään yksi asia — mitä juoma tekisi — ja toinen kysymys siihen kohtaan olisi
+ollut todellinen kustannus: lomake himon alussa on nopein tapa saada sovellus
+jättämään avaamatta.
+
+Mutta odotus on kymmenen minuuttia tarkoituksella tyhjää aikaa. Napautus siinä ei
+viivytä mitään, ja se antaa heti vastineen: näytettävät siirrot ovat niitä, jotka
+sopivat siihen huoneeseen, jossa käyttäjä oikeasti on. **Kysy myöhään, vastaa
+heti** — se on ainoa syy, jolla kysymykseen on varaa.
+
+Kysymyksen voi ohittaa, jolloin näkyvät yleiset siirrot. Vastaus tallentuu
+episodiin, ja historia näyttää **missä nämä hetket ovat olleet** — ainoa luku
+tässä sovelluksessa, joka osoittaa johonkin, minkä voi fyysisesti muuttaa. Huone
+ei ole henkilökohtainen epäonnistuminen, ja siksi sen näyttäminen on turvallista.
+Osuuksia paikoittain ei lasketa: `MIN_SAMPLE` per solu on määrä, jota lähes kukaan
+ei saavuta, eikä prosenttia jota ei voi laskea rehellisesti pidä vihjata olevan.
+
+### 3. Sängyssä on eri tilanne, ja se hoidetaan unilääketieteellä
+
+`Nukahtaa`-tarve esivalitsee tilanteeksi sängyn — ainoa tarve, joka kartoittuu
+paikkaan luotettavasti. Siellä ohjeet ovat unettomuuden hoidosta (CBT-I) eivätkä
+rauhoittumisvinkkejä, ja ensimmäinen niistä on tarkoituksella epäintuitiivinen:
+**nouse sängystä.** Sänky menettää tehonsa, jos siinä valvotaan.
+
+Syy, miksi uni ansaitsee oman polkunsa: Browerin työn mukaan alkuvaiheen
+unettomuus **ennustaa retkahdusta itsenäisesti** muista tekijöistä. Se on
+mitattava, hoidettava ja se osuu juuri siihen perusteluun, jolla paluu useimmin
+selitetään — "en saa muuten unta".
+
+### Ja yksi sivu: "Mitä odottaa"
+
+Etusivulta löytyvä aikataulu siitä, mitä tutkimuksissa on havaittu: vieroituksen
+aikaikkuna ja kindling, REM-rebound, harmaan aineen palautuminen (Durazzo ym.
+2015), anhedoniavaihe (Koob, Volkow ym. 2007), unettomuus, ja se rivi jota
+sovellukset eivät kerro:
+
+> **Vihjeen laukaisema himo voi olla voimakkaimmillaan noin kahden kuukauden
+> kohdalla.** Osastopotilailla mitattuna korkein päivänä 60, ei päivänä 7.
+> Taustalla jyskyttävä himo laskee ajan myötä, äkillinen vihjeestä lähtevä ei
+> välttämättä. Ne ovat eri ilmiöitä.
+
+Tämä on syy siihen, ettei sovellus lupaa, että joka päivä on edellistä helpompi.
+Se lupaus pettäisi juuri sinä päivänä, jona sitä eniten tarvitaan — ja sovelluksella,
+joka on luvannut tasaista paranemista, ei ole silloin mitään sanottavaa.
+
+Jokainen sivun kohta kantaa lähteensä **ja varauksensa samassa laatikossa**.
+Löydös ilman rajaansa on se, miten tutkimuksesta tulee iskulause. Mitään ei
+personoida: ei "olet nyt tässä" -merkkiä eikä päivälaskuria, jotka tekisivät
+fysiologian kuvauksesta edistymispalkin, josta voi jäädä jälkeen.
+
 ## Turvaseula, kerran
 
 Ensimmäisellä avauksella sovellus kysyy viisi kysymystä. Se on ainoa kohta, jossa
@@ -258,6 +341,8 @@ src/ui/factFigures.tsx  10 inline-SVG-kohtausta, osa animoituja
   stats.ts         rehelliset tunnusluvut, NaN alle viiden havainnon
   demands.ts       tarpeiden nimet, omat tarpeet
   screening.ts     AUDIT-C + kaksi riippuvuuskysymystä, kerran, ei seurantaa
+  situations.ts    kuusi tilannetta ja niiden siirrot, mekanismi mukana
+  timeline.ts      "Mitä odottaa": vaiheet, lähteet ja varaukset
 src/storage/db.ts  IndexedDB, vienti/tuonti/poisto
 src/ui/            näkymät: yksi ruutu kerrallaan, ei välilehtipalkkia
 app.html           Vite-sisääntulo (ei index.html — ks. Julkaisu)
@@ -267,7 +352,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 117 testiä ydinlogiikalle
+npm test           # 155 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 

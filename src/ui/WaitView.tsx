@@ -16,6 +16,7 @@ import { demandLabel } from '../core/demands';
 import { rankSupplies } from '../core/stats';
 import { FactPanel } from './FactPanel';
 import { TechniquePanel } from './TechniquePanel';
+import { MovePanel } from './MovePanel';
 import { useWakeLock } from './useWakeLock';
 import { useNow, type Store } from '../store';
 import type { Episode } from '../core/types';
@@ -32,7 +33,7 @@ export function WaitView({ store, episode }: Props) {
   useWakeLock(true);
   // At most one companion is open at a time. The wait screen must stay a screen
   // you can take in at a glance, not a dashboard with panels stacked on it.
-  const [companion, setCompanion] = useState<'none' | 'reading' | 'technique'>(
+  const [companion, setCompanion] = useState<'none' | 'reading' | 'technique' | 'move'>(
     store.settings.factsOn ? 'reading' : 'none',
   );
   const busy = companion !== 'none';
@@ -61,6 +62,8 @@ export function WaitView({ store, episode }: Props) {
         <FactPanel store={store} />
       ) : companion === 'technique' ? (
         <TechniquePanel />
+      ) : companion === 'move' ? (
+        <MovePanel store={store} episode={episode} />
       ) : done ? (
         <p className="wait-note">Aika kului. Miten menee?</p>
       ) : (
@@ -68,6 +71,18 @@ export function WaitView({ store, episode }: Props) {
       )}
 
       <div className="quiet-links">
+        {/*
+          First of the three, deliberately. Order on this row is a claim about
+          which one is worth trying, and changing the context has better support
+          than anything else the app can offer during a wait.
+        */}
+        <button
+          type="button"
+          className="quiet"
+          onClick={() => setCompanion(companion === 'move' ? 'none' : 'move')}
+        >
+          {companion === 'move' ? 'Piilota siirrot' : 'Vaihda paikkaa'}
+        </button>
         <button
           type="button"
           className="quiet"

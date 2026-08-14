@@ -10,7 +10,8 @@
  */
 
 import { useMemo, useState } from 'react';
-import { byDemand, medianTimeToPassMs, outcomeCounts, MIN_SAMPLE } from '../core/stats';
+import { byDemand, bySituation, medianTimeToPassMs, outcomeCounts, MIN_SAMPLE } from '../core/stats';
+import { situationLabel } from '../core/situations';
 import { demandLabel } from '../core/demands';
 import { eraseAll, exportAll, importAll, type ExportBundle } from '../storage/db';
 import { OUTCOME_LABELS, formatDurationShort, formatMinutes, formatPercent, formatWhen } from './labels';
@@ -26,6 +27,7 @@ export function HistoryView({ store, onBack }: { store: Store; onBack: () => voi
   const counts = outcomeCounts(closed);
   const typical = medianTimeToPassMs(closed);
   const rows = byDemand(closed);
+  const places = bySituation(closed);
 
   const doExport = async () => {
     const bundle = await exportAll();
@@ -103,6 +105,30 @@ export function HistoryView({ store, onBack }: { store: Store; onBack: () => voi
                   </li>
                 ))}
               </ul>
+            </div>
+          )}
+
+          {places.length > 0 && (
+            <div className="card">
+              <p className="card-label">Missä nämä hetket ovat olleet</p>
+              <ul className="stock">
+                {places.map((row) => (
+                  <li key={row.situation}>
+                    <span>{situationLabel(row.situation)}</span>
+                    <span className="card-note">{row.episodes} ×</span>
+                  </li>
+                ))}
+              </ul>
+              {/*
+                The only figure in this app that points at something the user can
+                physically change. A room is not a personal failing, which is why
+                this one is safe to show plainly — and why it is worth showing.
+              */}
+              <p className="card-note">
+                Jos yksi paikka toistuu, se on tämän listan tärkein rivi. Himo on
+                opittu paikkaan, ja paikan muuttaminen on helpompaa kuin sen
+                voittaminen samassa paikassa.
+              </p>
             </div>
           )}
 
