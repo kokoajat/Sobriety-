@@ -216,12 +216,19 @@ describe('illustrated lines', () => {
     const known = new Set([
       'risk-curve', 'sleep-arch', 'liver-rate', 'octopus-hearts', 'hexagons',
       'saturn-float', 'light-travel', 'ice-expand', 'fold-double', 'moon-drift',
+      'urge-wave', 'bac-curve', 'standard-drink', 'life-expectancy',
+      'cancer-share', 'tolerance-shift', 'snowflake', 'bamboo-grow',
+      'chess-branch', 'benford', 'four-colour', 'venus-day', 'water-ball',
+      'hummingbird',
     ]);
     expect(illustrated.filter((f) => !known.has(f.figure!))).toEqual([]);
   });
 
-  it('stays rare, so a picture still means something', () => {
-    expect(illustrated.length / all.length).toBeLessThan(0.05);
+  it('stays the exception rather than the rule', () => {
+    // Loosened from 5% when more scenes were asked for: pictures are now a
+    // normal part of the reading, but a corpus where most lines carry a drawing
+    // would make the drawing meaningless and the card slow to read.
+    expect(illustrated.length / all.length).toBeLessThan(0.15);
   });
 
   it('uses each scene at most once, since a repeated drawing reads as an error', () => {

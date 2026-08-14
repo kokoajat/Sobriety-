@@ -16,6 +16,7 @@ import { demandLabel } from '../core/demands';
 import { rankSupplies } from '../core/stats';
 import { FactPanel } from './FactPanel';
 import { TechniquePanel } from './TechniquePanel';
+import { useWakeLock } from './useWakeLock';
 import { useNow, type Store } from '../store';
 import type { Episode } from '../core/types';
 
@@ -26,6 +27,9 @@ interface Props {
 
 export function WaitView({ store, episode }: Props) {
   const now = useNow(true);
+  // Held for the whole wait: a screen that sleeps at 30 seconds leaves the
+  // person alone with the craving and makes returning a deliberate act.
+  useWakeLock(true);
   // At most one companion is open at a time. The wait screen must stay a screen
   // you can take in at a glance, not a dashboard with panels stacked on it.
   const [companion, setCompanion] = useState<'none' | 'reading' | 'technique'>(

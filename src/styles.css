@@ -764,3 +764,37 @@ select {
     animation: none;
   }
 }
+
+/* Additional scene motion. All slow, all small, all opt-out. */
+.scene-spin { animation: spin 26s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.scene-sprout { animation: sprout 6s ease-in-out infinite; }
+@keyframes sprout {
+  0%, 100% { transform: scaleY(0.55); }
+  55%, 75% { transform: scaleY(1); }
+}
+
+.scene-ride { animation: ride 7s ease-in-out infinite; }
+@keyframes ride {
+  0% { transform: translate(0, 0); }
+  30% { transform: translate(66px, -56px); }
+  50% { transform: translate(78px, -62px); }
+  80% { transform: translate(144px, 0); }
+  100% { transform: translate(176px, -4px); }
+}
+
+.scene-hover { animation: hover 2.2s ease-in-out infinite; }
+@keyframes hover {
+  0%, 100% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-spin,
+  .scene-sprout,
+  .scene-ride,
+  .scene-hover {
+    animation: none;
+  }
+}

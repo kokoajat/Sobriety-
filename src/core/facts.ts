@@ -113,7 +113,7 @@ export const FACTS: Fact[] = [
 
   // Sietokyky ja vieroitus --------------------------------------------------
   { id: 'tol-1', category: 'tolerance', text: 'Sietokyvyn kasvu ei kerro paremmasta kestävyydestä. Se kertoo, että aivot ovat säätäneet itsensä uudelleen.' },
-  { id: 'tol-2', category: 'tolerance', text: 'Kun sietokyky on kasvanut, saman vaikutuksen saamiseksi tarvitaan enemmän. Elimistön kuormitus kasvaa samassa tahdissa, vaikka humala tuntuu pienemmältä.' },
+  { id: 'tol-2', category: 'tolerance', figure: 'tolerance-shift', text: 'Kun sietokyky on kasvanut, saman vaikutuksen saamiseksi tarvitaan enemmän. Elimistön kuormitus kasvaa samassa tahdissa, vaikka humala tuntuu pienemmältä.' },
   { id: 'tol-3', category: 'tolerance', text: 'Päivittäisen runsaan käytön äkillinen lopettaminen voi aiheuttaa kouristuksia. Vieroitus kuuluu silloin lääkärille.' },
   { id: 'tol-4', category: 'tolerance', text: 'Delirium tremens on hengenvaarallinen vieroitustila. Se ei ole harvinaisuus päivittäin runsaasti juovilla.' },
   { id: 'tol-5', category: 'tolerance', text: 'Vieroitusoireet alkavat tyypillisesti 6–24 tunnin kuluessa viimeisestä annoksesta.' },
@@ -123,7 +123,7 @@ export const FACTS: Fact[] = [
   // Himon mekaniikka --------------------------------------------------------
   { id: 'crav-1', category: 'craving', text: 'Riippuvuus ei ole tahdonvoiman puutetta. Se on oppimista: aivot ovat oppineet, että tietty tilanne johtaa palkintoon.' },
   { id: 'crav-2', category: 'craving', text: 'Vihje voi laukaista himon ilman että sitä tunnistaa. Kellonaika, paikka, ääni, ihminen, tuoksu.' },
-  { id: 'crav-3', category: 'craving', text: 'Himo on aalto. Se nousee, käy huipussa ja laskee. Se ei kasva loputtomiin, vaikka huipulla tuntuu siltä.' },
+  { id: 'crav-3', category: 'craving', figure: 'urge-wave', text: 'Himo on aalto. Se nousee, käy huipussa ja laskee. Se ei kasva loputtomiin, vaikka huipulla tuntuu siltä.' },
   { id: 'crav-4', category: 'craving', text: 'Kliinisenä nyrkkisääntönä yksittäinen himo laantuu useimmiten noin kahdessakymmenessä minuutissa.' },
   { id: 'crav-5', category: 'craving', text: 'Palkkiojärjestelmä säätyy ajan mittaan: sama määrä tuottaa vähemmän mielihyvää ja enemmän pakkoa.' },
   { id: 'crav-6', category: 'craving', text: 'Retkahdusta edeltää yleensä sarja pieniä päätöksiä, joista yksikään ei tuntunut päätökseltä.' },
@@ -154,7 +154,7 @@ export const FACTS: Fact[] = [
   { id: 'rec-9', category: 'recovery', text: 'Yksikin väliin jäänyt kerta on todellinen. Vaikutukset eivät edellytä lopullista päätöstä.' },
 
   // Määrät ja mittarit ------------------------------------------------------
-  { id: 'meas-1', category: 'measure', text: 'Yksi annos on 12 grammaa puhdasta alkoholia: pullo keskiolutta, 12 senttiä viiniä tai 4 senttiä viinaa.' },
+  { id: 'meas-1', category: 'measure', figure: 'standard-drink', text: 'Yksi annos on 12 grammaa puhdasta alkoholia: pullo keskiolutta, 12 senttiä viiniä tai 4 senttiä viinaa.' },
   { id: 'meas-2', category: 'measure', text: 'Suomessa riskikäytön rajana on pidetty miehillä 14 ja naisilla 7 annosta viikossa. Se ei ole turvaraja vaan piste, jonka jälkeen haitat kasvavat selvästi.' },
   { id: 'meas-3', category: 'measure', text: '"Kohtuukäyttö" ei ole lääketieteellinen käsite. Se on tapa verrata itseään muihin.' },
   { id: 'meas-4', category: 'measure', text: 'Toleranssi vääristää oman arvion: mitä enemmän juo, sitä vähemmältä oma käyttö tuntuu.' },
@@ -173,7 +173,7 @@ export const FACTS: Fact[] = [
 
   // Lisää: aivot ja mieli
   { id: 'mind-10', category: 'mind', text: 'Alkoholi heikentää uuden oppimista vielä seuraavana päivänä, vaikka olo tuntuisi normaalilta.' },
-  { id: 'mind-11', category: 'mind', text: 'Ensimmäisen annoksen piristävä vaikutus tulee nousevasta pitoisuudesta. Laskevalla käyrällä sama aine vaimentaa.' },
+  { id: 'mind-11', category: 'mind', figure: 'bac-curve', text: 'Ensimmäisen annoksen piristävä vaikutus tulee nousevasta pitoisuudesta. Laskevalla käyrällä sama aine vaimentaa.' },
   { id: 'mind-12', category: 'mind', text: 'Siksi toinen annos tuntuu tarpeelliselta: se palauttaa nousevan käyrän hetkeksi. Sama toistuu joka kerta.' },
   { id: 'mind-13', category: 'mind', text: 'Alkoholi kaventaa kykyä kuvitella tulevaa. Huominen tuntuu kaukaisemmalta kuin se on.' },
   { id: 'mind-14', category: 'mind', text: 'Unettomuus ja ahdistus ruokkivat toisiaan, ja alkoholi pahentaa molempia pidemmällä aikavälillä vaikka helpottaa kumpaakin hetkeksi.' },
@@ -242,7 +242,7 @@ export const FACTS: Fact[] = [
   // Wood ym. 2018, Lancet: 83 seurantatutkimusta, 599 912 juovaa henkilöä.
   { id: 'res-16', category: 'research', text: 'Lancetin vuoden 2018 yhdistelmäanalyysi kokosi 83 seurantatutkimusta ja lähes 600 000 juovaa ihmistä. Kuolleisuus oli matalimmillaan noin sadan grammin viikkokulutuksella tai sen alle.' },
   { id: 'res-17', category: 'research', text: 'Sata grammaa viikossa on noin kahdeksan annosta. Monen maan viralliset rajat ovat tätä korkeammalla, ja tutkimuksen johtopäätös oli että niitä pitäisi laskea.' },
-  { id: 'res-18', category: 'research', text: 'Samassa aineistossa 40-vuotiaan elinajanodote oli 100–200 gramman viikkokulutuksella noin puoli vuotta lyhyempi, 200–350 grammalla 1–2 vuotta ja yli 350 grammalla 4–5 vuotta.' },
+  { id: 'res-18', category: 'research', figure: 'life-expectancy', text: 'Samassa aineistossa 40-vuotiaan elinajanodote oli 100–200 gramman viikkokulutuksella noin puoli vuotta lyhyempi, 200–350 grammalla 1–2 vuotta ja yli 350 grammalla 4–5 vuotta.' },
   { id: 'res-19', category: 'research', text: 'Aivohalvauksen, sydämen vajaatoiminnan ja kuolemaan johtavan verenpainetaudin riski kasvoi kulutuksen mukana suoraviivaisesti. Näissä ei ollut minkäänlaista suojaavaa aluetta.' },
 
   // Millwood ym. 2019, Lancet: China Kadoorie Biobank, geneettinen koeasetelma.
@@ -256,7 +256,7 @@ export const FACTS: Fact[] = [
   { id: 'res-25', category: 'research', text: 'Vinouma syntyy siitä, että "raittiiden" joukkoon päätyy usein ihmisiä jotka ovat lopettaneet sairauden takia. Silloin juovat näyttävät terveemmiltä ilman että juominen on syy.' },
 
   // Rumgay ym. 2021, Lancet Oncology.
-  { id: 'res-26', category: 'research', text: 'Vuonna 2020 alkoholin arvioitiin aiheuttaneen maailmassa 741 300 uutta syöpätapausta. Se on 4,1 prosenttia kaikista uusista syövistä.' },
+  { id: 'res-26', category: 'research', figure: 'cancer-share', text: 'Vuonna 2020 alkoholin arvioitiin aiheuttaneen maailmassa 741 300 uutta syöpätapausta. Se on 4,1 prosenttia kaikista uusista syövistä.' },
   { id: 'res-27', category: 'research', text: 'Samassa arviossa runsas käyttö selitti valtaosan tapauksista, mutta enintään kahden annoksen päivävauhti selitti silti yli sata tuhatta tapausta.' },
 
   // Schwarzinger ym. 2018, Lancet Public Health: Ranska 2008-13.

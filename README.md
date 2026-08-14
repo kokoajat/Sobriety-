@@ -108,9 +108,21 @@ oman aikataulunsa riippumatta napautuksista, jolloin 8,5 sekunnin kohdalla
 napautettu rivi olisi vaihtunut puolessa sekunnissa — mikä näyttää siltä että
 sovellus ei kuuntele.
 
+#### Näyttö pysyy auki
+
+Odotuksen ajaksi otetaan Wake Lock. Puhelin joka sammuu 30 sekunnin kohdalla on
+todennäköisin tapa jolla tämä sovellus jää kesken: ruutu pimenee, hetki jää
+yksin himon kanssa, ja palaaminen vaatii tietoisen teon juuri silloin kun
+tietoiset teot ovat vähissä.
+
+Lukko otetaan uudelleen aina kun sovellus palaa etualalle — selain pudottaa sen
+piiloon mennessä eikä palauta itse — ja vapautetaan kun odotus päättyy. Jos
+selain ei tue rajapintaa, virhe niellään: odotus toimii silti, eikä kirkkautta
+koskeva ilmoitus ole sen arvoinen.
+
 #### Kuvat
 
-Kymmenellä rivillä on piirros: sykkivät sydämet, kennoston kuusikulmiot,
+Kahdellakymmenelläneljällä rivillä on piirros: sykkivät sydämet, kennoston kuusikulmiot,
 Saturnus kellumassa, valon matka Auringosta, veden laajeneminen jäätyessä,
 taitosten kaksinkertaistuminen, Kuun loittoneminen — ja alkoholipuolella unen
 rakenne, maksan käsittelynopeus ja GBD-tutkimuksen riskiluvut pylväinä.
@@ -118,8 +130,12 @@ rakenne, maksan käsittelynopeus ja GBD-tutkimuksen riskiluvut pylväinä.
 Piirros lisätään vain sinne, missä kuva tekee työn jota lause ei tee: käyrän
 muoto, kaksi kokoa rinnakkain, jokin joka liikkuu. Jo valmiiksi selvän rivin
 kuvittaminen asettaisi koristeen lukijan ja tekstin väliin, ja klo 23 se on
-haitta. Testi vahtii että kuvitettuja on alle viisi prosenttia riveistä ja
-ettei yhtäkään kohtausta käytetä kahdesti.
+haitta. Testi vahtii, ettei yhtäkään kohtausta käytetä kahdesti ja että
+kuvitetut pysyvät poikkeuksena — korpus jossa useimmilla riveillä on piirros
+tekisi piirroksesta merkityksettömän.
+
+Sovelluksen kannalta tärkein niistä on **himon aalto**: nousu, huippu ja lasku,
+piste kulkemassa sitä pitkin. Se on koko premissi yhtenä muotona.
 
 Riskikuvaajan pylväät alkavat todellisesta nollasta. Akselin katkaiseminen
 yhdeksänsataan tekisi neljän tapauksen erosta sadassatuhannessa näyttävän

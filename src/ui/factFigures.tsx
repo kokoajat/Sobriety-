@@ -21,7 +21,21 @@ export type FactFigure =
   | 'light-travel'
   | 'ice-expand'
   | 'fold-double'
-  | 'moon-drift';
+  | 'moon-drift'
+  | 'urge-wave'
+  | 'bac-curve'
+  | 'standard-drink'
+  | 'life-expectancy'
+  | 'cancer-share'
+  | 'tolerance-shift'
+  | 'snowflake'
+  | 'bamboo-grow'
+  | 'chess-branch'
+  | 'benford'
+  | 'four-colour'
+  | 'venus-day'
+  | 'water-ball'
+  | 'hummingbird';
 
 export function FactScene({ figure }: { figure: FactFigure }) {
   return (
@@ -42,6 +56,20 @@ const LABELS: Record<FactFigure, string> = {
   'ice-expand': 'Vesi laajenee jäätyessään',
   'fold-double': 'Taitosten paksuus kaksinkertaistuu',
   'moon-drift': 'Kuu loittonee Maasta',
+  'urge-wave': 'Himon aalto: nousu, huippu ja lasku',
+  'bac-curve': 'Nouseva ja laskeva humalakäyrä',
+  'standard-drink': 'Yksi annos kolmena juomana',
+  'life-expectancy': 'Elinajanodotteen lyheneminen kulutuksen mukaan',
+  'cancer-share': 'Alkoholin osuus uusista syövistä',
+  'tolerance-shift': 'Sietokyvyn kasvu siirtää käyrää',
+  snowflake: 'Lumihiutaleen kuusisakarainen rakenne',
+  'bamboo-grow': 'Bambun kasvu',
+  'chess-branch': 'Shakin haarautuminen',
+  benford: 'Ensimmäisen numeron jakauma',
+  'four-colour': 'Neljä väriä riittää kartalle',
+  'venus-day': 'Venuksen vuorokausi ja vuosi',
+  'water-ball': 'Maapallon kaikki vesi yhtenä pallona',
+  hummingbird: 'Kolibri lentää myös taaksepäin',
 };
 
 /** Bars for 914 / 918 / 977 / 1252 per 100 000, scaled to the frame. */
@@ -189,6 +217,176 @@ const SCENES: Record<FactFigure, JSX.Element> = {
         </g>
       ))}
       <line className="scene-line" x1="14" y1="72" x2="188" y2="72" />
+    </g>
+  ),
+
+
+  // Himon aalto: koko sovelluksen premissi yhtenä muotona.
+  'urge-wave': (
+    <g>
+      <path className="scene-stroke" d="M12 78 q26 0 40 -46 q10 -32 26 -32 q16 0 26 32 q14 46 40 46 q26 0 44 -6" />
+      <circle className="scene-fill scene-ride" cx="12" cy="78" r="4.5" />
+      <text className="scene-tiny" x="78" y="14" textAnchor="middle">huippu</text>
+      <line className="scene-line" x1="12" y1="80" x2="188" y2="80" />
+      <text className="scene-tiny" x="188" y="92" textAnchor="end">aika</text>
+    </g>
+  ),
+
+  // Nouseva käyrä piristää, laskeva vaimentaa — siksi toinen annos houkuttaa.
+  'bac-curve': (
+    <g>
+      <path className="scene-stroke" d="M14 78 q30 -56 56 -56 q30 0 52 56" />
+      <path className="scene-line scene-dashed" d="M70 22 v56" />
+      <text className="scene-tiny" x="40" y="18">nousee</text>
+      <text className="scene-tiny" x="104" y="18">laskee</text>
+      <text className="scene-tiny" x="40" y="92" textAnchor="middle">piristää</text>
+      <text className="scene-tiny" x="112" y="92" textAnchor="middle">vaimentaa</text>
+      <line className="scene-line" x1="14" y1="78" x2="150" y2="78" />
+    </g>
+  ),
+
+  // Yksi annos kolmena eri juomana, tilavuudet suhteessa.
+  'standard-drink': (
+    <g>
+      <path className="scene-stroke" d="M26 26 h26 l-3 50 h-20 z" />
+      <path className="scene-fill" d="M28 42 h22 l-2.5 32 h-17 z" />
+      <text className="scene-tiny" x="39" y="90" textAnchor="middle">33 cl</text>
+      <path className="scene-stroke" d="M86 26 q14 0 14 16 q0 12 -7 14 v20 m-14 0 h28 m-14 -20 q-7 -2 -7 -14 q0 -16 14 -16" />
+      <text className="scene-tiny" x="93" y="90" textAnchor="middle">12 cl</text>
+      <path className="scene-stroke" d="M144 44 h20 l-2 32 h-16 z" />
+      <path className="scene-fill" d="M146 54 h16 l-1.5 20 h-13 z" />
+      <text className="scene-tiny" x="154" y="90" textAnchor="middle">4 cl</text>
+    </g>
+  ),
+
+  // Wood ym. 2018: elinajanodote 40-vuotiaana kulutusluokan mukaan.
+  'life-expectancy': (
+    <g>
+      {[
+        { l: '<100', v: 0 },
+        { l: '100–200', v: 0.5 },
+        { l: '200–350', v: 1.5 },
+        { l: '>350', v: 4.5 },
+      ].map((b, i) => (
+        <g key={b.l}>
+          <rect className="scene-fill" x={22 + i * 44} y={20} width={22} height={Math.max(2, b.v * 11)} rx="2" />
+          <text className="scene-tiny" x={33 + i * 44} y={78} textAnchor="middle">{b.l}</text>
+          <text className="scene-tiny" x={33 + i * 44} y={90} textAnchor="middle">
+            {b.v === 0 ? '—' : `-${b.v} v`}
+          </text>
+        </g>
+      ))}
+      <text className="scene-tiny" x="4" y="16">g / viikko</text>
+    </g>
+  ),
+
+  // Rumgay ym. 2021: 4,1 % uusista syövistä.
+  'cancer-share': (
+    <g>
+      <circle className="scene-line-box" cx="100" cy="48" r="30" />
+      <path className="scene-fill" d="M100 48 L100 18 A30 30 0 0 1 107.7 19 Z" />
+      <text className="scene-text" x="100" y="92" textAnchor="middle">4,1 % kaikista uusista syövistä</text>
+    </g>
+  ),
+
+  // Sietokyky siirtää annos-vastekäyrää oikealle.
+  'tolerance-shift': (
+    <g>
+      <path className="scene-stroke" d="M16 74 q24 -46 46 -46 q10 0 16 8" />
+      <path className="scene-stroke scene-dashed" d="M60 74 q24 -46 46 -46 q10 0 16 8" />
+      <path className="scene-line" d="M132 40 l24 0 m-6 -5 l6 5 l-6 5" />
+      <text className="scene-tiny" x="16" y="90">sama vaikutus</text>
+      <text className="scene-tiny" x="188" y="90" textAnchor="end">enemmän ainetta</text>
+    </g>
+  ),
+
+  snowflake: (
+    <g className="scene-stroke scene-spin" style={{ transformOrigin: '100px 48px' }}>
+      {[0, 60, 120].map((a) => (
+        <g key={a} transform={`rotate(${a} 100 48)`}>
+          <line x1="70" y1="48" x2="130" y2="48" />
+          <path d="M82 48 l8 -7 M82 48 l8 7 M118 48 l-8 -7 M118 48 l-8 7" />
+        </g>
+      ))}
+    </g>
+  ),
+
+  'bamboo-grow': (
+    <g>
+      <line className="scene-line" x1="14" y1="86" x2="188" y2="86" />
+      <g className="scene-sprout" style={{ transformOrigin: '100px 86px' }}>
+        <rect className="scene-fill" x="94" y="18" width="12" height="68" rx="3" />
+        <path className="scene-stroke" d="M94 40 h12 M94 58 h12 M94 74 h12" />
+      </g>
+      <text className="scene-tiny" x="140" y="52">~1 m / vrk</text>
+    </g>
+  ),
+
+  'chess-branch': (
+    <g className="scene-stroke">
+      <path d="M100 16 l-40 22 M100 16 l0 22 M100 16 l40 22" />
+      <path d="M60 38 l-20 20 M60 38 l0 20 M60 38 l20 20" />
+      <path d="M100 38 l-20 20 M100 38 l0 20 M100 38 l20 20" />
+      <path d="M140 38 l-20 20 M140 38 l0 20 M140 38 l20 20" />
+      <text className="scene-tiny" x="100" y="90" textAnchor="middle">…ja niin edelleen</text>
+    </g>
+  ),
+
+  benford: (
+    <g>
+      {[30, 17.6, 12.5, 9.7, 7.9, 6.7, 5.8, 5.1, 4.6].map((v, i) => (
+        <g key={i}>
+          <rect className="scene-fill" x={22 + i * 18} y={74 - v * 1.9} width={12} height={v * 1.9} rx="1" />
+          <text className="scene-tiny" x={28 + i * 18} y={86} textAnchor="middle">{i + 1}</text>
+        </g>
+      ))}
+      <line className="scene-line" x1="16" y1="74" x2="186" y2="74" />
+    </g>
+  ),
+
+  'four-colour': (
+    <g>
+      <path className="scene-fill" d="M20 20 h56 v30 h-56 z" opacity="0.9" />
+      <path className="scene-fill" d="M76 20 h52 v30 h-52 z" opacity="0.45" />
+      <path className="scene-fill" d="M128 20 h52 v30 h-52 z" opacity="0.7" />
+      <path className="scene-fill" d="M20 50 h44 v30 h-44 z" opacity="0.45" />
+      <path className="scene-fill" d="M64 50 h60 v30 h-60 z" opacity="0.9" />
+      <path className="scene-fill" d="M124 50 h56 v30 h-56 z" opacity="0.25" />
+      <g className="scene-line">
+        <path d="M20 20 h160 v60 h-160 z M76 20 v30 M128 20 v30 M64 50 v30 M124 50 v30 M20 50 h160" />
+      </g>
+    </g>
+  ),
+
+  'venus-day': (
+    <g>
+      <text className="scene-tiny" x="14" y="30">vuorokausi</text>
+      <rect className="scene-fill" x="14" y="34" width="150" height="14" rx="3" />
+      <text className="scene-tiny" x="14" y="66">vuosi</text>
+      <rect className="scene-fill" x="14" y="70" width="112" height="14" rx="3" opacity="0.5" />
+      <text className="scene-tiny" x="170" y="45">243 vrk</text>
+      <text className="scene-tiny" x="132" y="81">225</text>
+    </g>
+  ),
+
+  'water-ball': (
+    <g>
+      <circle className="scene-stroke" cx="66" cy="48" r="38" />
+      <circle className="scene-fill" cx="150" cy="62" r="18" />
+      <text className="scene-tiny" x="66" y="94" textAnchor="middle">Maa</text>
+      <text className="scene-tiny" x="150" y="94" textAnchor="middle">kaikki vesi</text>
+    </g>
+  ),
+
+  hummingbird: (
+    <g>
+      <g className="scene-hover">
+        <ellipse className="scene-fill" cx="100" cy="48" rx="16" ry="8" />
+        <path className="scene-stroke" d="M84 48 l-16 -4 M116 46 l14 -10" />
+      </g>
+      <path className="scene-line" d="M60 74 h-22 m6 -5 l-6 5 l6 5" />
+      <path className="scene-line" d="M140 74 h22 m-6 -5 l6 5 l-6 5" />
+      <text className="scene-tiny" x="100" y="78" textAnchor="middle">molempiin</text>
     </g>
   ),
 
