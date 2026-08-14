@@ -50,7 +50,7 @@ omasta käyttäytymisestä on pahempi kuin ei väitettä lainkaan.
 
 Kellon tuijottaminen on huono ainoa tekeminen kärsimättömälle mielelle, eikä
 kävelylle pääse aina. Odotusnäytöllä voi siksi avata lyhyiden lauseiden virran:
-yksi kerrallaan, vaihtuu itsestään yhdeksän sekunnin välein tai napauttamalla.
+yksi kerrallaan, ja seuraava tulee napauttamalla.
 Kello kutistuu mutta ei katoa — luettava on häiriö odotuksen ajaksi, ei korvaaja
 sille.
 
