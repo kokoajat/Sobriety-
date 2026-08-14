@@ -1,200 +1,122 @@
 /**
  * Domain model.
  *
- * The central inversion: nothing here scores whether the user drank. Drinking is
- * an *outcome to be predicted*, not a verdict to be handed down. Every score in
- * `forecast.ts` measures the quality of the user's self-model, which is a target
- * they can hit on a day they drink.
+ * The premise, stated once so the rest of the code can be read against it: this
+ * app does not measure the user. It has one job — to be useful during the ten
+ * minutes when the urge is loudest — and everything stored here exists to make
+ * the *next* ten minutes easier, never to produce a verdict about the last ones.
+ *
+ * Consequences that show up throughout:
+ *   - there is no streak, no score, no daily obligation, and nothing to keep up
+ *   - `took` is recorded exactly as neutrally as `passed`, because an app you
+ *     have to lie to stops receiving data at the moment data matters
+ *   - every rate is about the *supply* ("did a walk help") rather than about the
+ *     person ("did you succeed")
  */
 
-/** ISO date, `YYYY-MM-DD`, in the user's local timezone. */
-export type DateKey = string;
+/** What the drink would do, asked forward — to choose a substitute, not to file a report. */
+export type BuiltinDemand =
+  | 'settle' // rauhoittua
+  | 'detach' // irrota päivästä
+  | 'company' // olla ihmisten kanssa
+  | 'sleep' // nukahtaa
+  | 'empty' // täyttää tyhjä ilta
+  | 'feel-less'; // tuntea vähemmän
 
-/**
- * The jobs shipped with the app. Drinking is not the problem, it is the current
- * solution to one of these, so the app tracks the demand rather than the
- * consumption.
- */
-export type BuiltinFunctionTag =
-  | 'unwind' // siirtymä työstä vapaalle
-  | 'social' // sosiaalinen jännitys
-  | 'sleep' // nukahtaminen
-  | 'boredom' // tyhjä ilta
-  | 'numb' // tunteen vaimentaminen
-  | 'celebrate' // palkinto, juhla
-  | 'ritual' // tapa, käsi tekee itsestään
-  | 'craving'; // pelkkä himo ilman tunnistettua tehtävää
-
-export const BUILTIN_FUNCTION_TAGS: BuiltinFunctionTag[] = [
-  'unwind',
-  'social',
+export const BUILTIN_DEMANDS: BuiltinDemand[] = [
+  'settle',
+  'detach',
+  'company',
   'sleep',
-  'boredom',
-  'numb',
-  'celebrate',
-  'ritual',
-  'craving',
+  'empty',
+  'feel-less',
 ];
 
 /**
- * A function tag: one of the builtins above, or a user-defined id.
+ * A demand key: a builtin, or a user-defined id.
  *
- * Deliberately widened to `string`. The eight builtins are a guess at what a
- * drink gets hired for, and a guess that does not fit forces the user to file
- * the evening under the nearest wrong label — after which every number in the
- * app is computed over a category that does not exist for them. Analysis treats
- * tags as opaque keys throughout, so custom ones need no special handling
- * downstream.
+ * Widened to `string` for the same reason as everything else here — six shipped
+ * options are a guess, and a guess that misses makes the user pick the nearest
+ * wrong one, after which their prepared responses are filed against a need they
+ * do not have.
  */
-export type FunctionTag = string;
+export type Demand = string;
 
-/** Namespaced so a user-defined tag can never collide with a future builtin. */
-export const CUSTOM_TAG_PREFIX = 'custom:';
+export const CUSTOM_DEMAND_PREFIX = 'own:';
 
-export function isCustomTag(tag: FunctionTag): boolean {
-  return tag.startsWith(CUSTOM_TAG_PREFIX);
-}
+export const isCustomDemand = (d: Demand): boolean => d.startsWith(CUSTOM_DEMAND_PREFIX);
 
-/**
- * A function the user defined themselves.
- *
- * Never hard-deleted, only archived: historical forks still reference the tag,
- * and a deleted record would leave old days labelled with a raw id. Archiving
- * takes it out of the pickers while keeping every past day readable.
- */
-export interface CustomFunction {
-  /** The tag value itself, `custom:<uuid>`. */
-  id: FunctionTag;
+/** A need the user named themselves. Archived rather than deleted, so history stays readable. */
+export interface CustomDemand {
+  id: Demand;
   label: string;
-  /** The user's own note on when this applies; shown under the label. */
-  hint?: string;
   createdAt: number;
   archived?: boolean;
 }
 
-/** Coarse time-of-day buckets. Fine enough to be actionable, coarse enough to accumulate data. */
-export type Block = 'morning' | 'afternoon' | 'evening' | 'night';
-
-export const BLOCKS: Block[] = ['morning', 'afternoon', 'evening', 'night'];
-
-/** Block boundaries in minutes from local midnight. `night` wraps past midnight. */
-export const BLOCK_RANGES: Record<Block, { startMin: number; endMin: number }> = {
-  morning: { startMin: 5 * 60, endMin: 12 * 60 },
-  afternoon: { startMin: 12 * 60, endMin: 17 * 60 },
-  evening: { startMin: 17 * 60, endMin: 22 * 60 },
-  night: { startMin: 22 * 60, endMin: 29 * 60 }, // 22:00–05:00
-};
-
 /**
- * A predicted fork: a moment the user expects to face a decision. Predicting the
- * fork is the skill being trained — the drink itself is downstream of a choice
- * point that usually passes unnoticed.
+ * Something concrete the user prepared in advance for a given need.
+ *
+ * Written calm, offered hot. Nothing here is generated by the app: at the moment
+ * it matters, a suggestion from software has no standing, and the user's own
+ * sentence does.
  */
-export interface ForkPrediction {
-  block: Block;
-  tag: FunctionTag;
-  /** Free-text: "kun suljen läppärin", "kaupan ohi kävellessä". */
-  cue?: string;
-}
-
-/**
- * The morning forecast. Made cold, about a self that will be hot later.
- */
-export interface Forecast {
-  date: DateKey;
-  /** Subjective probability of drinking today, 0..1. */
-  p: number;
-  forks: ForkPrediction[];
-  /** Epoch ms. */
-  madeAt: number;
-}
-
-export type ForkChoice =
-  | 'drank' // juotiin
-  | 'delayed' // siirrettiin, sitten juotiin tai ei
-  | 'substituted' // korvattiin jollain muulla
-  | 'passed'; // ohitettiin
-
-/**
- * A fork as it actually happened. `loggedInMoment` distinguishes real-time
- * noticing from evening reconstruction — noticing is the trainable skill, so the
- * two are never pooled.
- */
-export interface ObservedFork {
-  /** Minutes from local midnight. */
-  atMin: number;
-  tag: FunctionTag;
-  choice: ForkChoice;
-  /** Craving intensity 1..5. */
-  intensity: number;
-  /** True when logged at the fork, false when reconstructed in the evening. */
-  loggedInMoment: boolean;
-  /** Set when `choice === 'substituted'`. */
-  alternativeId?: string;
-  /** Did the substitution actually do the job the drink would have done? */
-  worked?: boolean;
-}
-
-/** The evening resolution: what the day actually did. */
-export interface Observation {
-  date: DateKey;
-  drank: boolean;
-  /** Standard drinks, optional — deliberately not the headline number. */
-  drinks?: number;
-  forks: ObservedFork[];
-  resolvedAt: number;
-}
-
-export interface Day {
-  date: DateKey;
-  forecast?: Forecast;
-  observation?: Observation;
-}
-
-/** A user-authored option for meeting a function without a drink. */
-export interface Alternative {
+export interface Supply {
   id: string;
   label: string;
-  tags: FunctionTag[];
-  /** Outcomes of past attempts, oldest first. */
-  attempts: { at: number; worked: boolean }[];
+  /** Which needs this is meant for. */
+  demands: Demand[];
+  /** Outcomes of past offers, oldest first. */
+  attempts: SupplyAttempt[];
   archived?: boolean;
+  createdAt: number;
 }
 
+export interface SupplyAttempt {
+  at: number;
+  demand: Demand;
+  /** Did it help with the need — not whether the user stayed dry afterwards. */
+  helped: boolean;
+}
+
+export type Outcome =
+  /** Meni ohi. */
+  | 'passed'
+  /** Otin sen. Recorded without comment. */
+  | 'took'
+  /** The user never came back to say. Never guessed at. */
+  | 'unknown';
+
 /**
- * A message recorded by the calm self, addressed to the self standing at a fork.
- * The cold self cannot reason with the hot self, but the hot self will listen to
- * itself — so the app never generates this text, it only stores and returns it.
+ * One urge, from the moment the button was pressed.
+ *
+ * `waitedMs` is stored explicitly rather than derived from timestamps, because
+ * the interesting quantity is how long the user actually held on — which is not
+ * the same as wall-clock time between two events if the phone was put down.
  */
-export interface SelfMessage {
+export interface Episode {
   id: string;
-  tag: FunctionTag;
-  text: string;
-  /** Optional voice recording (audio/webm) held in IndexedDB, never uploaded. */
-  audio?: Blob;
-  createdAt: number;
+  startedAt: number;
+  demand: Demand;
+  /** The supply offered, if the user had one prepared for this need. */
+  supplyId?: string;
+  /** How long the wait ran before the episode closed. */
+  waitedMs: number;
+  /** How many times the user chose to keep waiting. */
+  extensions: number;
+  outcome: Outcome;
+  /** Set when the episode closes; absent while it is still running. */
+  endedAt?: number;
 }
 
 export interface Settings {
-  /**
-   * Clock minute at which one logged day ends and the next begins.
-   *
-   * Not midnight. An evening that runs past midnight is one evening as lived,
-   * and cutting it at 00:00 files its second half under a day that had no
-   * forecast — losing the first half's forecast from scoring entirely. 05:00
-   * matches the `night` block, which already spans 22:00–05:00.
-   */
-  dayStartsAtMin: number;
-  /** Local minute-of-day for the morning forecast nudge. */
-  forecastAtMin: number;
-  /** Local minute-of-day for the evening resolve nudge. */
-  resolveAtMin: number;
-  /** Stamped when the rhythm question has been answered or skipped. */
-  onboardedAt?: number;
+  /** Length of the first wait. */
+  waitMs: number;
+  /** Added by "hetki lisää". */
+  extensionMs: number;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  dayStartsAtMin: 5 * 60,
-  forecastAtMin: 8 * 60,
-  resolveAtMin: 21 * 60 + 30,
+  waitMs: 10 * 60 * 1000,
+  extensionMs: 5 * 60 * 1000,
 };

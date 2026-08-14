@@ -1,166 +1,150 @@
-import { useEffect, useState } from 'react';
-import { dayPhase, unresolvedBefore } from './core/day';
+/**
+ * One screen at a time, no tab bar.
+ *
+ * The home screen is a single button. Everything else is behind it, because the
+ * one moment this app has to work is the moment when reading a navigation bar is
+ * beyond what anyone wants to do. Preparation and history are two quiet links
+ * below the fold of attention, not destinations competing with the button.
+ */
+
+import { useEffect, useRef, useState } from 'react';
 import { useStore } from './store';
-import { ForecastView } from './ui/ForecastView';
-import { ForkView } from './ui/ForkView';
-import { ResolveView } from './ui/ResolveView';
-import { InsightView } from './ui/InsightView';
+import { WaitView } from './ui/WaitView';
+import { DemandView } from './ui/DemandView';
+import { AfterView } from './ui/AfterView';
 import { PrepareView } from './ui/PrepareView';
-import { DataView } from './ui/DataView';
-import { OnboardingView } from './ui/OnboardingView';
-import { formatDate } from './ui/labels';
+import { HistoryView } from './ui/HistoryView';
+import { medianTimeToPassMs } from './core/stats';
+import { formatMinutes } from './ui/labels';
+import type { Episode } from './core/types';
 
-type Tab = 'today' | 'fork' | 'insight' | 'prepare' | 'data';
-
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'today', label: 'Päivä' },
-  { id: 'fork', label: 'Risteys' },
-  { id: 'insight', label: 'Itsetuntemus' },
-  { id: 'prepare', label: 'Valmistelu' },
-  { id: 'data', label: 'Tiedot' },
-];
+type Mode = 'home' | 'demand' | 'after' | 'prepare' | 'history';
 
 export function App() {
   const store = useStore();
-  const [tab, setTab] = useState<Tab>('today');
+  const [mode, setMode] = useState<Mode>('home');
+  const [justClosed, setJustClosed] = useState<Episode | null>(null);
+  const runningId = useRef<string | null>(null);
 
-  const day = store.days.find((d) => d.date === store.today);
-  const phase = dayPhase(day, new Date(), store.settings);
-
-  // The forecast is the one thing that expires, so an unstarted day opens on it.
+  /**
+   * Notice the moment a wait ends, so the acknowledgement screen can follow it.
+   *
+   * Tracked through the episode id rather than component state because the wait
+   * itself lives in storage: the screen may have been unmounted and remounted
+   * several times while it ran.
+   */
   useEffect(() => {
-    if (store.ready && phase === 'awaiting-forecast') setTab('today');
-  }, [store.ready, phase]);
+    if (store.current) {
+      runningId.current = store.current.id;
+      return;
+    }
+    const id = runningId.current;
+    if (!id) return;
+    runningId.current = null;
+    const finished = store.episodes.find((e) => e.id === id && e.endedAt !== undefined);
+    if (finished) {
+      setJustClosed(finished);
+      setMode('after');
+    }
+  }, [store.current, store.episodes]);
 
   if (!store.ready) {
+    return <main className="app" />;
+  }
+
+  // A running wait outranks every other screen: reopening the app mid-urge must
+  // land back in the countdown, not on a menu.
+  if (store.current) {
     return (
       <main className="app">
-        <p className="status">Ladataan…</p>
+        <WaitView store={store} episode={store.current} />
       </main>
     );
   }
 
-  // Asked once, before the tab bar exists: the day boundary is the axis every
-  // later number is measured against, so it is worth one screen up front.
-  if (!store.settings.onboardedAt) {
+  if (mode === 'after' && justClosed) {
     return (
       <main className="app">
-        <div className="content">
-          <OnboardingView settings={store.settings} onDone={store.saveSettings} />
-        </div>
+        <AfterView
+          store={store}
+          episode={justClosed}
+          onDone={() => {
+            setJustClosed(null);
+            setMode('home');
+          }}
+        />
+      </main>
+    );
+  }
+
+  if (mode === 'demand') {
+    return (
+      <main className="app">
+        <DemandView store={store} onStarted={() => setMode('home')} onCancel={() => setMode('home')} />
+      </main>
+    );
+  }
+
+  if (mode === 'prepare') {
+    return (
+      <main className="app">
+        <PrepareView store={store} onBack={() => setMode('home')} />
+      </main>
+    );
+  }
+
+  if (mode === 'history') {
+    return (
+      <main className="app">
+        <HistoryView store={store} onBack={() => setMode('home')} />
       </main>
     );
   }
 
   return (
     <main className="app">
-      <div className="content">
-        {tab === 'today' && <TodayView phase={phase} store={store} onFork={() => setTab('fork')} />}
-        {tab === 'fork' && <ForkView store={store} onDone={() => setTab('today')} />}
-        {tab === 'insight' && (
-          <InsightView
-            days={store.days}
-            today={store.today}
-            functions={store.functions}
-            settings={store.settings}
-          />
-        )}
-        {tab === 'prepare' && <PrepareView store={store} />}
-        {tab === 'data' && <DataView store={store} />}
-      </div>
-
-      <nav className="tabs">
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            className={tab === t.id ? 'tab tab-active' : 'tab'}
-            onClick={() => setTab(t.id)}
-            aria-current={tab === t.id}
-          >
-            {t.label}
-          </button>
-        ))}
-      </nav>
+      <HomeView store={store} onPress={() => setMode('demand')} onGo={setMode} />
     </main>
   );
 }
 
-function TodayView({
-  phase,
+function HomeView({
   store,
-  onFork,
+  onPress,
+  onGo,
 }: {
-  phase: ReturnType<typeof dayPhase>;
   store: ReturnType<typeof useStore>;
-  onFork: () => void;
+  onPress: () => void;
+  onGo: (mode: Mode) => void;
 }) {
-  const [resolving, setResolving] = useState(false);
-  const [closingDate, setClosingDate] = useState<string | null>(null);
-
-  // A day left open before the boundary moved off midnight can still be closed;
-  // until it is, the forecast it holds never reaches the scores.
-  const stranded = unresolvedBefore(store.days, store.today);
-
-  if (closingDate) {
-    return (
-      <ResolveView store={store} date={closingDate} onDone={() => setClosingDate(null)} />
-    );
-  }
-
-  const banner = stranded ? (
-    <div className="block">
-      <h2>{formatDate(stranded.date)} jäi päättämättä</h2>
-      <p className="hint">
-        Sen ennuste odottaa toteumaa eikä ole vielä mukana luvuissa. Muistatko miten se
-        päivä meni?
-      </p>
-      <button type="button" className="secondary" onClick={() => setClosingDate(stranded.date)}>
-        Sulje se nyt
-      </button>
-    </div>
-  ) : null;
-
-  if (phase === 'awaiting-forecast') {
-    return (
-      <>
-        {banner}
-        <ForecastView store={store} onDone={() => undefined} />
-      </>
-    );
-  }
-  if (resolving || phase === 'awaiting-resolve') {
-    return <ResolveView store={store} onDone={() => setResolving(false)} />;
-  }
-
-  const day = store.days.find((d) => d.date === store.today);
-  const forks = day?.observation?.forks ?? [];
+  const closed = store.episodes.filter((e) => e.endedAt !== undefined);
+  const typical = medianTimeToPassMs(closed);
 
   return (
-    <section className="view">
-      {banner}
-      <header className="view-head">
-        <h1>{phase === 'closed' ? 'Päivä suljettu' : 'Päivä käynnissä'}</h1>
-        <p className="lede">
-          Ennuste tehty: {Math.round((day?.forecast?.p ?? 0) * 100)} %.
-          {forks.length > 0 && ` Risteyksiä kirjattu ${forks.length}.`}
-        </p>
-      </header>
+    <section className="screen screen-home">
+      <button type="button" className="big-button" onClick={onPress}>
+        Nyt tekee mieli
+      </button>
 
-      {phase === 'closed' ? (
-        <p className="hint">
-          Päivä on suljettu. Luvut päivittyivät Itsetuntemus-välilehdelle.
+      {Number.isFinite(typical) ? (
+        <p className="home-note">
+          Omissa merkinnöissäsi himo on mennyt ohi {formatMinutes(typical)}.
         </p>
       ) : (
-        <div className="button-column">
-          <button type="button" className="primary big" onClick={onFork}>
-            Olen risteyksessä
-          </button>
-          <button type="button" className="secondary" onClick={() => setResolving(true)}>
-            Sulje päivä
-          </button>
-        </div>
+        <p className="home-note">
+          Paina kun tekee mieli. Sovellus ei kysy muuta kuin mitä se tekisi, ja pyytää
+          odottamaan kymmenen minuuttia.
+        </p>
       )}
+
+      <div className="quiet-links">
+        <button type="button" className="quiet" onClick={() => onGo('prepare')}>
+          Valmistelu
+        </button>
+        <button type="button" className="quiet" onClick={() => onGo('history')}>
+          Historia
+        </button>
+      </div>
     </section>
   );
 }

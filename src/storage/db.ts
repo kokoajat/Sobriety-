@@ -1,54 +1,42 @@
 /**
  * Local-first storage.
  *
- * There is no server, no account and no network call anywhere in this codebase.
- * That is a design constraint, not a phase-one shortcut: this is among the most
- * sensitive categories of health data a person can generate, and a promise kept
- * in an architecture is worth more than one kept in a privacy policy. Anything
- * added later that uploads must be opt-in, end-to-end encrypted, and must not
- * be required for any feature here.
+ * No server, no account, no network call anywhere in this codebase. That is an
+ * architectural constraint rather than a first-phase shortcut: this is among the
+ * most sensitive categories of data a person can generate, and a promise kept in
+ * an architecture is worth more than one kept in a privacy policy.
+ *
+ * The database name is deliberately new. An earlier, quite different app shipped
+ * from this repository under the name `sobriety`, and some devices still hold its
+ * data. Reusing that name would have meant either reading records this schema
+ * does not understand or migrating someone's history into a model it was never
+ * recorded for. Leaving it untouched is the honest option — nothing here can
+ * damage it.
  */
 
-import type {
-  Alternative,
-  CustomFunction,
-  Day,
-  DateKey,
-  SelfMessage,
-  Settings,
-} from '../core/types';
+import type { CustomDemand, Episode, Settings, Supply } from '../core/types';
 import { DEFAULT_SETTINGS } from '../core/types';
 
-const DB_NAME = 'sobriety';
-// v2 added the user's own function tags. Upgrades only create missing stores,
-// so an existing database keeps every day already recorded in it.
-const DB_VERSION = 2;
+const DB_NAME = 'kymmenen-minuuttia';
+const DB_VERSION = 1;
 
-const STORE_DAYS = 'days';
-const STORE_ALTERNATIVES = 'alternatives';
-const STORE_MESSAGES = 'messages';
+const STORE_EPISODES = 'episodes';
+const STORE_SUPPLIES = 'supplies';
+const STORE_DEMANDS = 'demands';
 const STORE_SETTINGS = 'settings';
-const STORE_FUNCTIONS = 'functions';
 
 function open(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
     request.onupgradeneeded = () => {
       const db = request.result;
-      if (!db.objectStoreNames.contains(STORE_DAYS)) {
-        db.createObjectStore(STORE_DAYS, { keyPath: 'date' });
-      }
-      if (!db.objectStoreNames.contains(STORE_ALTERNATIVES)) {
-        db.createObjectStore(STORE_ALTERNATIVES, { keyPath: 'id' });
-      }
-      if (!db.objectStoreNames.contains(STORE_MESSAGES)) {
-        db.createObjectStore(STORE_MESSAGES, { keyPath: 'id' });
+      for (const name of [STORE_EPISODES, STORE_SUPPLIES, STORE_DEMANDS]) {
+        if (!db.objectStoreNames.contains(name)) {
+          db.createObjectStore(name, { keyPath: 'id' });
+        }
       }
       if (!db.objectStoreNames.contains(STORE_SETTINGS)) {
         db.createObjectStore(STORE_SETTINGS);
-      }
-      if (!db.objectStoreNames.contains(STORE_FUNCTIONS)) {
-        db.createObjectStore(STORE_FUNCTIONS, { keyPath: 'id' });
       }
     };
     request.onsuccess = () => resolve(request.result);
@@ -73,27 +61,19 @@ function run<T>(
   );
 }
 
-export const days = {
-  all: () => run<Day[]>(STORE_DAYS, 'readonly', (s) => s.getAll()),
-  get: (date: DateKey) => run<Day | undefined>(STORE_DAYS, 'readonly', (s) => s.get(date)),
-  put: (day: Day) => run<IDBValidKey>(STORE_DAYS, 'readwrite', (s) => s.put(day)),
+export const episodes = {
+  all: () => run<Episode[]>(STORE_EPISODES, 'readonly', (s) => s.getAll()),
+  put: (e: Episode) => run<IDBValidKey>(STORE_EPISODES, 'readwrite', (s) => s.put(e)),
 };
 
-export const alternatives = {
-  all: () => run<Alternative[]>(STORE_ALTERNATIVES, 'readonly', (s) => s.getAll()),
-  put: (a: Alternative) => run<IDBValidKey>(STORE_ALTERNATIVES, 'readwrite', (s) => s.put(a)),
-  remove: (id: string) => run<undefined>(STORE_ALTERNATIVES, 'readwrite', (s) => s.delete(id)),
+export const supplies = {
+  all: () => run<Supply[]>(STORE_SUPPLIES, 'readonly', (s) => s.getAll()),
+  put: (v: Supply) => run<IDBValidKey>(STORE_SUPPLIES, 'readwrite', (s) => s.put(v)),
 };
 
-export const messages = {
-  all: () => run<SelfMessage[]>(STORE_MESSAGES, 'readonly', (s) => s.getAll()),
-  put: (m: SelfMessage) => run<IDBValidKey>(STORE_MESSAGES, 'readwrite', (s) => s.put(m)),
-  remove: (id: string) => run<undefined>(STORE_MESSAGES, 'readwrite', (s) => s.delete(id)),
-};
-
-export const functions = {
-  all: () => run<CustomFunction[]>(STORE_FUNCTIONS, 'readonly', (s) => s.getAll()),
-  put: (f: CustomFunction) => run<IDBValidKey>(STORE_FUNCTIONS, 'readwrite', (s) => s.put(f)),
+export const demands = {
+  all: () => run<CustomDemand[]>(STORE_DEMANDS, 'readonly', (s) => s.getAll()),
+  put: (d: CustomDemand) => run<IDBValidKey>(STORE_DEMANDS, 'readwrite', (s) => s.put(d)),
 };
 
 export const settings = {
@@ -108,51 +88,30 @@ export const settings = {
 };
 
 export interface ExportBundle {
-  /** 2 is written; 1 is still accepted on import. */
-  version: 1 | 2;
+  version: 1;
   exportedAt: number;
-  days: Day[];
-  alternatives: Alternative[];
-  /** Voice recordings are omitted: they are large, and they are the user's voice. */
-  messages: Omit<SelfMessage, 'audio'>[];
-  /** Without these, an imported history would render as "Poistettu tehtävä". */
-  functions: CustomFunction[];
+  episodes: Episode[];
+  supplies: Supply[];
+  demands: CustomDemand[];
   settings: Settings;
 }
 
 export async function exportAll(): Promise<ExportBundle> {
-  const [d, a, m, f, s] = await Promise.all([
-    days.all(),
-    alternatives.all(),
-    messages.all(),
-    functions.all(),
+  const [e, v, d, s] = await Promise.all([
+    episodes.all(),
+    supplies.all(),
+    demands.all(),
     settings.get(),
   ]);
-  return {
-    version: 2,
-    exportedAt: Date.now(),
-    days: d,
-    alternatives: a,
-    messages: m.map(({ audio: _audio, ...rest }) => rest),
-    functions: f,
-    settings: s,
-  };
+  return { version: 1, exportedAt: Date.now(), episodes: e, supplies: v, demands: d, settings: s };
 }
 
-/**
- * Merge an exported bundle back in. Days are merged by date with the imported
- * copy winning, so restoring onto a device that has kept running does not
- * silently drop the days it recorded meanwhile.
- */
+/** Merge a bundle back in; the imported copy wins per record id. */
 export async function importAll(bundle: ExportBundle): Promise<void> {
-  // v1 bundles predate custom functions and carry none; they import cleanly.
-  if (bundle.version !== 1 && bundle.version !== 2) {
-    throw new Error(`Tuntematon vientiversio: ${bundle.version}`);
-  }
-  for (const day of bundle.days) await days.put(day);
-  for (const a of bundle.alternatives) await alternatives.put(a);
-  for (const m of bundle.messages) await messages.put(m as SelfMessage);
-  for (const f of bundle.functions ?? []) await functions.put(f);
+  if (bundle.version !== 1) throw new Error(`Tuntematon vientiversio: ${bundle.version}`);
+  for (const e of bundle.episodes ?? []) await episodes.put(e);
+  for (const v of bundle.supplies ?? []) await supplies.put(v);
+  for (const d of bundle.demands ?? []) await demands.put(d);
   await settings.put({ ...DEFAULT_SETTINGS, ...bundle.settings });
 }
 

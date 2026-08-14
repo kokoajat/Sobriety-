@@ -1,34 +1,38 @@
 /*
  * Visual tone is a functional requirement here, not decoration.
  *
- * No reds, no greens, no progress bars filling up, no celebratory colour: an
- * interface that visibly approves and disapproves is an interface that delivers
- * a small dose of shame on the days it matters most. Everything is one calm
- * neutral palette, and the emphasis colour is used for the current selection
- * only — never for a verdict on the user.
+ * No reds, no greens, no filling progress bars, no celebratory colour. An
+ * interface that visibly approves and disapproves delivers a small dose of shame
+ * on exactly the occasions that matter most. One calm palette; the accent marks
+ * where the thumb goes, never a verdict on the person.
+ *
+ * The layout is built for one hand at night: a single large target, generous
+ * spacing, nothing that needs precise aim, and no screen that scrolls unless it
+ * is a screen for the calm hours.
  */
 
 :root {
-  --bg: #f7f6f4;
+  --bg: #f4f3f1;
   --surface: #ffffff;
-  --ink: #1c1b19;
-  --ink-soft: #5f5c57;
-  --line: #e2ded8;
-  --accent: #3c5a6e;
-  --accent-soft: #eaf0f4;
-  --radius: 12px;
+  --ink: #191817;
+  --ink-soft: #605c57;
+  --line: #e0dcd6;
+  --accent: #3f5d54;
+  --accent-ink: #f4f3f1;
+  --accent-soft: #e7eeeb;
   color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #16181a;
-    --surface: #1e2124;
-    --ink: #eceae7;
-    --ink-soft: #a2a09c;
-    --line: #2e3236;
-    --accent: #8fb4cc;
-    --accent-soft: #23303a;
+    --bg: #131514;
+    --surface: #1c1f1e;
+    --ink: #ecebe8;
+    --ink-soft: #9d9c98;
+    --line: #2b2f2e;
+    --accent: #8fbcae;
+    --accent-ink: #131514;
+    --accent-soft: #1f2a27;
   }
 }
 
@@ -50,489 +54,307 @@ body {
 .app {
   min-height: 100dvh;
   display: flex;
-  flex-direction: column;
-  max-width: 34rem;
-  margin: 0 auto;
+  justify-content: center;
 }
 
-.content {
-  flex: 1;
-  padding: 1.5rem 1.25rem 2rem;
-}
-
-.view {
+.screen {
+  width: 100%;
+  max-width: 26rem;
+  padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1.5rem;
 }
 
-.view-head h1 {
+/* Only the calm-hours screens are allowed to be long. */
+.screen-scroll {
+  align-items: stretch;
+  gap: 1rem;
+}
+
+.screen-home {
+  justify-content: center;
+  min-height: 100dvh;
+  gap: 2rem;
+}
+
+/* The button ------------------------------------------------------------- */
+
+.big-button {
+  width: 15rem;
+  height: 15rem;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: inherit;
+  font-size: 1.375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  padding: 1rem;
+  /* No shadow, no gradient: it should read as a calm surface, not a klaxon. */
+  transition: transform 120ms ease;
+}
+
+.big-button:active {
+  transform: scale(0.97);
+}
+
+.home-note {
+  margin: 0;
+  color: var(--ink-soft);
+  text-align: center;
+  font-size: 0.9375rem;
+  max-width: 20rem;
+}
+
+.quiet-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.quiet {
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.875rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+/* Asking ----------------------------------------------------------------- */
+
+.ask {
+  margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
-  margin: 0 0 0.5rem;
-  letter-spacing: -0.01em;
-}
-
-.lede {
-  margin: 0;
-  color: var(--ink-soft);
-}
-
-h2 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 0.5rem;
-}
-
-.hint {
-  color: var(--ink-soft);
-  font-size: 0.875rem;
-  margin: 0.25rem 0;
-}
-
-.centred {
+  letter-spacing: -0.015em;
   text-align: center;
 }
 
-.block {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1rem;
-}
-
-.note p {
-  font-size: 0.875rem;
-  color: var(--ink-soft);
-}
-
-/* Probability slider ------------------------------------------------------ */
-
-.probability {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1.5rem 1rem 1rem;
-  text-align: center;
-}
-
-.probability-value {
-  display: block;
-  font-size: 3rem;
-  font-weight: 300;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
-}
-
-.probability input[type='range'] {
-  width: 100%;
-  margin: 1rem 0 0.5rem;
-  accent-color: var(--accent);
-}
-
-.probability-scale {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  color: var(--ink-soft);
-}
-
-/* Forms ------------------------------------------------------------------- */
-
-.field,
-.field-row label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  font-size: 0.875rem;
-  color: var(--ink-soft);
-}
-
-.field-row {
-  display: flex;
-  gap: 0.75rem;
-  align-items: flex-end;
-  margin-bottom: 0.75rem;
-}
-
-.field-row > label,
-.field-row > input {
-  flex: 1;
-}
-
-input[type='text'],
-select,
-textarea {
-  font: inherit;
-  color: var(--ink);
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.6rem 0.7rem;
-  width: 100%;
-}
-
-textarea {
-  resize: vertical;
-}
-
-input[type='range'] {
-  accent-color: var(--accent);
-}
-
-/* Buttons ----------------------------------------------------------------- */
-
-button {
-  font: inherit;
-  cursor: pointer;
-  border-radius: 10px;
-  border: 1px solid var(--line);
-  padding: 0.7rem 1rem;
-  background: var(--surface);
-  color: var(--ink);
-  transition: background 120ms ease;
-}
-
-button:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--bg);
-  font-weight: 500;
-}
-
-.secondary {
-  background: var(--surface);
-}
-
-.big {
-  padding: 1.25rem;
-  font-size: 1.125rem;
-}
-
-.button-row {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.button-row > button {
-  flex: 1;
-}
-
-.button-column {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-/* Chips and lists --------------------------------------------------------- */
-
-.chip-list {
-  list-style: none;
-  margin: 0 0 0.75rem;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.chip {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  background: var(--accent-soft);
-  border-radius: 8px;
-  padding: 0.5rem 0.7rem;
-  font-size: 0.875rem;
-}
-
-.chip-remove {
-  border: none;
-  background: none;
-  color: var(--ink-soft);
-  font-size: 1.1rem;
-  line-height: 1;
-  padding: 0 0.25rem;
-}
-
-.tag-grid {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.6rem;
-}
-
-.tag-button {
-  width: 100%;
+.screen-scroll .ask {
   text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  padding: 0.9rem 1rem;
 }
 
-.tag-button span {
-  font-size: 0.8125rem;
-  color: var(--ink-soft);
-}
-
-.fork-log,
-.ranked,
-.loadlist,
-.blindspots,
-.reading {
+.demand-grid {
   list-style: none;
-  margin: 0.5rem 0;
+  margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.fork-log li,
-.ranked li,
-.loadlist li {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 0.5rem;
-}
-
-.fork-log li > span:nth-child(2),
-.ranked li > span:first-child,
-.loadlist li > span:first-child {
-  flex: 1;
-}
-
-.fork-time {
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-soft);
-}
-
-.fork-choice {
-  color: var(--ink-soft);
-}
-
-.badge {
-  font-size: 0.6875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  background: var(--accent-soft);
-  color: var(--accent);
-  border-radius: 5px;
-  padding: 0.15rem 0.4rem;
-}
-
-.blindspots li {
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 0.5rem;
-}
-
-.blindspots span {
-  color: var(--ink-soft);
-}
-
-.reading li {
-  color: var(--ink-soft);
-}
-
-/* Self message ------------------------------------------------------------ */
-
-.self-message {
-  position: relative;
-  margin: 0 0 1rem;
-  padding: 1rem 1.1rem;
-  background: var(--accent-soft);
-  border-left: 3px solid var(--accent);
-  border-radius: 0 8px 8px 0;
-}
-
-.self-message p {
-  margin: 0 0 0.5rem;
-  font-size: 1.0625rem;
-}
-
-.self-message cite {
-  font-size: 0.75rem;
-  color: var(--ink-soft);
-  font-style: normal;
-}
-
-.self-message audio {
   width: 100%;
-  margin-top: 0.6rem;
-}
-
-.suggestion h2 {
-  font-size: 1.25rem;
-}
-
-/* Metrics ----------------------------------------------------------------- */
-
-.metric-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
-.metric {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.metric-wide {
-  grid-column: 1 / -1;
-}
-
-.metric-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--ink-soft);
-}
-
-.metric-value {
-  font-size: 2rem;
-  font-weight: 300;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-}
-
-.metric-note {
-  font-size: 0.8125rem;
-  color: var(--ink-soft);
-}
-
-.streak {
-  font-size: 2.5rem;
-  font-weight: 300;
-  font-variant-numeric: tabular-nums;
-  margin: 0;
-}
-
-/* Calibration plot -------------------------------------------------------- */
-
-.calibration {
+.demand {
   width: 100%;
-  max-width: 18rem;
-  display: block;
-  margin: 0.5rem auto;
-}
-
-.plot-bg {
-  fill: var(--bg);
-  stroke: var(--line);
-}
-
-.plot-ideal {
-  stroke: var(--line);
-  stroke-dasharray: 4 4;
-}
-
-.plot-point {
-  fill: var(--accent);
-  fill-opacity: 0.75;
-}
-
-.plot-axis {
-  fill: var(--ink-soft);
-  font-size: 9px;
-}
-
-/* Navigation -------------------------------------------------------------- */
-
-.tabs {
-  position: sticky;
-  bottom: 0;
-  display: flex;
+  min-height: 5rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
   background: var(--surface);
-  border-top: 1px solid var(--line);
-  padding-bottom: env(safe-area-inset-bottom);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.75rem;
 }
 
-.tab {
-  flex: 1;
-  border: none;
-  border-radius: 0;
-  background: none;
-  color: var(--ink-soft);
-  font-size: 0.75rem;
-  padding: 0.85rem 0.25rem;
-}
-
-.tab-active {
-  color: var(--accent);
-  font-weight: 600;
-  box-shadow: inset 0 2px 0 var(--accent);
-}
-
-.status {
-  padding: 1rem;
-  color: var(--ink-soft);
-  font-size: 0.875rem;
-}
-
-.fork-done h1 {
-  font-size: 1.5rem;
-}
-
-/* The "name your own" tile. Dashed rather than filled: it is an escape hatch
-   from the shipped list, not a ninth option competing with the eight. */
-.tag-button-add {
+.demand-add {
   border-style: dashed;
   background: none;
   color: var(--ink-soft);
 }
 
-.tag-button-add strong {
-  color: var(--ink);
-}
+/* Waiting ---------------------------------------------------------------- */
 
-/* Session rows: date, span, then the quiet detail. Times are tabular so the
-   column reads as a column rather than as ragged text. */
-.sessions {
-  list-style: none;
-  margin: 0.5rem 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  font-size: 0.875rem;
-}
-
-.sessions li {
-  display: grid;
-  grid-template-columns: 4.5rem 1fr;
-  gap: 0.1rem 0.6rem;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 0.6rem;
-}
-
-.session-when {
-  grid-row: span 2;
+.wait-demand {
+  margin: 0;
   color: var(--ink-soft);
-}
-
-.session-span {
-  font-variant-numeric: tabular-nums;
   font-size: 1rem;
 }
 
-.sessions .hint {
+.ring {
+  width: 100%;
+  max-width: 15rem;
+  display: block;
+}
+
+.ring-track {
+  fill: none;
+  stroke: var(--line);
+}
+
+.ring-arc {
+  fill: none;
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.ring-arc-done {
+  stroke: var(--line);
+}
+
+.ring-label {
+  fill: var(--ink);
+  font-size: 44px;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.wait-note {
   margin: 0;
+  color: var(--ink-soft);
+  text-align: center;
+  font-size: 0.9375rem;
+}
+
+.screen-scroll .wait-note {
+  text-align: left;
+}
+
+/* Cards ------------------------------------------------------------------ */
+
+.card {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.card-label {
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+.card-body {
+  margin: 0;
+  font-size: 1.125rem;
+}
+
+.card-figure {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.card-note {
+  margin: 0.5rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+/* Actions ---------------------------------------------------------------- */
+
+.actions {
+  width: 100%;
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+/* All outcomes look alike. The moment one of them is visually cheaper than
+   the others is the moment the user starts picking by appearance. */
+.action {
+  flex: 1;
+  min-height: 3.25rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+}
+
+.action:active {
+  background: var(--accent-soft);
+}
+
+.wide {
+  width: 100%;
+}
+
+.as-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footnote {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+}
+
+/* Forms and lists -------------------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.75rem;
+}
+
+input[type='text'],
+select {
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.7rem;
+  width: 100%;
+}
+
+.stock {
+  list-style: none;
+  margin: 0.5rem 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.stock li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9375rem;
+}
+
+.stock li > span:first-child {
+  flex: 1;
+}
+
+.stock .card-note {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.remove {
+  border: none;
+  background: none;
+  color: var(--ink-soft);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.25rem;
 }

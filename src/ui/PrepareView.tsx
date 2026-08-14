@@ -1,137 +1,67 @@
 /**
- * The calm hours: writing what the fork will need.
+ * The calm hours: stocking the shelf.
  *
- * Loewenstein's hot–cold empathy gap says the calm self cannot reason with the
- * craving self — it cannot even model it accurately. What it *can* do is leave
- * something behind. So this screen is a letterbox: the user writes to themselves
- * now, and the fork screen hands it back later. The app never generates this
- * text, because advice from an app has no standing at a fork and their own voice
- * does.
+ * Alcohol is extremely cheap at the moment of an urge — fast, reliable, requires
+ * no decision. Anything competing with it has to be available on the same terms,
+ * which means chosen in advance and named in the user's own words. Asking "what
+ * could you do instead?" mid-urge asks for the one faculty that is not available.
+ *
+ * So this screen exists to be used when nothing is happening, and the wait screen
+ * only ever hands back what was put here.
  */
 
-import { useRef, useState } from 'react';
-import type { Alternative, FunctionTag } from '../core/types';
-import { rankAlternatives } from '../core/substitution';
-import { functionHint, functionLabel, functionOptions } from '../core/functions';
+import { useState } from 'react';
+import { BUILTIN_DEMANDS } from '../core/types';
+import { demandLabel, demandOptions } from '../core/demands';
+import { rankSupplies } from '../core/stats';
 import type { Store } from '../store';
+import type { Demand } from '../core/types';
 
-const newId = () => (crypto.randomUUID?.() ?? String(Date.now() + Math.random()));
-
-export function PrepareView({ store }: { store: Store }) {
-  const [tag, setTag] = useState<FunctionTag>('unwind');
-  const [text, setText] = useState('');
+export function PrepareView({ store, onBack }: { store: Store; onBack: () => void }) {
+  const [demand, setDemand] = useState<Demand>(BUILTIN_DEMANDS[0]);
   const [label, setLabel] = useState('');
-  const [recording, setRecording] = useState(false);
-  const [functionLabelDraft, setFunctionLabelDraft] = useState('');
-  const [functionHintDraft, setFunctionHintDraft] = useState('');
-  const recorder = useRef<MediaRecorder | null>(null);
-  const chunks = useRef<Blob[]>([]);
 
-  const existing = store.messages.find((m) => m.tag === tag);
-  const ranked = rankAlternatives(store.alternatives, tag);
-  const options = functionOptions(store.functions);
-  const ownFunctions = store.functions.filter((f) => !f.archived);
+  const ranked = rankSupplies(store.supplies, demand);
+  const ownDemands = store.demands.filter((d) => !d.archived);
 
-  const addOwnFunction = async () => {
-    const created = await store.addFunction(functionLabelDraft, functionHintDraft);
-    if (!created) return;
-    setFunctionLabelDraft('');
-    setFunctionHintDraft('');
-    // Jump to the new function: the reason to define one is to prepare for it.
-    setTag(created);
-  };
-
-  const saveMessage = async () => {
-    if (!text.trim()) return;
-    await store.upsertMessage({
-      id: existing?.id ?? newId(),
-      tag,
-      text: text.trim(),
-      audio: existing?.audio,
-      createdAt: Date.now(),
-    });
-    setText('');
-  };
-
-  const addAlternative = async () => {
-    if (!label.trim()) return;
-    const match = store.alternatives.find(
-      (a) => a.label.toLowerCase() === label.trim().toLowerCase(),
-    );
-    // Reuse an existing option across functions rather than forking its history —
-    // a walk that works for boredom and for unwinding is one option with one record.
-    const next: Alternative = match
-      ? { ...match, tags: [...new Set([...match.tags, tag])], archived: false }
-      : { id: newId(), label: label.trim(), tags: [tag], attempts: [] };
-    await store.upsertAlternative(next);
+  const add = async () => {
+    await store.addSupply(label, demand);
     setLabel('');
   };
 
-  const startRecording = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const rec = new MediaRecorder(stream);
-    chunks.current = [];
-    rec.ondataavailable = (e) => chunks.current.push(e.data);
-    rec.onstop = async () => {
-      stream.getTracks().forEach((t) => t.stop());
-      const audio = new Blob(chunks.current, { type: rec.mimeType });
-      await store.upsertMessage({
-        id: existing?.id ?? newId(),
-        tag,
-        text: existing?.text ?? '',
-        audio,
-        createdAt: Date.now(),
-      });
-      setRecording(false);
-    };
-    recorder.current = rec;
-    rec.start();
-    setRecording(true);
-  };
-
   return (
-    <section className="view">
-      <header className="view-head">
-        <h1>Valmistelu</h1>
-        <p className="lede">
-          Tämä tehdään rauhassa. Risteyksessä ei ehdi eikä jaksa keksiä mitään — siellä on
-          käytettävissä vain se, mikä on jo valmiina.
-        </p>
-      </header>
+    <section className="screen screen-scroll">
+      <h1 className="ask">Valmistelu</h1>
+      <p className="wait-note">
+        Risteyksessä ei ehdi keksiä mitään. Siellä on käytettävissä vain se, mikä on
+        jo valmiina.
+      </p>
 
-      <div className="block">
+      <div className="card">
         <label className="field">
-          Mitä tehtävää valmistelet
-          <select value={tag} onChange={(e) => setTag(e.target.value as FunctionTag)}>
-            {options.map((o) => (
-              <option key={o.tag} value={o.tag}>
+          Mihin tarpeeseen
+          <select value={demand} onChange={(e) => setDemand(e.target.value)}>
+            {demandOptions(store.demands).map((o) => (
+              <option key={o.demand} value={o.demand}>
                 {o.label}
               </option>
             ))}
           </select>
-          <span className="hint">{functionHint(tag, store.functions)}</span>
         </label>
-      </div>
 
-      <div className="block">
-        <h2>Omat tehtävät</h2>
-        <p className="hint">
-          Kahdeksan valmista tehtävää on arvaus siitä, mihin juoma otetaan. Jos omasi ei ole
-          niiden joukossa, lisää se — se on mukana risteysvalinnoissa ja kaikessa analyysissä
-          siitä eteenpäin.
-        </p>
-
-        {ownFunctions.length > 0 && (
-          <ul className="ranked">
-            {ownFunctions.map((f) => (
-              <li key={f.id}>
-                <span>{f.label}</span>
+        {ranked.length > 0 && (
+          <ul className="stock">
+            {ranked.map((r) => (
+              <li key={r.supply.id}>
+                <span>{r.supply.label}</span>
+                <span className="card-note">
+                  {r.untested ? 'kokeilematta' : `${r.helped}/${r.attempts}`}
+                </span>
                 <button
                   type="button"
-                  className="chip-remove"
-                  onClick={() => store.archiveFunction(f.id, true)}
-                  aria-label={`Poista käytöstä: ${f.label}`}
-                  title="Poista käytöstä"
+                  className="remove"
+                  onClick={() => store.archiveSupply(r.supply.id)}
+                  aria-label={`Poista ${r.supply.label}`}
                 >
                   ×
                 </button>
@@ -141,108 +71,53 @@ export function PrepareView({ store }: { store: Store }) {
         )}
 
         <label className="field">
-          Tehtävän nimi
-          <input
-            type="text"
-            value={functionLabelDraft}
-            onChange={(e) => setFunctionLabelDraft(e.target.value)}
-            placeholder="riita kotona"
-          />
-        </label>
-        <label className="field">
-          Milloin se pätee (valinnainen)
-          <input
-            type="text"
-            value={functionHintDraft}
-            onChange={(e) => setFunctionHintDraft(e.target.value)}
-            placeholder="kun ilta menee pieleen"
-          />
-        </label>
-        <button type="button" className="secondary" onClick={addOwnFunction}>
-          Lisää tehtävä
-        </button>
-        <p className="hint">
-          Käytöstä poistaminen ei poista historiaa: vanhat päivät säilyvät luettavina, tehtävä
-          vain katoaa valinnoista.
-        </p>
-      </div>
-
-      <div className="block">
-        <h2>Viesti itsellesi</h2>
-        <p className="hint">
-          Mitä sanoisit itsellesi juuri siinä hetkessä? Kirjoita omilla sanoillasi, ei
-          neuvona vaan viestinä.
-        </p>
-        {existing?.text && (
-          <blockquote className="self-message">
-            <p>{existing.text}</p>
-            <button
-              type="button"
-              className="chip-remove"
-              onClick={() => store.removeMessage(existing.id)}
-              aria-label="Poista viesti"
-            >
-              ×
-            </button>
-          </blockquote>
-        )}
-        <textarea
-          rows={4}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Tiedän että juuri nyt tuntuu…"
-        />
-        <div className="button-row">
-          <button type="button" className="secondary" onClick={saveMessage}>
-            {existing?.text ? 'Korvaa viesti' : 'Tallenna viesti'}
-          </button>
-          {recording ? (
-            <button
-              type="button"
-              className="secondary"
-              onClick={() => recorder.current?.stop()}
-            >
-              Lopeta nauhoitus
-            </button>
-          ) : (
-            <button type="button" className="secondary" onClick={startRecording}>
-              Nauhoita ääni
-            </button>
-          )}
-        </div>
-        {existing?.audio && <p className="hint">Ääniviesti tallennettu tälle tehtävälle.</p>}
-      </div>
-
-      <div className="block">
-        <h2>Vaihtoehdot</h2>
-        <p className="hint">
-          Mikä muu voisi hoitaa tehtävän <strong>{functionLabel(tag, store.functions)}</strong>?
-          Ei parempi ihminen, vaan jotain mikä on käden ulottuvilla kolmessa sekunnissa.
-        </p>
-        {ranked.length > 0 && (
-          <ul className="ranked">
-            {ranked.map((r) => (
-              <li key={r.alternative.id}>
-                <span>{r.alternative.label}</span>
-                <span className="hint">
-                  {r.untested ? 'kokeilematta' : `${r.successes}/${r.attempts}`}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-        <div className="field-row">
+          Mikä voisi auttaa tähän
           <input
             type="text"
             value={label}
             onChange={(e) => setLabel(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') void add();
+            }}
             placeholder="kävely ulkona"
           />
-          <button type="button" className="secondary" onClick={addAlternative}>
-            Lisää
-          </button>
-        </div>
+        </label>
+        <button type="button" className="action wide" onClick={add}>
+          Lisää
+        </button>
+        <p className="card-note">
+          Konkreettinen ja käden ulottuvilla kolmessa sekunnissa. Ei parempi ihminen.
+        </p>
       </div>
+
+      {ownDemands.length > 0 && (
+        <div className="card">
+          <p className="card-label">Omat tarpeet</p>
+          <ul className="stock">
+            {ownDemands.map((d) => (
+              <li key={d.id}>
+                <span>{demandLabel(d.id, store.demands)}</span>
+                <span className="card-note" />
+                <button
+                  type="button"
+                  className="remove"
+                  onClick={() => store.archiveDemand(d.id)}
+                  aria-label={`Poista ${d.label}`}
+                >
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
+          <p className="card-note">
+            Poistaminen ei poista historiaa: vanhat merkinnät säilyvät luettavina.
+          </p>
+        </div>
+      )}
+
+      <button type="button" className="quiet" onClick={onBack}>
+        Takaisin
+      </button>
     </section>
   );
 }

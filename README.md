@@ -1,229 +1,63 @@
-# Sobriety
+# Kymmenen minuuttia
 
-**Et yritä lopettaa juomista. Yrität tulla tarkaksi ennustajaksi omasta käytöksestäsi.**
+**Tämä ei mittaa sinua. Se on käytettävissä ne kymmenen minuuttia, kun tekee mieli.**
 
-Tämä on juomapäiväkirja, joka ei laske raittiita päiviä, ei aseta tavoitteita eikä
-kerro sinulle miten meni. Se tekee yhden asian: pyytää sinua aamulla arvaamaan,
-juotko tänään — ja pisteyttää illalla *arvauksen*, ei päivää.
+Yksi painike. Painat kun tekee mieli, sovellus kysyy yhden asian — *mitä se tekisi
+juuri nyt* — ja pyytää odottamaan kymmenen minuuttia. Sillä aikaa se näyttää sen
+konkreettisen asian, jonka olet itse rauhassa kirjoittanut juuri tähän tarpeeseen.
 
-Raittius, jos se tulee, tulee sivutuotteena siitä että itsemalli tarkentuu tarpeeksi
-hyväksi, että risteyskohta näkyy ennen kuin siitä on kuljettu ohi.
+Ei putkea. Ei pisteitä. Ei päivittäistä velvoitetta. Ei mitään mistä voi jäädä
+jälkeen.
 
 ---
 
-## Miksi tavallinen seuranta ei toimi
+## Miksi odottaminen ja ei mittaaminen
 
-Ihminen kirjaa kaiken, saa palautetta, ja jatkaa juomista. Se ei ole
-motivaatiopula. Se on suunnitteluvirhe, ja se toistuu käytännössä jokaisessa alan
-sovelluksessa.
+**Odottaminen on päätös, jonka pystyy tekemään.** "Lopeta juominen" on päätös
+sellaisesta minästä, jota ei juuri nyt ole paikalla. "Odota kymmenen minuuttia" on
+päätös seuraavista kymmenestä minuutista, ja sen voi perua koska tahansa. Viive on
+myös ainoa vipu joka vaikuttaa välittömän palkinnon etuun: sen veto laskee kun
+viive kasvaa. Siksi ajastin *on* käyttöliittymä eikä sen yksityiskohta.
 
-**1. Palaute puhuu väärälle järjestelmälle.** Riippuvuus toimii pääosin
-automaattisen, opitun järjestelmän kautta. Kirjaaminen ja graafit puhuvat
-harkitsevalle järjestelmälle — sille osalle, joka on jo vakuuttunut. "Tiedän että
-juon liikaa" ei ole se puuttuva palanen. Tieto ei ole koskaan ollut se puuttuva
-palanen.
+**Kysyntä, ei syy.** Kysymys on mitä juoma *tekisi*, ei miksi tekee mieli. Syyn
+selittäminen vaatii harkintaa jota siinä hetkessä ei ole käytettävissä — ja
+tehtävään voi tarjota korvaajan, syyhyn ei.
 
-**2. Mittaamisesta tulee itse selviytymiskeino.** Kirjaaminen antaa hallinnan
-tunteen. Hallinnan tunne laskee sitä ahdistusta, joka olisi pakottanut muutokseen.
-Sovellus asettuu muutoksen tielle *korvaamalla* sen.
+**Tarjonta valmistellaan etukäteen.** Alkoholi on siinä hetkessä äärimmäisen halpa:
+nopea, luotettava, ei vaadi päätöstä. Kilpailijan pitää olla yhtä lähellä. Siksi
+sovellus ei koskaan kysy "mitä voisit tehdä sen sijaan?" kesken himon, vaan antaa
+takaisin sen mitä rauhallinen sinä kirjoitti. Se ei myöskään generoi tekstiä
+puolestasi: sovelluksen neuvolla ei ole siinä hetkessä painoarvoa, sinun omalla
+lauseellasi on.
 
-**3. Palaute on arvio, ja arvio on häpeää.** "Ylitit tavoitteesi" on pieni annos
-häpeää joka ilta. Häpeä on yksi parhaiten dokumentoiduista retkahduksen
-laukaisijoista. Sovellus tuottaa päivittäin sitä ainetta, jota vastaan se väittää
-taistelevansa.
+**Kaikki kolme lopputulosta näyttävät samalta.** *Meni ohi*, *hetki lisää* ja
+*otin sen* ovat samankokoisia, samanvärisiä, yhtä kaukana peukalosta. Sovellus
+jolle pitää valehdella lakkaa saamasta dataa juuri silloin kun data olisi
+arvokasta — ja sovellus joka tekee yhdestä vastauksesta kiusallisen *on* sovellus
+jolle valehdellaan.
 
-**4. Putkilaskuri tekee retkahduksesta katastrofin.** Marlattin *abstinence
-violation effect*: kun 84 päivän putki katkeaa yhdestä lasillisesta, romahdus ei
-ole yksi lasillinen vaan koko viikonloppu. Laskuri ei mittaa romahdusta — se
-rakentaa sen.
+**Mikään luku ei arvostele sinua.** Historiassa esitetyt luvut ovat *tarjonnan*
+ominaisuuksia ("kävely on auttanut 4/5 kertaa") tai himon ominaisuuksia ("se on
+mennyt ohi noin kuudessa minuutissa"). Kumpikaan ei ole pisteytys, josta voi olla
+jäljessä.
 
-**5. Juominen ei ole ongelma vaan ratkaisu.** Se ratkaisee jotain: unta,
-sosiaalista jännitystä, työpäivän loppumattomuutta, tyhjää iltaa, tunnetta jota ei
-halua tuntea. Ratkaisun poistaminen ilman että tehtävä hoidetaan jotenkin muuten
-ei ole suunnitelma, se on toive.
+**Alle viiden merkinnän osuuksia ei näytetä.** Kolmesta havainnosta laskettu
+prosentti on huhu. `stats.ts` palauttaa silloin `NaN`, ja käyttöliittymä kirjoittaa
+"liian vähän vielä" numeron sijaan. Tällä alueella väärä mutta itsevarma väite
+omasta käyttäytymisestä on pahempi kuin ei väitettä lainkaan.
 
-**6. Päätös on tehty kauan ennen ensimmäistä lasillista.** Kirjaus tallentaa
-juoman. Valinta tapahtui ehkä 90 minuuttia aiemmin hetkessä, joka ei tuntunut
-miltään. Sitä hetkeä ei ole missään datassa.
+### Se yksi luku joka on hyödyllinen
 
-**7. Aamun minä ei tavoita illan minää.** Loewensteinin *hot–cold empathy gap*:
-rauhallinen ihminen ei pysty edes kuvittelemaan himon voimakkuutta, saati
-neuvottelemaan sen kanssa. Tavoitteen asettaa maanantaiaamun ihminen. Paikalla on
-perjantai-illan ihminen, joka ei tunne häntä.
+Kun merkintöjä on tarpeeksi, sovellus kertoo **kauanko himo on sinun omissa
+merkinnöissäsi kestänyt** ennen kuin se meni ohi. Se muuttaa "kestä loputtomiin"
+luvuksi, jonka olet jo useamman kerran voittanut. Mediaani, ei keskiarvo — yksi
+poikkeuksellisen pitkä kerta ei saa siirtää tyypillistä tapausta.
 
-Tarkennus rehellisyyden vuoksi: psykologia **on** kuvannut nämä kaikki. Marlatt,
-dual-process-mallit, viivediskonttaus, käyttäytymistaloustiede. Uutta ei ole
-mekanismi vaan se, että työkalut rakennetaan yhä sen mallin varaan, jonka tutkimus
-on jo hylännyt.
-
-## Mitä tämä tekee toisin
-
-**Ennuste, ei kirjaus.** Aamulla annat luvun: kuinka todennäköisesti juot tänään.
-Illalla kerrot mitä tapahtui. Sovellus pisteyttää ennusteen tarkkuuden.
-
-Tämä kääntää koko kannustinrakenteen ympäri:
-
-- **Peli, jonka voi voittaa juomapäivänäkin.** Ennustit 85 %, joit — täydet pisteet.
-  Ennustit 10 %, joit — siinä on tietoa itsestäsi, jota sinulla ei ollut aamulla.
-- **Häpeä poistuu rakenteesta, ei sanavalinnoista.** Sovellus ei voi paheksua
-  juomista, koska juominen ei ole sen mittari. Mikään merkkijono käyttöliittymässä
-  ei arvota päivää.
-- **Se vaatii juuri sitä, mikä riippuvuudessa rapautuu.** Oman käytöksen tarkka
-  ennustaminen edellyttää toimivaa itsemallia. Kalibraation harjoittelu *on*
-  itsetuntemuksen harjoittelua — ei siitä puhumista.
-- **Se siirtää katseen eteenpäin.** Kirjaus katsoo taaksepäin tapahtumaan, jolle ei
-  voi enää mitään. Ennuste katsoo hetkeen, jossa voi vielä toimia.
-
-### Kolme lukua yhden putkilaskurin sijaan
-
-Pisteytys on Brier-pistemäärä ja sen Murphy-hajotelma, joka sattuu jakautumaan
-kolmeen osaan joilla on suora inhimillinen merkitys:
-
-```
-Brier = kalibrointivirhe − erottelukyky + perustason vaihtelu
-```
-
-| Luku | Mitä se sanoo | Suunta |
-|---|---|---|
-| **Erottelukyky** | Erotatko riskipäivät muista jo aamulla | ylös |
-| **Kalibrointivirhe** | Kun sanot 70 %, tapahtuuko se 70 % ajasta | alas |
-| **Ennustetaito** | Kertovatko ennusteesi enemmän kuin pelkkä keskiarvosi | ylös |
-
-Erottelukyky on tässä se kiinnostava. Ihminen joka antaa joka päivälle "50 %" saa
-nollan — se on itsemallin puuttumisen allekirjoitus. Kun luku alkaa nousta, ihminen
-on alkanut nähdä päivissä eron etukäteen. Se on mitattavissa, ja se tapahtuu ennen
-kuin juomisessa näkyy mitään.
-
-### Muut suunnitteluratkaisut
-
-**Sokeiden pisteiden etsintä.** Kun risteys tulee vastaan aikaikkunassa, jota et
-merkinnyt aamulla, se kirjataan yllätykseksi. Kolmen toiston jälkeen sovellus
-kertoo: "torstai-iltana tulee risteys, jota et näe tulevaksi." Se on
-kalibrointivirheraportti, ei syytös.
-
-**Tehtävälista on avoin.** Kahdeksan valmista tehtävää on kehittäjän arvaus siitä,
-mihin juoma otetaan. Jos arvaus ei osu, käyttäjä kirjaa iltansa lähimmän väärän
-otsikon alle — ja sen jälkeen jokainen luku lasketaan kategorian yli, jota hänellä
-ei ole. Siksi omia tehtäviä voi lisätä sekä rauhassa Valmistelussa että kesken
-risteyksen, ja ne ovat mukana analyysissä täsmälleen samoin kuin valmiit. Samalla
-nimellä lisääminen käyttää olemassa olevaa tehtävää uuden sijaan, jottei saman
-asian historia jakaudu kahdelle tunnisteelle. Käytöstä poisto on arkistointi, ei
-poisto: vanhat päivät säilyvät luettavina.
-
-**Risteys, ei juoma, on kirjattava tapahtuma.** Yksikkö on hetki jossa päivä
-haarautuu. Neljä vaihtoehtoa — *join*, *siirsin*, *tein jotain muuta*, *ohitin* —
-kirjataan täsmälleen samalla tavalla. Sovellus jolle pitää valehdella lakkaa
-saamasta dataa juuri silloin kun data on tärkeintä.
-
-**Hetkessä huomaaminen erotellaan jälkikäteen muistamisesta.** Huomaaminen on
-harjoiteltavissa tavalla, jolla juomatta jättäminen ei ole: himoa ei voi päättää
-pois, mutta niiden kymmenen sekunnin havaitsemisessa voi kehittyä. Siksi ne kaksi
-eivät koskaan mene samaan lukuun.
-
-**Kylmä minä kirjoittaa kuumalle minälle.** Rauhallisena kirjoitat tai nauhoitat
-viestin itsellesi. Risteyksessä sovellus antaa sen takaisin. Se ei koskaan generoi
-tekstiä puolestasi — sovelluksen neuvolla ei ole risteyksessä mitään painoarvoa,
-sinun omalla äänelläsi on.
-
-**Vaihtoehto tarjotaan valmiiksi valittuna.** Alkoholi on risteyksessä äärimmäisen
-halpa: nopea, luotettava, ei vaadi päätöstä. Kilpailijan pitää olla yhtä lähellä.
-Siksi vaihtoehtoja ei keksitä risteyksessä vaan rauhassa etukäteen, ja risteyksessä
-näytetään yksi nimetty vaihtoehto oman onnistumishistoriasi kanssa.
-
-**Päivä ei vaihdu keskiyöllä vaan klo 05.** Ilta joka jatkuu puolenyön yli on
-yksi ilta, ja kalenterirajaan katkaistuna sen jälkipuolisko päätyisi päivälle
-jolle ei tehty ennustetta — jolloin illan ennuste jäisi kokonaan pisteyttämättä.
-Raja on säädettävissä Tiedot-välilehdellä.
-
-**Jakso näytetään, päivä pisteytetään.** Itsetuntemus-näkymä esittää päivän
-yhtenä jaksona — ensimmäisestä risteyksestä viimeiseen, rajasta rajaan — jolloin
-puolenyön yli jatkunut ilta näkyy yhtenä jaksona eikä kahtena. Jakso on
-johdettu, ei tallennettu: se on se mihin risteykset summautuvat. Jos jakson
-sisällä on yli kolmen tunnin tauko, se sanotaan ääneen ("erillisissä erissä"),
-jottei 12.30–23.00 näytä yhdeltä yhtenäiseltä illalta.
-
-Jakso ei silti kelpaa **pisteytysyksiköksi**, vaikka se on luontevampi
-kokemuksena. Kalibrointi vaatii yksikön joka on olemassa myös silloin kun mitään
-ei tapahdu. Jakso on määritelmällisesti juomisjakso: jokaisen toteuma olisi
-"join", perustaso 100 %, erottelukyky nolla. Yksikköä joka syntyy vasta
-ennustettavasta tapahtumasta ei voi ennustaa.
-
-**Rytmi kysytään heti, ei arvata.** Ensimmäisellä käynnistyksellä kysytään yksi
-asia: milloin sinun päiväsi vaihtuu, ja milloin haluat sulkea sen. Se on akseli
-jota vasten jokainen myöhempi luku mitataan, joten sen arvaaminen käyttäjän
-puolesta menee väärin kaikilla joiden illat eivät noudata kalenteria. Kysely on
-yksi ruutu, ohitettavissa, eikä se kysy juomamääristä mitään — asetusruudusta ei
-tehdä tarkastusta.
-
-**Ainoa putkilaskuri mittaa mukanaoloa.** Se katkeaa vain väliin jätetystä
-päivästä. Juominen ei katkaise sitä — ei koskaan.
-
-## Tekniikka
-
-Local-first PWA. Ei tiliä, ei palvelinta, ei verkkokutsuja missään koodissa. Data
-on selaimen IndexedDB:ssä ja lähtee laitteelta vain kun viet sen itse JSON-tiedostona.
-Tämä on arkkitehtuurirajoite, ei ensimmäisen vaiheen oikaisu: tämä on
-arkaluontoisimpia terveysdatoja mitä ihminen voi tuottaa, ja arkkitehtuurissa
-pidetty lupaus on enemmän arvoinen kuin tietosuojaselosteessa pidetty.
-
-```
-src/core/          puhdas logiikka, ei riippuvuuksia UI:hin — täysin testattu
-  types.ts         domain-malli
-  forecast.ts      Brier, Murphy-hajotelma, kalibrointi, mukanaoloputki
-  windows.ts       sokeat pisteet, funktiokuorma, huomaamisaste
-  substitution.ts  vaihtoehtojen ranking (Laplace-silotus + Wilson-alaraja)
-  sessions.ts      päivä yhtenä jaksona, johdettu risteyksistä
-  day.ts           päivän elinkaari, paikalliset päivämäärät
-src/storage/db.ts  IndexedDB, vienti/tuonti/poisto
-src/ui/            näkymät
-app.html           Vite-sisääntulo (ei index.html — ks. Julkaisu)
-index.html         julkaistu käännös, generoitu — älä muokkaa käsin
-assets/            julkaistun käännöksen tiedostot, generoitu
-```
-
-```bash
-npm install
-npm run dev        # kehityspalvelin
-npm test           # 123 testiä ydinlogiikalle
-npm run build      # typecheck + käännös + synkkaus repon juureen
-```
-
-## Julkaisu
-
-Sivusto on osoitteessa https://kokoajat.github.io/Sobriety-/ ja se julkaistaan
-**repon juuresta**, ei erillisestä käännösvaiheesta. Siksi juuren `index.html` ja
-`assets/` ovat versionhallinnassa: ne *ovat* julkaistu sivusto.
-
-Tämä on epätavallista ja syy on kertomisen arvoinen. GitHub Pages ei käännä
-mitään — se tarjoilee valitun lähteen sellaisenaan. Jos Viten sisääntulo olisi
-juuren `index.html`:nä, Pages tarjoilisi sen kääntämättä, selain kohtaisi
-`<script src="/src/main.tsx">`-rivin jota se ei osaa suorittaa, ja sivu jäisi
-tyhjäksi. Siksi sisääntulo on `app.html` eikä `index.html`.
-
-Puhtaampi ratkaisu olisi asettaa Pagesin lähteeksi *GitHub Actions*, jolloin
-`.github/workflows/deploy.yml` julkaisisi `dist/`-hakemiston eikä käännöstä
-tarvitsisi committoida. Se workflow on olemassa ja toimii. Vaihto vaatii kuitenkin
-repositorion asetuksen (Settings → Pages → Source), eikä sitä pysty tekemään
-koodista. Jos vaihdat sen, voit poistaa juuresta `index.html`:n, `assets/`:n ja
-`scripts/sync-build.mjs`:n sekä palauttaa `app.html`:n nimeksi `index.html`.
-
-**Muistisääntö:** älä koskaan muokkaa juuren `index.html`:ää tai `assets/`:ia
-käsin. Aja `npm run build` ja committaa sen tulos. CI kääntää uudelleen ja kaatuu,
-jos committoitu käännös ei vastaa lähdekoodia.
-
-## Tilanne
-
-Toimiva MVP. Ydinlogiikka on testattu ja käyttöliittymä on käytettävissä koko
-kierrokseen: aamun ennuste → risteys → illan sulkeminen → kalibrointinäkymä.
-
-Seuraavaksi ilmeiset: paikalliset muistutukset ennusteelle ja illan sulkemiselle
-(ilman niitä kierros katkeaa), risteysilmoitus ennustettuun ikkunaan,
-service worker offline-käyttöön, ja kalibroinnin kehityskäyrä ajassa.
-
-## Mikä tämä ei ole
+## Mitä tämä ei ole
 
 Tämä ei ole hoitoa eikä korvaa sitä. Malli on suunnitteluhypoteesi, joka nojaa
-oikeaan tutkimukseen mutta jota ei ole kliinisesti testattu — pidä sitä sellaisena.
+oikeaan tutkimukseen (viive ja himon aaltoluonne, korvaavien vahvisteiden
+taloustiede, häpeän rooli retkahduksessa) mutta jota ei ole kliinisesti testattu.
 
 Jos juot päivittäin ja runsaasti, **äkillinen lopettaminen voi olla
 hengenvaarallista**: vieroitusoireet voivat johtaa kouristuksiin ja deliriumiin.
@@ -231,3 +65,72 @@ Vieroitus kuuluu silloin lääkärille, ei sovellukselle.
 
 Päivystysapu 112 · Päihdeneuvonta 0800 900 45 (maksuton, nimetön, ympäri
 vuorokauden)
+
+## Tekniikka
+
+Local-first PWA. Ei tiliä, ei palvelinta, ei verkkokutsuja missään koodissa. Data
+on selaimen IndexedDB:ssä ja lähtee laitteelta vain kun viet sen itse
+JSON-tiedostona. Arkkitehtuurirajoite, ei ensimmäisen vaiheen oikaisu.
+
+Käynnissä oleva odotus elää tallennuksessa eikä komponentin tilassa: kymmenen
+minuutin ajastimen kohdalla näytön lukittuminen ja välilehden karsiminen ovat
+normaalitilanne, eivät reunatapaus. Sovelluksen avaaminen kesken himon palauttaa
+laskurin, ei valikkoa.
+
+```
+src/core/          puhdas logiikka, ei riippuvuuksia UI:hin — testattu
+  types.ts         domain-malli
+  waiting.ts       odotuksen tila: jäljellä, edistymä, jatkaminen, sulkeminen
+  stats.ts         rehelliset tunnusluvut, NaN alle viiden havainnon
+  demands.ts       tarpeiden nimet, omat tarpeet
+src/storage/db.ts  IndexedDB, vienti/tuonti/poisto
+src/ui/            näkymät: yksi ruutu kerrallaan, ei välilehtipalkkia
+app.html           Vite-sisääntulo (ei index.html — ks. Julkaisu)
+index.html         julkaistu käännös, generoitu — älä muokkaa käsin
+```
+
+```bash
+npm install
+npm run dev        # kehityspalvelin
+npm test           # 48 testiä ydinlogiikalle
+npm run build      # typecheck + käännös + synkkaus repon juureen
+```
+
+Tietokannan nimi on `kymmenen-minuuttia`. Tästä samasta reposta julkaistiin
+aiemmin toinen, hyvin erilainen sovellus nimellä `sobriety`, ja joillakin
+laitteilla sen data on yhä tallessa. Nimeä ei käytetä uudelleen: se olisi
+tarkoittanut joko lukemista skeemasta jota tämä ei ymmärrä, tai jonkun historian
+migraatiota malliin jota varten sitä ei koskaan kirjattu.
+
+## Julkaisu
+
+Sivusto on osoitteessa https://kokoajat.github.io/Sobriety-/ ja se julkaistaan
+**repon juuresta**. Siksi juuren `index.html` ja `assets/` ovat versionhallinnassa:
+ne *ovat* julkaistu sivusto.
+
+GitHub Pages ei käännä mitään — se tarjoilee valitun lähteen sellaisenaan. Jos
+Viten sisääntulo olisi juuren `index.html`:nä, Pages tarjoilisi sen kääntämättä ja
+selain kohtaisi rivin `<script src="/src/main.tsx">`, jota se ei osaa suorittaa.
+Siksi sisääntulo on `app.html`.
+
+Puhtaampi ratkaisu olisi asettaa Pagesin lähteeksi *GitHub Actions*, jolloin
+`.github/workflows/deploy.yml` julkaisisi `dist/`-hakemiston. Se workflow on
+olemassa ja toimii, mutta vaihto vaatii repositorion asetuksen (Settings → Pages →
+Source), eikä sitä pysty tekemään koodista.
+
+**Älä koskaan muokkaa juuren `index.html`:ää tai `assets/`:ia käsin.** Aja
+`npm run build` ja committaa sen tulos. CI kääntää uudelleen ja kaatuu, jos
+committoitu käännös ei vastaa lähdekoodia.
+
+## Aiempi versio
+
+Tästä reposta julkaistiin ensin toinen sovellus samaan ongelmaan: **ennustepohjainen
+itsetuntemustyökalu**, jossa käyttäjä arvioi aamulla juomisen todennäköisyyden ja
+sovellus pisteytti ennusteen tarkkuuden Brier-pistemäärällä ja Murphy-hajotelmalla.
+Se on kokonaisuudessaan tallella haarassa
+[`archive/v0.1-ennustepohjainen`](https://github.com/kokoajat/Sobriety-/tree/archive/v0.1-ennustepohjainen),
+123 testiä ja oma README mukaan lukien.
+
+Se oli älyllisesti kiinnostavampi. Tämä versio lähtee siitä, mikä siinä oli
+käytännössä heikointa: se vaati kaksi kirjausta päivässä ja esitti käyttäjälle
+kalibrointimatematiikkaa hetkellä, jolloin tarvitaan yksi napautus.

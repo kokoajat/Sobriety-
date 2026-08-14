@@ -1,103 +1,39 @@
 /**
- * Finnish UI strings.
+ * Finnish UI strings and formatting.
  *
  * House rule for every string in this file: describe, never evaluate. No string
- * may congratulate a dry day or mark a wet one. Shame is one of the
- * best-documented relapse drivers, so an app that hands out a small dose of it
- * every evening is manufacturing the thing it claims to treat.
+ * may congratulate the user for waiting or mark them for not waiting. An
+ * interface that visibly approves and disapproves hands out a small dose of shame
+ * on exactly the occasions that matter most, and shame is one of the
+ * best-documented drivers of the behaviour this app is meant to help with.
  */
 
-import type { Block, ForkChoice } from '../core/types';
+export function formatMinutes(ms: number): string {
+  if (!Number.isFinite(ms)) return '–';
+  const minutes = Math.round(ms / 60_000);
+  return minutes <= 1 ? 'noin minuutissa' : `noin ${minutes} minuutissa`;
+}
 
-// Function labels live in core/functions.ts, since the user's own functions are
-// data rather than translations and both kinds must resolve the same way.
+export function formatDurationShort(ms: number): string {
+  if (!Number.isFinite(ms)) return '–';
+  const minutes = Math.round(ms / 60_000);
+  return minutes < 1 ? 'alle min' : `${minutes} min`;
+}
 
-export const BLOCK_LABELS: Record<Block, string> = {
-  morning: 'Aamu',
-  afternoon: 'Iltapäivä',
-  evening: 'Ilta',
-  night: 'Yö',
+export function formatPercent(x: number): string {
+  return Number.isFinite(x) ? `${Math.round(x * 100)} %` : '–';
+}
+
+/** `to 14.8. klo 0.35` — enough to recognise the occasion. */
+export function formatWhen(at: number): string {
+  const d = new Date(at);
+  const days = ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'];
+  const time = `${d.getHours()}.${String(d.getMinutes()).padStart(2, '0')}`;
+  return `${days[d.getDay()]} ${d.getDate()}.${d.getMonth() + 1}. klo ${time}`;
+}
+
+export const OUTCOME_LABELS: Record<string, string> = {
+  passed: 'Meni ohi',
+  took: 'Otin sen',
+  unknown: 'Ei merkintää',
 };
-
-export const BLOCK_CLOCK: Record<Block, string> = {
-  morning: '05–12',
-  afternoon: '12–17',
-  evening: '17–22',
-  night: '22–05',
-};
-
-export const CHOICE_LABELS: Record<ForkChoice, string> = {
-  drank: 'Join',
-  delayed: 'Siirsin',
-  substituted: 'Tein jotain muuta',
-  passed: 'Ohitin',
-};
-
-export const WEEKDAYS = ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'];
-
-export const WEEKDAYS_SHORT = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'];
-
-export function formatPercent(x: number, digits = 0): string {
-  return Number.isFinite(x) ? `${(x * 100).toFixed(digits)} %` : '–';
-}
-
-export function formatScore(x: number, digits = 3): string {
-  return Number.isFinite(x) ? x.toFixed(digits) : '–';
-}
-
-/** `2026-08-13` as `to 13.8.` — enough to recognise which evening is meant. */
-export function formatDate(key: string): string {
-  const d = new Date(`${key}T12:00:00`);
-  return `${WEEKDAYS_SHORT[d.getDay()].toLowerCase()} ${d.getDate()}.${d.getMonth() + 1}.`;
-}
-
-/** `155` as `2 h 35 min`. Minutes only below an hour, so short spans stay exact. */
-export function formatDuration(min: number): string {
-  if (!Number.isFinite(min)) return '–';
-  if (min < 60) return `${Math.round(min)} min`;
-  const hours = Math.floor(min / 60);
-  const rest = Math.round(min % 60);
-  return rest === 0 ? `${hours} h` : `${hours} h ${rest} min`;
-}
-
-export function formatMinute(min: number): string {
-  const h = Math.floor(min / 60) % 24;
-  const m = min % 60;
-  return `${String(h).padStart(2, '0')}.${String(m).padStart(2, '0')}`;
-}
-
-/**
- * Plain-language reading of the skill score. Deliberately flat in tone at every
- * level: the low end is a starting point, not a failure.
- */
-export function readSkill(skillScore: number, n: number): string {
-  if (!Number.isFinite(skillScore) || n < 7) {
-    return 'Liian vähän päiviä. Tämä alkaa näyttää joltain noin viikon jälkeen.';
-  }
-  if (skillScore <= 0) {
-    return 'Ennusteesi eivät vielä kerro päivistä enempää kuin keskiarvosi kertoisi.';
-  }
-  if (skillScore < 0.15) {
-    return 'Ennusteesi alkavat erottaa päiviä toisistaan.';
-  }
-  if (skillScore < 0.35) {
-    return 'Tunnistat päivän luonteen aamulla selvästi keskiarvoa paremmin.';
-  }
-  return 'Tiedät aamulla jo pitkälti, millainen päivä on tulossa.';
-}
-
-/** Reading of the calibration bias, in the direction that matters. */
-export function readBias(bias: number, n: number): string {
-  if (!Number.isFinite(bias) || n < 7) return 'Odottaa dataa.';
-  if (bias < -0.12) return 'Aliarvioit riskisi järjestelmällisesti.';
-  if (bias > 0.12) return 'Yliarvioit riskisi järjestelmällisesti.';
-  return 'Ennusteesi osuvat keskimäärin oikealle tasolle.';
-}
-
-export function readSpread(spread: number, n: number): string {
-  if (!Number.isFinite(spread) || n < 7) return 'Odottaa dataa.';
-  if (spread < 0.08) {
-    return 'Annat joka päivälle käytännössä saman luvun. Päivät eivät ole samanlaisia.';
-  }
-  return 'Erottelet päiviä toisistaan.';
-}
