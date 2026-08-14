@@ -287,6 +287,31 @@ export const FACTS: Fact[] = [
   { id: 'rec-19', category: 'recovery', text: 'Maksa uusiutuu merkittävästi. Se on ihmisen sisäelimistä ainoa joka tekee niin, ja se tekee sen myös vaurioituneena, jos vaurio ei ole edennyt liian pitkälle.' },
   { id: 'rec-20', category: 'recovery', figure: 'recovery-weeks', text: 'Verenpaine, leposyke ja unen laatu ovat niitä joissa muutos näkyy ensimmäisenä — yleensä viikoissa, ei vuosissa.' },
   { id: 'rec-21', category: 'recovery', text: 'Rahaa säästyy huomaamatta. Kaksi annosta päivässä on vuodessa neljänumeroinen summa useimmilla hinnoilla.' },
+  /*
+   * Liikunta.
+   *
+   * Added after a summary arrived claiming exercise is a shortcut to
+   * neuroplasticity. The mechanisms in it are directionally right; the clinical
+   * bottom line was missing, and it inverts the headline. So the lines below
+   * lead with the null result on drinking and put the mechanisms behind it,
+   * which is the order the evidence is actually in.
+   */
+  { id: 'res-34', category: 'research', text: 'Liikunta ja juominen on tutkittu: 21 tutkimusta ja 1204 ihmistä koottiin vuonna 2017. Liikunta ei vähentänyt päivittäistä kulutusta eikä AUDIT-pisteitä.' },
+  { id: 'res-35', category: 'research', text: 'Samassa analyysissä viikkokulutus näytti laskevan kolmessa tutkimuksessa, mutta ero katosi kun julkaisuharha otettiin huomioon. Kolme tutkimusta on vähän.' },
+  { id: 'res-36', category: 'research', text: 'Sama analyysi löysi selvän vaikutuksen kahteen muuhun asiaan: masennusoireet vähenivät ja hapenottokyky parani. Molemmat erottuivat vahvemmin kuin mikään juomista koskeva luku.' },
+  { id: 'res-37', category: 'research', text: 'Tanskalainen 175 potilaan satunnaistettu koe vuodelta 2017: liikunnalla ei ollut suoraa vaikutusta juomiseen puolen vuoden kohdalla.' },
+  { id: 'res-38', category: 'research', text: 'Hermokasvutekijä BDNF nousee liikunnasta — mutta ihmisiltä se mitataan verestä. Aivojen omaa BDNF-tasoa ei voi mitata elävästä ihmisestä, joten yhteys uusiin hermosoluihin on päätelty jyrsijöistä.' },
+  { id: 'res-39', category: 'research', text: 'Tunnetuin havainto siitä että liikunta lisää dopamiinireseptoreita on 19 ihmisen tutkimus vuodelta 2016 — ja se tehtiin metamfetamiinin, ei alkoholin käyttäjillä. Sitoutuminen kasvoi noin 14 prosenttia.' },
+  { id: 'res-40', category: 'research', text: '"Runner\'s high" tuskin on endorfiineja: ne eivät juuri läpäise veriaivoestettä. Hiirikokeessa tunne säilyi opioidisalpauksesta huolimatta mutta katosi endokannabinoidisalpauksesta.' },
+  { id: 'res-41', category: 'research', text: 'Aivokuoren glutamaatti ja GABA nousevat rasituksen jälkeen, ja se on mitattu ihmisiltä. Vieroitustilassa samaa ei ole tutkittu, joten yhteys vieroituksen ylivirittyneisyyteen on päätelmä eikä havainto.' },
+  { id: 'res-42', category: 'research', text: '"Aivojen Miracle-Gro" on kirjailijan kielikuva vuodelta 2008. Kielikuva on hyvä eikä se ole väärässä — mutta se ei ole lähde.' },
+
+  { id: 'rec-22', category: 'recovery', text: 'Liikunnan vahvin näyttö tässä yhteydessä ei koske juomista vaan mielialaa. Ja mieliala on se, mikä tekee alkuviikoista siedettävät tai sietämättömät.' },
+  { id: 'rec-23', category: 'recovery', text: 'Se vaihe jossa mikään ei tunnu miltään, ja se asia johon liikunnalla on paras osoitettu vaikutus, osuvat samaan kohtaan. Se ei ole sattuma vaan sama järjestelmä.' },
+  { id: 'rec-24', category: 'recovery', text: 'Kävely ei vaadi varusteita, jäsenyyttä eikä päätöstä elämäntavasta. Se vaatii ovenkahvan.' },
+  { id: 'rec-25', category: 'recovery', text: 'Ulos lähteminen on myös paikanvaihto. Se osa toimii riippumatta siitä, mitä välittäjäaineille tapahtuu.' },
+  { id: 'rec-26', category: 'recovery', text: 'Hapenottokyky paranee mitattavasti muutamassa viikossa. Se on alkuvaiheen harvoja asioita, jotka menevät varmasti parempaan suuntaan.' },
+
   { id: 'crav-20', category: 'craving', text: 'Tämä hetki on jo alkanut kulua. Himon huippu on lyhyempi kuin sen aikana tuntuu, eikä sitä tarvitse voittaa — vain istua sen ajan.' },
   { id: 'crav-21', category: 'craving', text: 'Odottaminen ei ole kieltäytymistä. Se on vain sen selvittämistä, mitä mieli haluaa kymmenen minuutin päästä.' },
   { id: 'crav-22', category: 'craving', text: 'Jokainen kerta jolloin himo menee ohi ilman juomaa, heikentää sitä yhteyttä hieman. Se ei tunnu miltään ensimmäisillä kerroilla, mutta se kertyy.' },

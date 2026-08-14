@@ -62,7 +62,7 @@ toipumisfaktoja**, koska pelkkä haittalista himon aikana lannistaa — lannistu
 on se tila jossa juodaan. Noin kolmannes riveistä katsoo eteenpäin, ja sitäkin
 vahtii testi.
 
-Alkoholirivejä on 159, ja niistä 33 on omassa kategoriassaan **Mistä tiedetään**.
+Alkoholirivejä on 173, ja niistä 42 on omassa kategoriassaan **Mistä tiedetään**.
 Ne nimeävät lähteen ja kertovat myös sen, missä väite on kiistelty. Mukana ovat
 GBD 2016 ja sen 2022 tarkennus, Lancetin 600 000 juovan kynnysanalyysi, Kiinan
 geneettinen koeasetelma joka romutti J-käyrän, 4,8 miljoonan ihmisen
@@ -279,6 +279,35 @@ Löydös ilman rajaansa on se, miten tutkimuksesta tulee iskulause. Mitään ei
 personoida: ei "olet nyt tässä" -merkkiä eikä päivälaskuria, jotka tekisivät
 fysiologian kuvauksesta edistymispalkin, josta voi jäädä jälkeen.
 
+## Liikunta: mihin näyttö oikeasti osuu
+
+Sovellukseen tuli yhteenveto, jonka mukaan liikunta on "oikotie neuroplastisuuteen".
+Mekanismit siinä olivat pääosin oikeansuuntaisia, mutta **kliininen tulos puuttui,
+ja se kääntää otsikon toisin päin.**
+
+| Väite | Mitä ihmisaineisto sanoo |
+|---|---|
+| Vähentää juomista | **Ei.** 21 tutkimusta, 1204 ihmistä: ei vaikutusta päivittäiseen kulutukseen (p = 0,24) eikä AUDIT-pisteisiin (p = 0,18). Viikkokulutuksen ero (3 tutkimusta, p = 0,04) katosi julkaisuharhakorjauksessa. Tanskalainen 175 potilaan RCT: ei suoraa vaikutusta. |
+| Vähentää masennusoireita | **Kyllä**, selvästi (p = 0,006). |
+| Parantaa kuntoa | **Kyllä** (p = 0,01). |
+| Lisää D2-reseptoreita | Tunnetuin ihmislöydös on **19 hengen tutkimus metamfetamiinin** käyttäjillä, ei alkoholilla. |
+| Nostaa BDNF:ää → neurogeneesi | Veren BDNF nousee ihmisillä. Aivojen BDNF:ää ei voi mitata elävästä ihmisestä; **neurogeneesiketju on jyrsijöistä**. |
+| "Runner's high" = endorfiinit | Endorfiinit eivät juuri läpäise veriaivoestettä. Hiirikokeessa tunne säilyi opioidisalpauksessa mutta **katosi endokannabinoidisalpauksessa**. |
+| "Aivojen Miracle-Gro" | Kirjailijan kielikuva vuodelta 2008. Hyvä kielikuva — ei lähde. |
+
+Lähteet: Hallgren ym. 2017 (BJSM), Roessler ym. 2017 (PLOS One), Robertson ym.
+2016 (Neuropsychopharmacology), Fuss ym. 2015, Maddock ym. 2016.
+
+**Korjaus ei poista hyötyä vaan siirtää sen.** Anhedoniavaihe (2–8 vk) on se, mikä
+ratkaisee ovatko alkuviikot siedettäviä — ja se on juuri se kohta, johon
+liikunnalla on paras osoitettu vaikutus. Tämä on myös kestävämpi väite: lupaus
+"liikunta pitää sinut kuivilla" romahtaa ensimmäisenä päivänä, jona se ei pidä.
+
+Aineisto meni kahteen paikkaan: yhdeksän lähteistettyä riviä `facts.ts`:n
+**Mistä tiedetään** -kategoriaan, ja oma kohtansa **Mitä odottaa** -sivulle. Mukana
+tuli viisi eteenpäin katsovaa riviä: pelkillä kumoamisilla vastaaminen jättäisi
+himon hetkeen listan asioista jotka eivät toimi.
+
 ## Illan tahti — ja miksi siinä ei ole promillelukua
 
 Kun illan aikana on vähintään yksi *otin sen*, etusivulle ilmestyy linkki **Tämä
@@ -422,7 +451,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 189 testiä ydinlogiikalle
+npm test           # 195 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 

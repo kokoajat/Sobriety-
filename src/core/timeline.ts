@@ -99,6 +99,16 @@ export const PHASES: Phase[] = [
       'Tupakointi hidastaa palautumista, ja vaikutus kasvaa iän myötä. Osa aineiston eroista voi johtua muusta kuin alkoholista — ravitsemuksesta, maksasta, muista päihteistä.',
   },
   {
+    id: 'exercise',
+    window: 'Kaikissa vaiheissa',
+    heading: 'Liikunta: vahva näyttö mielialaan, ei juomiseen',
+    body: 'Mekanismipuoli on kiinnostava — BDNF, dopamiinireseptorit, glutamaatin ja GABA:n tasapaino. Mutta kliininen kysymys on eri kysymys: pitääkö liikunta ihmisen erossa alkoholista? 21 tutkimusta ja 1204 ihmistä: ei vaikutusta päivittäiseen kulutukseen eikä AUDIT-pisteisiin. Sen sijaan masennusoireet vähenivät selvästi ja hapenottokyky parani.',
+    source:
+      'Hallgren ym. 2017, British Journal of Sports Medicine. Samaan suuntaan tanskalainen 175 potilaan satunnaistettu koe (Roessler ym. 2017): ei suoraa vaikutusta juomiseen puolen vuoden kohdalla.',
+    caveat:
+      'Tämä ei tee liikunnasta hyödytöntä — se siirtää hyödyn toiseen kohtaan. Anhedoniavaihe yllä on se, mikä ratkaisee ovatko alkuviikot siedettäviä, ja se on juuri se kohta johon liikunnalla on paras osoitettu vaikutus. Reseptori- ja neurogeneesiväitteet sen sijaan nojaavat jyrsijöihin ja hyvin pieniin ihmisaineistoihin: tunnetuin dopamiinireseptorilöydös on 19 ihmisen tutkimus metamfetamiinin käyttäjillä.',
+  },
+  {
     id: 'memory',
     window: 'Vuosia',
     heading: 'Muisti ei pyyhkiydy — sen rinnalle rakennetaan toinen',

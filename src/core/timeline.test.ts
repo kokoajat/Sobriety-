@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { HEADLINE, PHASES } from './timeline';
+import { FACTS } from './facts';
 
 describe('the timeline', () => {
   it('has unique ids', () => {
@@ -78,5 +79,47 @@ describe('honesty rules for the page', () => {
   it('does not address the reader as a case, since nothing here is personalised', () => {
     const text = PHASES.flatMap((p) => [p.heading, p.body]).join(' ');
     expect(text).not.toMatch(/sinun aivosi|olet nyt vaiheessa|sinun kohdallasi/i);
+  });
+});
+
+describe('the exercise phase', () => {
+  const exercise = PHASES.find((p) => p.id === 'exercise')!;
+
+  it('leads with the outcome that was measured, not the mechanism', () => {
+    // A summary arrived claiming exercise is a shortcut to neuroplasticity. The
+    // mechanisms are real; the trials on drinking are null, and that inverts the
+    // headline. The heading has to carry the inversion, not bury it.
+    expect(exercise.heading).toMatch(/ei juomiseen/);
+  });
+
+  it('names both the null drinking result and the real mood result', () => {
+    expect(exercise.body).toMatch(/ei vaikutusta päivittäiseen kulutukseen/);
+    expect(exercise.body).toMatch(/masennusoireet vähenivät/);
+  });
+
+  it('separates rodent and tiny-sample findings from the human trial evidence', () => {
+    expect(exercise.caveat).toMatch(/jyrsijöihin/);
+    expect(exercise.caveat).toMatch(/19 ihmisen/);
+  });
+
+  it('does not leave the reader with "so it is useless"', () => {
+    // The honest correction moves the benefit, it does not delete it.
+    expect(exercise.caveat).toMatch(/ei tee liikunnasta hyödytöntä/);
+  });
+});
+
+describe('the exercise lines in the reading corpus', () => {
+  it('is not a pure debunk: forward-looking lines came with the correction', () => {
+    // Correcting an overclaim by leaving only negatives would meet a craving
+    // with a list of things that do not work.
+    const added = ['rec-22', 'rec-23', 'rec-24', 'rec-25', 'rec-26'];
+    expect(added.every((id) => FACTS.some((f) => f.id === id && f.category === 'recovery')))
+      .toBe(true);
+  });
+
+  it('labels the popular metaphor as a metaphor', () => {
+    const line = FACTS.find((f) => f.id === 'res-42')!;
+    expect(line.text).toMatch(/kielikuva/);
+    expect(line.text).toMatch(/ei ole lähde/);
   });
 });
