@@ -128,7 +128,7 @@ koskeva ilmoitus ole sen arvoinen.
 
 #### Kuvat
 
-Neljälläkymmenelläseitsemällä rivillä on piirros, eli tasan kymmenellä
+Neljälläkymmenelläseitsemällä rivillä on piirros, eli noin kymmenellä
 prosentilla korpuksesta: sykkivät sydämet, kennoston kuusikulmiot,
 Saturnus kellumassa, valon matka Auringosta, veden laajeneminen jäätyessä,
 taitosten kaksinkertaistuminen, Kuun loittoneminen — ja alkoholipuolella unen
