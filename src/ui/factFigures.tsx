@@ -58,7 +58,9 @@ export type FactFigure =
   | 'mercator'
   | 'birthday-23'
   | 'monty-hall'
-  | 'iss-sunrises';
+  | 'iss-sunrises'
+  | 'fibre-atrophy'
+  | 'strength-return';
 
 export function FactScene({ figure }: { figure: FactFigure }) {
   return (
@@ -116,6 +118,8 @@ const LABELS: Record<FactFigure, string> = {
   'birthday-23': 'Syntymäpäiväparadoksi',
   'monty-hall': 'Kolme ovea',
   'iss-sunrises': 'Auringonnousut avaruusasemalla',
+  'fibre-atrophy': 'Surkastuminen osuu tyypin II soluihin',
+  'strength-return': 'Lihasvoiman palautuminen raittiudessa',
 };
 
 /** Bars for 914 / 918 / 977 / 1252 per 100 000, scaled to the frame. */
@@ -671,6 +675,36 @@ const SCENES: Record<FactFigure, JSX.Element> = {
       <text className="scene-tiny" x="161" y="72" textAnchor="middle">
         3,8 cm/v
       </text>
+    </g>
+  ),
+
+  /*
+   * Two fibre types side by side: the slow one unchanged, the fast one visibly
+   * thinner. The selectivity is the whole point of the line, and it is the kind
+   * of thing a sentence states but a drawing shows.
+   */
+  'fibre-atrophy': (
+    <g>
+      <text className="scene-tiny" x="52" y="22" textAnchor="middle">tyyppi I</text>
+      <text className="scene-tiny" x="148" y="22" textAnchor="middle">tyyppi II</text>
+      <rect className="scene-fill" x="38" y="32" width="28" height="46" rx="12" />
+      <rect className="scene-line-box scene-dashed" x="134" y="32" width="28" height="46" rx="12" />
+      <rect className="scene-fill" x="141" y="32" width="14" height="46" rx="7" />
+      <text className="scene-tiny" x="148" y="92" textAnchor="middle">−30 %</text>
+    </g>
+  ),
+
+  /* A curve that climbs steeply to three months and flattens without quite
+     reaching the line: recovery is real, substantial and incomplete. */
+  'strength-return': (
+    <g>
+      <line className="scene-line scene-dashed" x1="20" y1="28" x2="184" y2="28" />
+      <text className="scene-tiny" x="184" y="24" textAnchor="end">lähtötaso</text>
+      <line className="scene-line" x1="20" y1="80" x2="184" y2="80" />
+      <path className="scene-stroke" d="M20 76 C60 74 76 44 104 38 C136 32 160 34 184 33" />
+      <circle className="scene-dot" cx="104" cy="38" r="3" />
+      <text className="scene-tiny" x="104" y="92" textAnchor="middle">3 kk</text>
+      <text className="scene-tiny" x="180" y="92" textAnchor="end">1 v</text>
     </g>
   ),
 };

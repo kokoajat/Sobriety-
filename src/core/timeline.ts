@@ -90,6 +90,16 @@ export const PHASES: Phase[] = [
       'Tämä on koko listan käyttökelpoisin kohta: se on mitattava, hoidettava ja se osuu juuri siihen perusteluun, jolla paluu useimmin selitetään.',
   },
   {
+    id: 'muscle',
+    window: '3 kk – 1 v',
+    heading: 'Lihasvoima palautuu, ja se näkyy numeroina',
+    body: 'Alkoholimyopatia koskee noin puolta tai kahta kolmasosaa pitkäaikaisista suurkuluttajista, ja kirjallisuudessa sitä kuvataan läntisen maailman yleisimmäksi luurankolihassairaudeksi. Surkastuminen kohdistuu valikoivasti tyypin II soluihin — nopeisiin, voimaa tuottaviin — ja koko lihasmassa voi vähentyä jopa 30 prosenttia. Raittiiksi jääneillä paraneminen näkyi jo kolmessa kuukaudessa, usein täytenä toipumisena vuoden sisällä. Aikaväli osuu päällekkäin sen vaiheen kanssa, jossa mikään ei tunnu miltään — ja tämä on niistä kahdesta se, joka on mitattavissa.',
+    source:
+      'Preedy ym. 2001 (määritelmät ja esiintyvyys); Estruch ym. 1998, viiden vuoden seuranta toipumisesta.',
+    caveat:
+      'Toipuminen on osittaista: noin puolet ei palannut normaalitasolle. Esiintyvyysluvut vaihtelevat sen mukaan mitataanko kudosnäytettä vai kliinistä heikkoutta, joten sama ilmiö saa eri kriteereillä luvun 33 prosenttia tai kaksi kolmasosaa. Huomionarvoista silti: myopatia esiintyy riippumatta hermovauriosta, aliravitsemuksesta ja maksasairaudesta — se ei ole seuraus jostain muusta.',
+  },
+  {
     id: 'partial',
     window: '7,5 kk',
     heading: 'Palautuminen on todellista muttei täydellistä',

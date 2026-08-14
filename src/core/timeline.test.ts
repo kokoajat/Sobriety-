@@ -123,3 +123,48 @@ describe('the exercise lines in the reading corpus', () => {
     expect(line.text).toMatch(/ei ole lähde/);
   });
 });
+
+describe('the muscle phase', () => {
+  const muscle = PHASES.find((p) => p.id === 'muscle')!;
+
+  it('exists and sits before the later structural entry', () => {
+    const ids = PHASES.map((p) => p.id);
+    expect(muscle).toBeDefined();
+    expect(ids.indexOf('muscle')).toBeLessThan(ids.indexOf('partial'));
+  });
+
+  it('states the size of the chronic problem, which is the underreported half', () => {
+    expect(muscle.body).toMatch(/puolta tai kahta kolmasosaa/);
+    expect(muscle.body).toMatch(/tyypin II/);
+  });
+
+  it('names the recovery window, since that is why it earns a place here', () => {
+    expect(muscle.body).toMatch(/kolmessa kuukaudessa/);
+  });
+
+  it('admits the recovery is partial in the same box', () => {
+    expect(muscle.caveat).toMatch(/noin puolet ei palannut/);
+  });
+
+  it('says the prevalence figure depends on the criterion', () => {
+    // 33 % and two thirds are the same phenomenon measured two ways. Quoting
+    // one without the other would be picking the more convenient number.
+    expect(muscle.caveat).toMatch(/33 prosenttia tai kaksi kolmasosaa/);
+  });
+});
+
+describe('the muscle lines in the reading corpus', () => {
+  it('carries the dose caveat next to the post-training finding', () => {
+    // The 24 % figure is real and is also the source of an internet meme. The
+    // dose behind it — twelve drinks, eight men — has to travel with it.
+    const dose = FACTS.find((f) => f.id === 'res-44')!;
+    expect(dose.text).toMatch(/12 annosta/);
+    expect(dose.text).toMatch(/kahdeksan/);
+  });
+
+  it('does not leave the strength material as harm only', () => {
+    const forward = ['rec-27', 'rec-28', 'rec-29', 'rec-30'];
+    expect(forward.every((id) => FACTS.some((f) => f.id === id && f.category === 'recovery')))
+      .toBe(true);
+  });
+});

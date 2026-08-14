@@ -312,6 +312,32 @@ export const FACTS: Fact[] = [
   { id: 'rec-25', category: 'recovery', text: 'Ulos lähteminen on myös paikanvaihto. Se osa toimii riippumatta siitä, mitä välittäjäaineille tapahtuu.' },
   { id: 'rec-26', category: 'recovery', text: 'Hapenottokyky paranee mitattavasti muutamassa viikossa. Se on alkuvaiheen harvoja asioita, jotka menevät varmasti parempaan suuntaan.' },
 
+  /*
+   * Lihasvoima.
+   *
+   * The interesting asymmetry, and the reason these lines are ordered the way
+   * they are: the acute "alcohol ruins your training" claim is weaker than its
+   * reputation — the study everyone quotes used twelve drinks and eight men —
+   * while the chronic story is strong, large and almost never mentioned.
+   * Alcoholic myopathy affects half to two-thirds of long-term heavy drinkers
+   * and is described in the literature as the most prevalent skeletal muscle
+   * disorder in the Western world. So the acute lines carry their own dose
+   * caveat, and the chronic ones are allowed to state their size plainly.
+   */
+  { id: 'res-43', category: 'research', text: 'Voimaharjoituksen jälkeen nautittu alkoholi vaimensi lihasproteiinisynteesiä 24 prosenttia, vaikka proteiini juotiin samaan aikaan. Pelkän hiilihydraatin kanssa lasku oli 37 prosenttia.' },
+  { id: 'res-44', category: 'research', text: 'Sama tutkimus on internetin "alkoholi tappaa treenitulokset" -väitteen lähde. Annos oli 1,5 grammaa painokiloa kohti eli noin 12 annosta, ja koehenkilöitä oli kahdeksan.' },
+  { id: 'res-45', category: 'research', text: 'Lihasta vaurioittavan harjoituksen jälkeen gramma painokiloa kohti pahensi voimantuoton menetystä vielä 36 tunnin kohdalla. Matala annos ei vaikuttanut mitattavasti.' },
+  { id: 'res-46', category: 'research', text: 'Vaikutus näytti syntyvän lihasvauriosta ja alkoholista yhdessä, ei alkoholin yleisvaikutuksesta. Kova harjoitus ja kova ilta samana päivänä on eri asia kuin kumpikaan yksin.' },
+  { id: 'res-47', category: 'research', text: 'Alkoholimyopatia koskee noin puolta tai kahta kolmasosaa pitkäaikaisista suurkuluttajista. Kirjallisuudessa sitä kuvataan läntisen maailman yleisimmäksi luurankolihassairaudeksi.' },
+  { id: 'res-48', category: 'research', figure: 'fibre-atrophy', text: 'Surkastuminen kohdistuu valikoivasti tyypin II lihassoluihin — nopeisiin, voimaa tuottaviin. Koko lihasmassa voi vähentyä jopa 30 prosenttia.' },
+  { id: 'res-49', category: 'research', text: 'Alkoholimyopatia esiintyy riippumatta ääreishermovauriosta, aliravitsemuksesta ja maksasairaudesta. Se ei siis ole seuraus jostain muusta, vaan alkoholin suora vaikutus lihakseen.' },
+  { id: 'res-50', category: 'research', text: 'Esiintyvyysluvut vaihtelevat sen mukaan mitataanko kudosnäytettä vai kliinistä heikkoutta. Sama ilmiö saa eri kriteereillä luvun 33 prosenttia tai kaksi kolmasosaa.' },
+
+  { id: 'rec-27', category: 'recovery', figure: 'strength-return', text: 'Raittiiksi jääneillä lihasten surkastuminen parani merkittävästi kolmessa kuukaudessa, ja usein toipuminen oli täysi vuoden sisällä.' },
+  { id: 'rec-28', category: 'recovery', text: 'Lihasvoima on niitä harvoja asioita, jotka antavat mitattavaa palautetta viikkojen aikavälillä. Siinä muutos näkyy numeroina eikä tunteena.' },
+  { id: 'rec-29', category: 'recovery', text: 'Lihasten toipuminen on osittaista: noin puolet ei palannut normaalitasolle. Suunta oli silti sama kaikilla, jotka lopettivat — ja käytön jatkuessa surkastuminen eteni.' },
+  { id: 'rec-30', category: 'recovery', text: 'Se vaihe jossa mikään ei tunnu miltään ja se aikaväli jolla lihasvoima palautuu, osuvat päällekkäin. Toinen niistä on mitattavissa.' },
+
   { id: 'crav-20', category: 'craving', text: 'Tämä hetki on jo alkanut kulua. Himon huippu on lyhyempi kuin sen aikana tuntuu, eikä sitä tarvitse voittaa — vain istua sen ajan.' },
   { id: 'crav-21', category: 'craving', text: 'Odottaminen ei ole kieltäytymistä. Se on vain sen selvittämistä, mitä mieli haluaa kymmenen minuutin päästä.' },
   { id: 'crav-22', category: 'craving', text: 'Jokainen kerta jolloin himo menee ohi ilman juomaa, heikentää sitä yhteyttä hieman. Se ei tunnu miltään ensimmäisillä kerroilla, mutta se kertyy.' },

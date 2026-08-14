@@ -224,7 +224,7 @@ describe('illustrated lines', () => {
       'slip-fork', 'glass-shape', 'j-curve-broken', 'dementia-share',
       'breast-1000', 'recovery-weeks', 'octopus-gap', 'heart-count',
       'vessels-earth', 'trench-everest', 'mercator', 'birthday-23',
-      'monty-hall', 'iss-sunrises',
+      'monty-hall', 'iss-sunrises', 'fibre-atrophy', 'strength-return',
     ]);
     expect(illustrated.filter((f) => !known.has(f.figure!))).toEqual([]);
   });

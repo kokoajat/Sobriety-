@@ -62,7 +62,7 @@ toipumisfaktoja**, koska pelkkä haittalista himon aikana lannistaa — lannistu
 on se tila jossa juodaan. Noin kolmannes riveistä katsoo eteenpäin, ja sitäkin
 vahtii testi.
 
-Alkoholirivejä on 173, ja niistä 42 on omassa kategoriassaan **Mistä tiedetään**.
+Alkoholirivejä on 185, ja niistä 50 on omassa kategoriassaan **Mistä tiedetään**.
 Ne nimeävät lähteen ja kertovat myös sen, missä väite on kiistelty. Mukana ovat
 GBD 2016 ja sen 2022 tarkennus, Lancetin 600 000 juovan kynnysanalyysi, Kiinan
 geneettinen koeasetelma joka romutti J-käyrän, 4,8 miljoonan ihmisen
@@ -128,7 +128,7 @@ koskeva ilmoitus ole sen arvoinen.
 
 #### Kuvat
 
-Neljälläkymmenelläseitsemällä rivillä on piirros, eli noin kymmenellä
+Neljälläkymmenelläyhdeksällä rivillä on piirros, eli noin kymmenellä
 prosentilla korpuksesta: sykkivät sydämet, kennoston kuusikulmiot,
 Saturnus kellumassa, valon matka Auringosta, veden laajeneminen jäätyessä,
 taitosten kaksinkertaistuminen, Kuun loittoneminen — ja alkoholipuolella unen
@@ -308,6 +308,41 @@ Aineisto meni kahteen paikkaan: yhdeksän lähteistettyä riviä `facts.ts`:n
 tuli viisi eteenpäin katsovaa riviä: pelkillä kumoamisilla vastaaminen jättäisi
 himon hetkeen listan asioista jotka eivät toimi.
 
+## Lihasvoima: sama epäsuhta toisin päin
+
+Liikuntakohdassa akuutti mekanismiväite oli vahvempi kuin kliininen tulos. Täällä
+epäsuhta on päinvastainen: **akuutti "alkoholi pilaa treenin" on heikompi kuin
+maineensa, ja krooninen tarina on paljon vahvempi kuin kukaan puhuu.**
+
+**Akuutti.** Voimaharjoituksen jälkeen nautittu alkoholi vaimensi
+lihasproteiinisynteesiä 24 % proteiinin kanssa ja 37 % hiilihydraatin kanssa
+(Parr ym. 2014). Tästä tuli internetin "alkoholi tappaa tulokset" -meemi — mutta
+annos oli **1,5 g/kg eli noin 12 annosta, ja koehenkilöitä oli kahdeksan**. Barnesin
+annosvaste: gramma painokiloa kohti pahensi voimantuoton menetystä vielä 36 tunnin
+kohdalla, matala annos ei mitattavasti. Vaikutus näytti syntyvän lihasvauriosta ja
+alkoholista *yhdessä*.
+
+**Krooninen.** Alkoholimyopatia koskee noin puolta tai kahta kolmasosaa
+pitkäaikaisista suurkuluttajista, ja kirjallisuudessa sitä kuvataan läntisen
+maailman yleisimmäksi luurankolihassairaudeksi. Surkastuminen kohdistuu
+valikoivasti **tyypin II soluihin** — nopeisiin, voimaa tuottaviin — ja koko
+lihasmassa voi vähentyä jopa 30 %. Se esiintyy **riippumatta** hermovauriosta,
+aliravitsemuksesta ja maksasairaudesta: ei siis seuraus jostain muusta.
+
+**Toipuminen** (Estruch ym. 1998, viiden vuoden seuranta): merkittävä paraneminen
+kolmessa kuukaudessa, usein täysi vuoden sisällä. Varaus samassa laatikossa: noin
+puolet ei palannut normaalitasolle.
+
+Tämä ansaitsi oman kohtansa **Mitä odottaa** -sivulla siksi, että **aikaväli osuu
+päällekkäin anhedoniavaiheen kanssa** — ja niistä kahdesta lihasvoima on se, joka
+on mitattavissa. Se on eri väite kuin "liikunta pitää sinut kuivilla", joka ei
+kestänyt tarkastelua: tämä on yksi asia, joka menee mitattavasti parempaan suuntaan
+juuri siinä ikkunassa, jossa mikään ei tunnu miltään.
+
+Kaksi uutta piirrosta: tyypin I ja II solut rinnakkain, ja palautumiskäyrä joka
+nousee jyrkästi kolmeen kuukauteen ja tasaantuu **aivan lähtötason alle** — osittain,
+ei täysin.
+
 ## Illan tahti — ja miksi siinä ei ole promillelukua
 
 Kun illan aikana on vähintään yksi *otin sen*, etusivulle ilmestyy linkki **Tämä
@@ -451,7 +486,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 195 testiä ydinlogiikalle
+npm test           # 202 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 
