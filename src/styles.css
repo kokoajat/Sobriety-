@@ -1043,3 +1043,59 @@ select {
   font-size: 0.8125rem;
   text-align: center;
 }
+
+/* The evening's pace ------------------------------------------------------ */
+
+.pace-list {
+  list-style: none;
+  margin: 0.5rem 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.pace-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.875rem;
+}
+
+.pace-clock {
+  flex: 0 0 3.1rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+
+.pace-first {
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+}
+
+.pace-bar-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* One neutral colour at one weight. A bar that turned red past some number
+   would be the app grading the evening, which is the whole thing this screen
+   is built to avoid. */
+.pace-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--accent);
+  opacity: 0.55;
+  flex-shrink: 1;
+  min-width: 4px;
+}
+
+.pace-gap {
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}

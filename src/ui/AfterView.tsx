@@ -9,7 +9,8 @@
  */
 
 import { demandLabel } from '../core/demands';
-import { formatDurationShort } from './labels';
+import { summarise } from '../core/session';
+import { formatDurationShort, formatGap } from './labels';
 import type { Store } from '../store';
 import type { Episode } from '../core/types';
 
@@ -21,6 +22,13 @@ interface Props {
 
 export function AfterView({ store, episode, onDone }: Props) {
   const supply = store.supplies.find((s) => s.id === episode.supplyId);
+  // Only after a drink, and only when this evening's own spacing has just
+  // collapsed. This is the moment the observation is worth anything — an hour
+  // later it is history, and on a wait that passed it would be a reprimand
+  // attached to the wrong event.
+  const pace = episode.outcome === 'took'
+    ? summarise(store.episodes, episode.endedAt ?? Date.now()).accelerated
+    : undefined;
   const alreadyRated = supply?.attempts.some((a) => a.at >= (episode.endedAt ?? 0) - 1000);
 
   const rate = async (helped: boolean) => {
@@ -39,6 +47,17 @@ export function AfterView({ store, episode, onDone }: Props) {
         {formatDurationShort(episode.waitedMs)}
         {episode.extensions > 0 ? ` · jatkettu ${episode.extensions}×` : ''}
       </p>
+
+      {pace && (
+        <div className="card card-warning">
+          <p className="card-label">Tahti tiivistyi</p>
+          <p className="card-note">
+            Väli edelliseen oli {formatGap(pace.gapMs)}. Aiemmin tänä iltana se on ollut
+            noin {formatGap(pace.baselineMs)}. Ei mitään tehtävää — tämä on vain se, mitä
+            kelloissa lukee.
+          </p>
+        </div>
+      )}
 
       {supply && !alreadyRated ? (
         <div className="card">

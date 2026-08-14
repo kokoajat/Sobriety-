@@ -24,6 +24,21 @@ export function formatPercent(x: number): string {
   return Number.isFinite(x) ? `${Math.round(x * 100)} %` : '–';
 }
 
+/** `21.05` — just the time, for rows that already sit under a date. */
+export function formatClock(at: number): string {
+  const d = new Date(at);
+  return `${d.getHours()}.${String(d.getMinutes()).padStart(2, '0')}`;
+}
+
+/** `1 h 25 min` — a gap between two events, where minutes alone stop being readable. */
+export function formatGap(ms: number): string {
+  const minutes = Math.round(ms / 60_000);
+  if (minutes < 60) return `${minutes} min`;
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return m === 0 ? `${h} h` : `${h} h ${m} min`;
+}
+
 /** `to 14.8. klo 0.35` — enough to recognise the occasion. */
 export function formatWhen(at: number): string {
   const d = new Date(at);

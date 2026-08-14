@@ -17,8 +17,10 @@ import { HistoryView } from './ui/HistoryView';
 import { ScreeningView } from './ui/ScreeningView';
 import { SafetyView } from './ui/SafetyView';
 import { TimelineView } from './ui/TimelineView';
+import { SessionView } from './ui/SessionView';
 import { eraseAll } from './storage/db';
 import { medianTimeToPassMs } from './core/stats';
+import { summarise } from './core/session';
 import { formatMinutes } from './ui/labels';
 import type { Episode } from './core/types';
 
@@ -30,7 +32,8 @@ type Mode =
   | 'history'
   | 'safety'
   | 'screening'
-  | 'timeline';
+  | 'timeline'
+  | 'session';
 
 export function App() {
   const store = useStore();
@@ -168,6 +171,14 @@ export function App() {
     );
   }
 
+  if (mode === 'session') {
+    return (
+      <main className="app">
+        <SessionView store={store} onBack={() => setMode('home')} />
+      </main>
+    );
+  }
+
   if (mode === 'timeline') {
     return (
       <main className="app">
@@ -206,6 +217,7 @@ function HomeView({
 }) {
   const closed = store.episodes.filter((e) => e.endedAt !== undefined);
   const typical = medianTimeToPassMs(closed, store.settings);
+  const session = summarise(store.episodes, Date.now());
 
   return (
     <section className="screen screen-home">
@@ -228,6 +240,16 @@ function HomeView({
         <button type="button" className="quiet" onClick={() => onGo('prepare')}>
           Valmistelu
         </button>
+        {/*
+          Only while an evening is actually running. A permanent link would put a
+          drink counter on the home screen of everyone who has not had one, which
+          is the opposite of what this app is.
+        */}
+        {session.drinks > 0 && (
+          <button type="button" className="quiet" onClick={() => onGo('session')}>
+            Tämä ilta
+          </button>
+        )}
         <button type="button" className="quiet" onClick={() => onGo('history')}>
           Historia
         </button>

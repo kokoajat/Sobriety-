@@ -279,6 +279,58 @@ Löydös ilman rajaansa on se, miten tutkimuksesta tulee iskulause. Mitään ei
 personoida: ei "olet nyt tässä" -merkkiä eikä päivälaskuria, jotka tekisivät
 fysiologian kuvauksesta edistymispalkin, josta voi jäädä jälkeen.
 
+## Illan tahti — ja miksi siinä ei ole promillelukua
+
+Kun illan aikana on vähintään yksi *otin sen*, etusivulle ilmestyy linkki **Tämä
+ilta**. Se katoaa klo 5, kun ilta vaihtuu. Pysyvä linkki asettaisi
+annoslaskurin niidenkin etusivulle, jotka eivät ole ottaneet mitään.
+
+### Miksi promillea ei lasketa
+
+Ilmeinen toteutus olisi promillekäyrä. Sitä ei voi laskea rehellisesti ilman
+painoa ja sukupuolta, eikä virhe ole pieni. Widmark: `‰ = grammat / (r × kg)`,
+missä r ≈ 0,55 naisilla ja ≈ 0,68 miehillä. Kuusi annosta on 72 g:
+
+| | Laskutoimitus | Tulos |
+|---|---|---|
+| 55 kg, r = 0,55 | 72 / 30,3 | **2,4 ‰** |
+| 100 kg, r = 0,68 | 72 / 68,0 | **1,1 ‰** |
+
+Sama kuusi annosta, yli kaksinkertainen ero — ja tämä on ennen kuin poistuma on
+vähennetty. Yksi luku tuolta väliltä ei ole arvio vaan arvaus, jossa on
+desimaali. `stats.ts` kieltäytyy jo näyttämästä prosenttia kolmesta havainnosta;
+promillen näyttäminen *nollasta* havainnosta olisi pahempi — ja tämä on ainoa
+luku koko sovelluksessa, jonka perusteella joku saattaisi päättää ajamisesta.
+
+### Mitä tilalla on, ja miksi se vastaa kysymykseen paremmin
+
+Kysymys oli *milloin tahti kiihtyy*. Se on **kellonaikojen ominaisuus, ei kehon**,
+joten se ei tarvitse painoa eikä sukupuolta — ja se on mitattu eikä mallinnettu.
+
+**Illan sisällä:** välit peräkkäisten kertojen välillä palkkeina. Kun viimeisin
+väli alittaa puolet saman illan aiemmasta mediaanista, sovellus sanoo sen.
+Vertailukohta on tämän illan oma alku, joten se toimii ensimmäisestä illasta
+alkaen eikä tarvitse historiaa lainkaan. Sama huomio näkyy myös heti kirjauksen
+jälkeen, koska tunnin päästä se on jo historiaa.
+
+**Iltojen yli:** mediaaniväli kunkin kerran kohdalla, ja ensimmäinen kerta jossa
+väli on puolittunut alkuun nähden. `MIN_SAMPLE` iltaa vaaditaan sekä
+vertailukohdalta että ehdokkaalta, joten yksi poikkeuksellinen ilta ei synnytä
+sääntöä. **Jos tahti ei katkea selvästi missään, mitään ei näytetä** — kaikilla ei
+ole sellaista kohtaa, ja sellaisen keksiminen olisi juuri se itsevarma väärä
+väite, jonka tämä koodi torjuu kaikkialla muualla.
+
+Annokset ja grammat ovat tarkkoja *annetulla oletuksella* — yksi *otin sen* = yksi
+annos, 4 cl 38 % = 12,0 g — ja oletus sanotaan näytöllä. Sovellus ei kysy mitä
+lasissa oli, joten pitkien drinkkien ilta ja tuplien ilta näyttävät samalta. Se
+on luvun todellinen rajoite eikä sitä piiloteta.
+
+Näyttö on rakennettu niin ettei siitä tule tulostaulua: ei tavoitetta, ei rajaa,
+ei väriä joka tarkoittaa huonoa, ja jokaisen lauseen subjekti on tahti tai ilta —
+ei ihminen. "Tahti tiivistyi" on havainto; "joit liikaa" olisi tuomio, ja tuomio
+klo 23 on annos häpeää sille, joka on juuri siinä tilassa, jossa häpeä tekee
+vahinkonsa.
+
 ## Turvaseula, kerran
 
 Ensimmäisellä avauksella sovellus kysyy viisi kysymystä. Se on ainoa kohta, jossa
@@ -360,6 +412,7 @@ src/ui/factFigures.tsx  10 inline-SVG-kohtausta, osa animoituja
   screening.ts     AUDIT-C + kaksi riippuvuuskysymystä, kerran, ei seurantaa
   situations.ts    kuusi tilannetta ja niiden siirrot, mekanismi mukana
   timeline.ts      "Mitä odottaa": vaiheet, lähteet ja varaukset
+  session.ts       illan rajat klo 5-5, välit, tahdin kiihtyminen
 src/storage/db.ts  IndexedDB, vienti/tuonti/poisto
 src/ui/            näkymät: yksi ruutu kerrallaan, ei välilehtipalkkia
 app.html           Vite-sisääntulo (ei index.html — ks. Julkaisu)
@@ -369,7 +422,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 161 testiä ydinlogiikalle
+npm test           # 189 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 
