@@ -62,7 +62,7 @@ toipumisfaktoja**, koska pelkkä haittalista himon aikana lannistaa — lannistu
 on se tila jossa juodaan. Noin kolmannes riveistä katsoo eteenpäin, ja sitäkin
 vahtii testi.
 
-Alkoholirivejä on 185, ja niistä 50 on omassa kategoriassaan **Mistä tiedetään**.
+Alkoholirivejä on 196, ja niistä 58 on omassa kategoriassaan **Mistä tiedetään**.
 Ne nimeävät lähteen ja kertovat myös sen, missä väite on kiistelty. Mukana ovat
 GBD 2016 ja sen 2022 tarkennus, Lancetin 600 000 juovan kynnysanalyysi, Kiinan
 geneettinen koeasetelma joka romutti J-käyrän, 4,8 miljoonan ihmisen
@@ -128,7 +128,7 @@ koskeva ilmoitus ole sen arvoinen.
 
 #### Kuvat
 
-Neljälläkymmenelläyhdeksällä rivillä on piirros, eli noin kymmenellä
+Viidelläkymmenellä rivillä on piirros, eli noin kymmenellä
 prosentilla korpuksesta: sykkivät sydämet, kennoston kuusikulmiot,
 Saturnus kellumassa, valon matka Auringosta, veden laajeneminen jäätyessä,
 taitosten kaksinkertaistuminen, Kuun loittoneminen — ja alkoholipuolella unen
@@ -307,6 +307,41 @@ Aineisto meni kahteen paikkaan: yhdeksän lähteistettyä riviä `facts.ts`:n
 **Mistä tiedetään** -kategoriaan, ja oma kohtansa **Mitä odottaa** -sivulle. Mukana
 tuli viisi eteenpäin katsovaa riviä: pelkillä kumoamisilla vastaaminen jättäisi
 himon hetkeen listan asioista jotka eivät toimi.
+
+## Syöpä: mikä oikeasti muuttui, ja mikä todistaa syy-yhteyden
+
+Alkoholi on ryhmän 1 karsinogeeni — mutta **luokitus on vuodelta 1988**, ei tältä
+vuodelta. Etanoli ja asetaldehydi lisättiin samaan luokkaan 2007–2012. Kun
+Yhdysvaltain Surgeon General vaati tammikuussa 2025 syöpävaroituksia pakkauksiin,
+**tiede ei ollut muuttunut** — luokitus oli silloin 37 vuotta vanha. Muuttunut oli
+se, mitä etiketissä lukee. Sivun otsikko sanoo tämän suoraan, koska "nykyään
+luokiteltu" on yleinen ja se antaa väärän kuvan siitä, kuinka uutta tieto on.
+
+**Vahvin osa ei ole luokitus vaan syy-yhteyden todiste.** Lähes kaikki
+syöpäepidemiologia on havainnoivaa, ja siihen pätee aina "korrelaatio ei ole
+kausaatio". ALDH2-geenimuunnos sulkee aukon kahdesta suunnasta yhtä aikaa:
+
+| ALDH2 | Seuraus | Ruokatorvisyövän riski |
+|---|---|---|
+| Puuttuu kokonaan | Ei käytännössä juo lainkaan | **matalampi** |
+| Toimii osittain | Juo, mutta asetaldehydi kertyy | **korkeampi** |
+
+Kaksi vastakkaista suuntaa samasta geenistä, arvottuna syntymässä eikä
+elämäntavan mukaan. Se osoittaa kaksi asiaa kerralla: **alkoholi aiheuttaa**
+ruokatorvisyöpää, ja **asetaldehydi on se aine**, joka sen tekee. Menetelmä on
+mendeliaaninen satunnaistaminen — sama, jolla Kiinan aineisto romutti J-käyrän
+aivohalvauksen osalta. Yksi rivi nimeää tuon yhteyden, koska kaksi tulosta samalla
+työkalulla on enemmän kuin kaksi erillistä faktaa.
+
+Kaksisuuntaisuudelle on oma piirroksensa: yksi laatikko, kaksi nuolta vastakkaisiin
+suuntiin. Se on juuri sellainen asia, jota lause kertoo mutta kuva näyttää.
+
+Varaukset samassa laatikossa: **karsinogeeniluokitus kertoo että yhteys on
+osoitettu, ei kuinka suuri riski on** — nämä sekoitetaan jatkuvasti, ja pienillä
+määrillä absoluuttinen lisäys on pieni vaikka kynnystä ei ole. Ja koska riski
+kertyy altistuksesta, se **lakkaa kasvamasta kun juominen loppuu** — suun, nielun
+ja ruokatorven osalta se myös laskee vuosien mittaan, hitaammin kuin mikään muu
+sivulla.
 
 ## Kysymys, johon vastaus jakautuu kahtia
 
@@ -520,7 +555,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 209 testiä ydinlogiikalle
+npm test           # 217 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 

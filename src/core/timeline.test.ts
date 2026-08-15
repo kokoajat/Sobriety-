@@ -210,3 +210,56 @@ describe('the cycling phase', () => {
     expect(cycling.caveat).toMatch(/viikon tauko on itsessään vieroitus/);
   });
 });
+
+describe('the cancer phase', () => {
+  const cancer = PHASES.find((p) => p.id === 'cancer')!;
+
+  it('corrects the "this is new" impression in the heading itself', () => {
+    // The classification is from 1988. What changed recently is labelling, not
+    // science, and that belongs where it cannot be missed.
+    expect(cancer.heading).toMatch(/1988, ei tältä vuodelta/);
+  });
+
+  it('separates the science from the communication', () => {
+    expect(cancer.body).toMatch(/tiede ei ollut muuttunut/);
+    expect(cancer.body).toMatch(/mitä etiketissä lukee/);
+  });
+
+  it('leads the evidence with causality rather than with the headline counts', () => {
+    // Counts are only worth something once the causal claim stands up, so the
+    // natural experiment comes first and the numbers sit in the caveat.
+    expect(cancer.body).toMatch(/ALDH2/);
+    expect(cancer.body).toMatch(/kaksi vastakkaista suuntaa samasta geenistä/i);
+  });
+
+  it('distinguishes "a link is proven" from "the risk is large"', () => {
+    expect(cancer.caveat).toMatch(/ei kuinka suuri riski on/);
+  });
+
+  it('says the risk stops accumulating when drinking stops', () => {
+    // Without this the entry is a pure harm list, which is the one thing the
+    // corpus rules forbid.
+    expect(cancer.caveat).toMatch(/lakkaa kasvamasta/);
+  });
+});
+
+describe('the cancer lines in the reading corpus', () => {
+  it('carries the two-directional genetic finding', () => {
+    const line = FACTS.find((f) => f.id === 'res-51')!;
+    expect(line.text).toMatch(/matalampi/);
+    expect(line.text).toMatch(/korkeampi/);
+    expect(line.figure).toBe('aldh2-split');
+  });
+
+  it('ties the method back to the study already in the corpus', () => {
+    // Mendelian randomisation appears twice now — stroke and oesophageal
+    // cancer. The line naming that is what turns two facts into a method.
+    expect(FACTS.find((f) => f.id === 'res-54')!.text).toMatch(/sama menetelmä/i);
+  });
+
+  it('does not leave the cancer material as harm only', () => {
+    const forward = ['rec-31', 'rec-32', 'rec-33'];
+    expect(forward.every((id) => FACTS.some((f) => f.id === id && f.category === 'recovery')))
+      .toBe(true);
+  });
+});

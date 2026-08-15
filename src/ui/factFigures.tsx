@@ -60,7 +60,8 @@ export type FactFigure =
   | 'monty-hall'
   | 'iss-sunrises'
   | 'fibre-atrophy'
-  | 'strength-return';
+  | 'strength-return'
+  | 'aldh2-split';
 
 export function FactScene({ figure }: { figure: FactFigure }) {
   return (
@@ -120,6 +121,7 @@ const LABELS: Record<FactFigure, string> = {
   'iss-sunrises': 'Auringonnousut avaruusasemalla',
   'fibre-atrophy': 'Surkastuminen osuu tyypin II soluihin',
   'strength-return': 'Lihasvoiman palautuminen raittiudessa',
+  'aldh2-split': 'Sama geeni, kaksi vastakkaista suuntaa',
 };
 
 /** Bars for 914 / 918 / 977 / 1252 per 100 000, scaled to the frame. */
@@ -691,6 +693,25 @@ const SCENES: Record<FactFigure, JSX.Element> = {
       <rect className="scene-line-box scene-dashed" x="134" y="32" width="28" height="46" rx="12" />
       <rect className="scene-fill" x="141" y="32" width="14" height="46" rx="7" />
       <text className="scene-tiny" x="148" y="92" textAnchor="middle">−30 %</text>
+    </g>
+  ),
+
+  /*
+   * One gene, two arrows going opposite ways. The double dissociation is the
+   * entire causal argument, and it is far easier to see than to read: no enzyme
+   * means almost no drinking and lower risk, partial enzyme means drinking with
+   * acetaldehyde piling up and higher risk.
+   */
+  'aldh2-split': (
+    <g>
+      <rect className="scene-line-box" x="76" y="38" width="48" height="24" rx="4" />
+      <text className="scene-tiny" x="100" y="54" textAnchor="middle">ALDH2</text>
+      <path className="scene-line" d="M74 50 h-30 l0 20 m-5 -6 l5 6 l5 -6" />
+      <text className="scene-tiny" x="44" y="86" textAnchor="middle">ei lainkaan</text>
+      <text className="scene-tiny" x="44" y="30" textAnchor="middle">riski ↓</text>
+      <path className="scene-line" d="M126 50 h30 l0 -20 m-5 6 l5 -6 l5 6" />
+      <text className="scene-tiny" x="156" y="86" textAnchor="middle">osittain</text>
+      <text className="scene-tiny" x="156" y="20" textAnchor="middle">riski ↑</text>
     </g>
   ),
 

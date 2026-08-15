@@ -338,6 +338,30 @@ export const FACTS: Fact[] = [
   { id: 'rec-29', category: 'recovery', text: 'Lihasten toipuminen on osittaista: noin puolet ei palannut normaalitasolle. Suunta oli silti sama kaikilla, jotka lopettivat — ja käytön jatkuessa surkastuminen eteni.' },
   { id: 'rec-30', category: 'recovery', text: 'Se vaihe jossa mikään ei tunnu miltään ja se aikaväli jolla lihasvoima palautuu, osuvat päällekkäin. Toinen niistä on mitattavissa.' },
 
+  /*
+   * Syöpä: luokituksen ikä, syy-yhteyden todiste ja se mikä oikeasti muuttui.
+   *
+   * The corpus already said alcohol is a Group 1 carcinogen and that the
+   * classification is from 1988. What was missing was the strongest thing in the
+   * whole cancer story: nearly all of this evidence is observational, and the
+   * ALDH2 natural experiment is what closes the correlation-versus-causation gap.
+   * It also identifies the agent. The lines below lead with that rather than with
+   * the headline counts, because the counts are only worth anything once the
+   * causal claim stands up.
+   */
+  { id: 'res-51', category: 'research', figure: 'aldh2-split', text: 'ALDH2-entsyymin puuttuminen kokonaan tekee pienestäkin määrästä niin epämiellyttävän, ettei ihminen käytännössä juo — ja ruokatorvisyövän riski on heillä matalampi. Osittainenkin toiminta riittää juomiseen, mutta asetaldehydi kertyy, ja riski on korkeampi.' },
+  { id: 'res-52', category: 'research', text: 'Kaksi vastakkaista suuntaa samasta geenistä, arvottuna syntymässä eikä elämäntavan mukaan. Se on luonnon tekemä satunnaistettu koe, ja se sulkee "korrelaatio ei ole kausaatio" -aukon.' },
+  { id: 'res-53', category: 'research', text: 'Sama asetelma osoittaa kaksi asiaa kerralla: alkoholi aiheuttaa ruokatorvisyöpää, ja asetaldehydi on se aine joka sen tekee. Menetelmää kutsutaan mendeliaaniseksi satunnaistamiseksi.' },
+  { id: 'res-54', category: 'research', text: 'Sama menetelmä romutti J-käyrän aivohalvauksen osalta Kiinan aineistossa. Kun sama työkalu antaa saman vastauksen kahdesta eri kysymyksestä, vastausta on vaikeampi selittää pois.' },
+  { id: 'res-55', category: 'research', text: 'Alkoholijuomat luokiteltiin ryhmän 1 karsinogeeniksi vuonna 1988. Etanoli itsessään ja alkoholijuomiin liittyvä asetaldehydi lisättiin samaan luokkaan vuosien 2007 ja 2012 välillä.' },
+  { id: 'res-56', category: 'research', text: 'Yhdysvaltain Surgeon General vaati tammikuussa 2025 syöpävaroituksia alkoholipakkauksiin. Tiede ei ollut muuttunut — luokitus oli silloin 37 vuotta vanha. Muuttunut oli se, mitä etiketissä lukee.' },
+  { id: 'res-57', category: 'research', text: 'Saman neuvonnan arvio: alkoholi liittyy noin 100 000 syöpätapaukseen ja 20 000 syöpäkuolemaan vuodessa Yhdysvalloissa. Kolmanneksi suurin ehkäistävissä oleva syövän aiheuttaja tupakan ja lihavuuden jälkeen.' },
+  { id: 'res-58', category: 'research', text: 'Syöpätyyppejä on vähintään seitsemän: rinta, paksusuoli, ruokatorvi, maksa, suu, nielu ja kurkunpää. Enemmistö väestöstä ei tiedä yhteyttä olevan olemassa.' },
+
+  { id: 'rec-31', category: 'recovery', text: 'Syöpäriski kertyy altistuksesta, ja altistus loppuu silloin kun juominen loppuu. Kertymä ei ala uudestaan alusta, mutta se lakkaa kasvamasta.' },
+  { id: 'rec-32', category: 'recovery', text: 'Suun, nielun ja ruokatorven riski laskee lopettamisen jälkeen vuosien mittaan. Se ei tapahdu viikoissa, mutta se tapahtuu.' },
+  { id: 'rec-33', category: 'recovery', text: 'Se että jokin luokitellaan karsinogeeniksi ei kerro kuinka suuri riski on. Se kertoo että yhteys on osoitettu — määrä on eri kysymys, ja siihen vaikuttaa se mitä tästä eteenpäin tapahtuu.' },
+
   { id: 'crav-20', category: 'craving', text: 'Tämä hetki on jo alkanut kulua. Himon huippu on lyhyempi kuin sen aikana tuntuu, eikä sitä tarvitse voittaa — vain istua sen ajan.' },
   { id: 'crav-21', category: 'craving', text: 'Odottaminen ei ole kieltäytymistä. Se on vain sen selvittämistä, mitä mieli haluaa kymmenen minuutin päästä.' },
   { id: 'crav-22', category: 'craving', text: 'Jokainen kerta jolloin himo menee ohi ilman juomaa, heikentää sitä yhteyttä hieman. Se ei tunnu miltään ensimmäisillä kerroilla, mutta se kertyy.' },

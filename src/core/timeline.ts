@@ -119,6 +119,16 @@ export const PHASES: Phase[] = [
       'Tämä ei tee liikunnasta hyödytöntä — se siirtää hyödyn toiseen kohtaan. Anhedoniavaihe yllä on se, mikä ratkaisee ovatko alkuviikot siedettäviä, ja se on juuri se kohta johon liikunnalla on paras osoitettu vaikutus. Reseptori- ja neurogeneesiväitteet sen sijaan nojaavat jyrsijöihin ja hyvin pieniin ihmisaineistoihin: tunnetuin dopamiinireseptorilöydös on 19 ihmisen tutkimus metamfetamiinin käyttäjillä.',
   },
   {
+    id: 'cancer',
+    window: 'Kertyvä riski',
+    heading: 'Syöpä: luokitus on vuodelta 1988, ei tältä vuodelta',
+    body: 'Alkoholijuomat luokiteltiin ryhmän 1 karsinogeeniksi jo 1988, etanoli ja asetaldehydi samaan luokkaan 2007–2012. Kun Yhdysvaltain Surgeon General vaati tammikuussa 2025 syöpävaroituksia pakkauksiin, tiede ei ollut muuttunut — luokitus oli silloin 37 vuotta vanha. Muuttunut oli se, mitä etiketissä lukee. Vahvin osa tästä ei kuitenkaan ole luokitus vaan syy-yhteyden todiste: ihmiset joilta ALDH2-entsyymi puuttuu kokonaan eivät käytännössä juo, ja heidän ruokatorvisyöpäriskinsä on matalampi — mutta ne joilla entsyymi toimii osittain juovat, asetaldehydi kertyy, ja riski on korkeampi. Kaksi vastakkaista suuntaa samasta geenistä, arvottuna syntymässä eikä elämäntavan mukaan.',
+    source:
+      'IARC monografia 44 (1988), etanoli ja asetaldehydi monografioissa 96 ja 100E. ALDH2-asetelma: mendeliaanisen satunnaistamisen meta-analyysit ruokatorvisyövästä. Luvut: US Surgeon General, tammikuu 2025.',
+    caveat:
+      'Karsinogeeniluokitus kertoo että yhteys on osoitettu, ei kuinka suuri riski on — nämä sekoitetaan jatkuvasti. Suuruusluokka on eri kysymys, ja pienillä määrillä absoluuttinen lisäys on pieni, vaikka kynnystä ei ole. Neuvonnan arvio on noin 100 000 syöpätapausta ja 20 000 kuolemaa vuodessa Yhdysvalloissa, kolmanneksi suurimpana ehkäistävissä olevana aiheuttajana tupakan ja lihavuuden jälkeen. Riski kertyy altistuksesta, joten se lakkaa kasvamasta kun juominen loppuu, ja suun, nielun ja ruokatorven osalta se laskee vuosien mittaan — hitaammin kuin mikään muu tällä sivulla.',
+  },
+  {
     id: 'cycling',
     window: 'Toistuva kaava',
     heading: 'Viikko ilman, sitten pari päivää — vie se lähemmäs?',
