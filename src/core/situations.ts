@@ -90,7 +90,7 @@ export const SITUATIONS: Record<SituationKey, Situation> = {
         id: 'ha-out',
         kind: 'room',
         text: 'Mene ulos ovesta. Rappu, piha tai parveke riittää — kaksi minuuttia.',
-        why: 'Valo, lämpötila ja ääni vaihtuvat kerralla. Mikään yhtä helppo teko ei vaihda kontekstia yhtä paljon.',
+        why: 'Valo, lämpötila ja ääni vaihtuvat kerralla. Mikään yhtä helppo teko ei vaihda kontekstia yhtä paljon — ja ulkona valoa on kertaluokkaa enemmän kuin sisällä, myös pilvisellä säällä.',
         seconds: 120,
       },
       {
@@ -257,6 +257,13 @@ export const SITUATIONS: Record<SituationKey, Situation> = {
         text: 'Jos nouset, pidä valot himmeinä. Ei kirkasta ruutua kasvojen edessä.',
         why: 'Kirkas valo siirtää sisäistä kelloa myöhemmäksi ja tekee huomisillasta saman ongelman uudestaan.',
         seconds: 15,
+      },
+      {
+        id: 'bd-curtain',
+        kind: 'sensory',
+        text: 'Avaa verho valmiiksi ja aseta herätys samaan aikaan kuin eilen.',
+        why: 'Aamun valo on vahvin yksittäinen vipu sisäiseen kelloon, ja sisävalaistus on siihen kertaluokan liian himmeä. Tämän voi tehdä nyt, jolloin huomisaamusta tulee oletus eikä päätös.',
+        seconds: 30,
       },
       {
         id: 'bd-breath',

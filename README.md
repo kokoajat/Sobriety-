@@ -62,7 +62,7 @@ toipumisfaktoja**, koska pelkkä haittalista himon aikana lannistaa — lannistu
 on se tila jossa juodaan. Noin kolmannes riveistä katsoo eteenpäin, ja sitäkin
 vahtii testi.
 
-Alkoholirivejä on 196, ja niistä 58 on omassa kategoriassaan **Mistä tiedetään**.
+Alkoholirivejä on 205, ja niistä 64 on omassa kategoriassaan **Mistä tiedetään**.
 Ne nimeävät lähteen ja kertovat myös sen, missä väite on kiistelty. Mukana ovat
 GBD 2016 ja sen 2022 tarkennus, Lancetin 600 000 juovan kynnysanalyysi, Kiinan
 geneettinen koeasetelma joka romutti J-käyrän, 4,8 miljoonan ihmisen
@@ -128,7 +128,7 @@ koskeva ilmoitus ole sen arvoinen.
 
 #### Kuvat
 
-Viidelläkymmenellä rivillä on piirros, eli noin kymmenellä
+Viidelläkymmenelläyhdellä rivillä on piirros, eli noin kymmenellä
 prosentilla korpuksesta: sykkivät sydämet, kennoston kuusikulmiot,
 Saturnus kellumassa, valon matka Auringosta, veden laajeneminen jäätyessä,
 taitosten kaksinkertaistuminen, Kuun loittoneminen — ja alkoholipuolella unen
@@ -307,6 +307,44 @@ Aineisto meni kahteen paikkaan: yhdeksän lähteistettyä riviä `facts.ts`:n
 **Mistä tiedetään** -kategoriaan, ja oma kohtansa **Mitä odottaa** -sivulle. Mukana
 tuli viisi eteenpäin katsovaa riviä: pelkillä kumoamisilla vastaaminen jättäisi
 himon hetkeen listan asioista jotka eivät toimi.
+
+## Valo: kokoluokan ero, ei asteen ero
+
+Liikunnan ja magnesiumin kohdalla mekanismi oli *pääteltyä*. Tässä se on **mitattu
+ihmisiltä annoksittain**, ja se ero on syy antaa valolle oma kohtansa:
+
+- Puolet melatoniinin vaimennuksesta jo **50–130 luksissa**
+- 90 % maksimista **200 luksissa**
+- Vaihesiirtymän puolikas **80–160 luksissa**
+
+Ja siitä seuraa se yksi luku, joka tekee asiasta toimintaohjeen: **himmeä sisätila
+on noin 100 luksia ja kirkas toimisto 300–500, kun pilvinen ulkoilma on tuhansia ja
+aurinkoinen päivä kymmeniä tuhansia.** Sisävalaistus jää vähintään kertaluokan alle
+ulkoilman. *"Olin päivällä valoisassa"* ei merkitse kellolle mitään, jos se oli
+sisällä — ikkunan ääressä istuminen ei korvaa ulos menemistä.
+
+Sama käyrä toiseen suuntaan selittää, miksi sängyn kohdalla lukee jo "pidä valot
+himmeinä": 50–130 luksia *on* olohuoneen iltavalaistus.
+
+Kohta on sijoitettu **heti unettomuuskohdan perään**, koska se on saman asian
+työkalu: unettomuus ennustaa retkahdusta itsenäisesti, ja valo on yksi harvoista
+vivuista siihen. Testi lukitsee sen paikan.
+
+Rajaus on sama kuin liikunnalla: **juomistulosta ei ole osoitettu.** Vuoden 2026
+katsauksen oma sanamuoto on, että perusta on vahva mutta hyvin suunniteltuja
+kokeita tarvitaan vielä — lupaus, ei näyttö. Ja **D-vitamiini ei ole tämän kohdan
+mekanismi**: puutos on yleistä, mutta lisäravinnekokeet mielialaan ovat pääosin
+nollatuloksia.
+
+Luksiero sai piirroksen, joka on **piirretty logaritmiselle asteikolle ja myös
+merkitty sellaiseksi**. Lineaarisella asteikolla sisävalon palkki olisi kahden
+pikselin siru — mikä on tavallaan rehellisin kuva, mutta näyttää renderöintivirheeltä
+eikä löydökseltä.
+
+Aamuvalo meni myös siirroksi `situations.ts`:ään, mutta muodossa joka on tehtävissä
+**nyt**: *"Avaa verho valmiiksi ja aseta herätys samaan aikaan kuin eilen."*
+Moduulin sopimus on, että jokainen siirto on tehtävissä odotuksen aikana — "hae
+aamuvaloa" olisi ohje toiselle päivälle ja rikkoisi sen. Testi vartioi tätä.
 
 ## Syöpä: mikä oikeasti muuttui, ja mikä todistaa syy-yhteyden
 
@@ -555,7 +593,7 @@ index.html         julkaistu käännös, generoitu — älä muokkaa käsin
 ```bash
 npm install
 npm run dev        # kehityspalvelin
-npm test           # 217 testiä ydinlogiikalle
+npm test           # 226 testiä ydinlogiikalle
 npm run build      # typecheck + käännös + synkkaus repon juureen
 ```
 

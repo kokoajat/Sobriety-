@@ -362,6 +362,29 @@ export const FACTS: Fact[] = [
   { id: 'rec-32', category: 'recovery', text: 'Suun, nielun ja ruokatorven riski laskee lopettamisen jälkeen vuosien mittaan. Se ei tapahdu viikoissa, mutta se tapahtuu.' },
   { id: 'rec-33', category: 'recovery', text: 'Se että jokin luokitellaan karsinogeeniksi ei kerro kuinka suuri riski on. Se kertoo että yhteys on osoitettu — määrä on eri kysymys, ja siihen vaikuttaa se mitä tästä eteenpäin tapahtuu.' },
 
+  /*
+   * Valo.
+   *
+   * The distinction that earns these lines a place: unlike the exercise and
+   * magnesium material, the mechanism here is not inferred — the circadian light
+   * response has been measured in humans dose by dose. What is untested is the
+   * drinking outcome, and that is stated as plainly as everywhere else.
+   *
+   * The practically important number is the gap between indoor and outdoor
+   * light. It is an order of magnitude, not a difference of degree, and almost
+   * nobody knows it.
+   */
+  { id: 'res-59', category: 'research', text: 'Puolet melatoniinin vaimennuksesta tapahtuu jo 50–130 luksissa, ja 90 prosenttia maksimista 200 luksissa. Se on tavallisen olohuoneen valaistus illalla.' },
+  { id: 'res-60', category: 'research', figure: 'lux-gap', text: 'Himmeä sisätila on noin 100 luksia ja kirkas toimisto 300–500. Pilvinen ulkoilma on tuhansia ja aurinkoinen päivä kymmeniä tuhansia. Ero ei ole asteen vaan kertaluokan.' },
+  { id: 'res-61', category: 'research', text: 'Sisävalaistus jää tyypillisesti vähintään kertaluokan alle ulkoilman, ja tavallinen toimisto usein alle 150 melanooppisen luksin — kun päivän suositus silmän tasolla on vähintään 250.' },
+  { id: 'res-62', category: 'research', text: 'Aamun kirkas valo aikaistaa sisäistä kelloa, illan valo myöhäistää sitä. Sama valo, vastakkainen vaikutus — ero on kellonajassa.' },
+  { id: 'res-63', category: 'research', text: 'Kirkasvalohoidosta riippuvuuksissa on katsaus vuodelta 2026: perusta on vahva mielialan, unen ja sirkadiaanisen säätelyn kautta, mutta hyvin suunniteltuja kokeita tarvitaan vielä. Juomistulosta ei ole osoitettu.' },
+  { id: 'res-64', category: 'research', text: 'D-vitamiinin puutos on runsaassa käytössä yleistä, koska maksa hoitaa yhden aktivointivaiheen. Lisäravinnekokeet mielialaan ovat silti pääosin nollatuloksia — auringon hyöty ei ole pääosin vitamiinissa.' },
+
+  { id: 'rec-34', category: 'recovery', text: 'Ulos meneminen aamulla on halvin vipu uneen, ja uni on se kohta, jolla on selvin yhteys siihen miten seuraava ilta menee.' },
+  { id: 'rec-35', category: 'recovery', text: 'Verhon avaaminen valmiiksi tekee huomisaamun valosta oletuksen eikä päätöksen. Päätöksiä on aamulla vähemmän kuin iltaisin.' },
+  { id: 'rec-36', category: 'recovery', text: 'Pimeä vuodenaika ei ole luonteenpiirre. Se on valon määrä, ja määrä on mitattavissa ja korjattavissa.' },
+
   { id: 'crav-20', category: 'craving', text: 'Tämä hetki on jo alkanut kulua. Himon huippu on lyhyempi kuin sen aikana tuntuu, eikä sitä tarvitse voittaa — vain istua sen ajan.' },
   { id: 'crav-21', category: 'craving', text: 'Odottaminen ei ole kieltäytymistä. Se on vain sen selvittämistä, mitä mieli haluaa kymmenen minuutin päästä.' },
   { id: 'crav-22', category: 'craving', text: 'Jokainen kerta jolloin himo menee ohi ilman juomaa, heikentää sitä yhteyttä hieman. Se ei tunnu miltään ensimmäisillä kerroilla, mutta se kertyy.' },

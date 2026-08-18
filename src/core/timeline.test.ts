@@ -263,3 +263,35 @@ describe('the cancer lines in the reading corpus', () => {
       .toBe(true);
   });
 });
+
+describe('the light phase', () => {
+  const light = PHASES.find((p) => p.id === 'light')!;
+
+  it('sits immediately after the insomnia entry it is a tool for', () => {
+    const ids = PHASES.map((p) => p.id);
+    expect(ids.indexOf('light')).toBe(ids.indexOf('sleep-late') + 1);
+  });
+
+  it('gives the dose-response numbers rather than "get some sunlight"', () => {
+    // This is what separates it from the exercise entry: the mechanism was
+    // measured in humans dose by dose, not inferred.
+    expect(light.body).toMatch(/50–130 luksissa/);
+    expect(light.body).toMatch(/200 luksissa/);
+  });
+
+  it('states the indoor-outdoor gap, which is the actionable part', () => {
+    expect(light.body).toMatch(/300–500/);
+    expect(light.body).toMatch(/kymmeniä tuhansia/);
+  });
+
+  it('applies the same restraint as the exercise entry on drinking outcomes', () => {
+    expect(light.caveat).toMatch(/Juomistulosta ei ole osoitettu/);
+    expect(light.caveat).toMatch(/lupaus, ei näyttö/);
+  });
+
+  it('says outright that vitamin D is not the mechanism here', () => {
+    // The most common substitution: sunlight gets credited to the vitamin, and
+    // the supplement trials for mood are largely null.
+    expect(light.caveat).toMatch(/D-vitamiini ei ole tämän kohdan mekanismi/);
+  });
+});

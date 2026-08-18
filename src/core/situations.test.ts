@@ -122,3 +122,27 @@ describe('situationLabel', () => {
     }
   });
 });
+
+describe('the morning-light move', () => {
+  const curtain = SITUATIONS.bed.moves.find((m) => m.id === 'bd-curtain')!;
+
+  it('exists in the bed situation, where the next morning is decided', () => {
+    expect(curtain).toBeDefined();
+  });
+
+  it('is doable now rather than tomorrow', () => {
+    // Every move in this module is something to do during the wait. "Get
+    // morning light" would be an instruction for another day and would break
+    // that contract, so the move is the thirty seconds that make it happen.
+    expect(curtain.seconds).toBeLessThanOrEqual(60);
+    expect(curtain.text).toMatch(/valmiiksi/);
+  });
+
+  it('explains why indoor light does not substitute', () => {
+    expect(curtain.why).toMatch(/kertaluokan liian himmeä/);
+  });
+
+  it('does not displace getting out of bed as the first bed move', () => {
+    expect(movesFor('bed')[0].text).toMatch(/[Nn]ouse sängystä/);
+  });
+});

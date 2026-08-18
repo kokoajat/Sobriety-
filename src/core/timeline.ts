@@ -90,6 +90,16 @@ export const PHASES: Phase[] = [
       'Tämä on koko listan käyttökelpoisin kohta: se on mitattava, hoidettava ja se osuu juuri siihen perusteluun, jolla paluu useimmin selitetään.',
   },
   {
+    id: 'light',
+    window: 'Aamuisin',
+    heading: 'Valo: kokoluokan ero, ei asteen ero',
+    body: 'Valon vaikutus sisäiseen kelloon on mitattu ihmisiltä annoksittain: puolet melatoniinin vaimennuksesta tapahtuu jo 50–130 luksissa ja 90 prosenttia maksimista 200 luksissa. Se on olohuoneen valaistus. Sama käyrä toiseen suuntaan tarkoittaa, ettei sisällä oleminen riitä päivällä: himmeä sisätila on noin 100 luksia ja kirkas toimisto 300–500, kun pilvinen ulkoilma on tuhansia ja aurinkoinen päivä kymmeniä tuhansia. Aamun kirkas valo aikaistaa kelloa, illan valo myöhäistää sitä. Tämä on saman asian työkalu kuin edellinen kohta: unettomuus ennustaa retkahdusta, ja valo on yksi harvoista vivuista siihen.',
+    source:
+      'Sirkadiaanisen valovasteen annos-vaste-tutkimukset; PLOS Biology 2022, suositukset sisävalaistuksesta; kirkasvalohoidon katsaus riippuvuuksissa 2026.',
+    caveat:
+      'Juomistulosta ei ole osoitettu. Katsauksen oma sanamuoto on, että perusta on vahva mutta hyvin suunniteltuja kokeita tarvitaan vielä — eli lupaus, ei näyttö. Sama rajaus kuin liikunnalla: uni ja mieliala kyllä, juominen ei. Pohjoisessa tämä on lisäksi konkreettinen rajoite eikä valinta, ja pimeä kausi osuu samaan ikkunaan kuin vaihe jossa mikään ei tunnu miltään. D-vitamiini ei ole tämän kohdan mekanismi: puutos on yleistä, mutta lisäravinnekokeet mielialaan ovat pääosin nollatuloksia.',
+  },
+  {
     id: 'muscle',
     window: '3 kk – 1 v',
     heading: 'Lihasvoima palautuu, ja se näkyy numeroina',

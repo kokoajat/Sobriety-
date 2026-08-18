@@ -61,7 +61,8 @@ export type FactFigure =
   | 'iss-sunrises'
   | 'fibre-atrophy'
   | 'strength-return'
-  | 'aldh2-split';
+  | 'aldh2-split'
+  | 'lux-gap';
 
 export function FactScene({ figure }: { figure: FactFigure }) {
   return (
@@ -122,6 +123,7 @@ const LABELS: Record<FactFigure, string> = {
   'fibre-atrophy': 'Surkastuminen osuu tyypin II soluihin',
   'strength-return': 'Lihasvoiman palautuminen raittiudessa',
   'aldh2-split': 'Sama geeni, kaksi vastakkaista suuntaa',
+  'lux-gap': 'Sisävalo ja ulkovalo logaritmisella asteikolla',
 };
 
 /** Bars for 914 / 918 / 977 / 1252 per 100 000, scaled to the frame. */
@@ -693,6 +695,36 @@ const SCENES: Record<FactFigure, JSX.Element> = {
       <rect className="scene-line-box scene-dashed" x="134" y="32" width="28" height="46" rx="12" />
       <rect className="scene-fill" x="141" y="32" width="14" height="46" rx="7" />
       <text className="scene-tiny" x="148" y="92" textAnchor="middle">−30 %</text>
+    </g>
+  ),
+
+  /*
+   * Drawn on a log axis, and labelled as one.
+   *
+   * On a linear scale the indoor bar would be a sliver two pixels wide — which
+   * is arguably the honest picture, but it reads as a rendering fault rather
+   * than as a finding. A log axis with its decades marked shows the same three
+   * orders of magnitude and can be checked by the reader.
+   */
+  'lux-gap': (
+    <g>
+      {[
+        { label: 'sisällä', x: 61, y: 26 },
+        { label: 'pilvinen', x: 115, y: 44 },
+        { label: 'aurinko', x: 168, y: 62 },
+      ].map((b) => (
+        <g key={b.label}>
+          <rect className="scene-fill" x="24" y={b.y - 6} width={b.x - 24} height="9" rx="3" />
+          <text className="scene-tiny" x={b.x + 4} y={b.y + 2}>{b.label}</text>
+        </g>
+      ))}
+      <line className="scene-line" x1="24" y1="76" x2="184" y2="76" />
+      {[24, 77, 131, 184].map((x) => (
+        <line key={x} className="scene-line" x1={x} y1="76" x2={x} y2="80" />
+      ))}
+      <text className="scene-tiny" x="24" y="92" textAnchor="middle">100</text>
+      <text className="scene-tiny" x="184" y="92" textAnchor="middle">100 000</text>
+      <text className="scene-tiny" x="104" y="92" textAnchor="middle">luksia, log</text>
     </g>
   ),
 
